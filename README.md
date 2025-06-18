@@ -1,2 +1,0 @@
-# arco-app
-Arco APP

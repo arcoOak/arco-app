@@ -1,0 +1,71 @@
+
+.reserva-unidad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+
+.reserva-unidad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    margin: 24px auto 12px auto;
+    padding: 24px;
+    background: #fff;
+    color: #333;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    text-align: center;
+}
+
+.reserva-unidad-container-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    margin: 12px auto;
+    padding: 12px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    text-align: center;
+    color: #333;
+    gap: 20px;
+}
+
+.reserva-unidad-image {
+    width: 100%;
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 12px rgba(99,99,99,0.10);
+}
+
+.reserva-unidad-container h2 {
+    margin-bottom: 18px;
+    color: #333;
+    font-size: 2rem;
+}
+
+.reserva-unidad-container p {
+    margin: 10px 0;
+    color: #444;
+    font-size: 1.1rem;
+}
+
+.reserva-unidad-container b {
+    color: #222;
+}
+
+.reserva-unidad-icons{
+    width: 50%;
+}

@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import Home from "./pages/Home";
 import Perfil from "./pages/Perfil";
 import Reservas from "./pages/Reserva";
+import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio";
 import Qr from "./pages/Lectura";
 
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/perfil" element={<Perfil />} />
                     <Route path="/reservas" element={<Reservas />} />
+                    <Route path="/reservas/:id" element={<ReservaUnidad />} />
                     <Route path="/comercios" element={<Comercios />} />
                     <Route path="/qr" element={<Qr />} />
                 </Route>

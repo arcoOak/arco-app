@@ -1,0 +1,15 @@
+
+.container {
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0002;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* .container:hover {
+  box-shadow: 0 8px 32px #0003;  /* Sombra más intensa al hacer hover 
+} 
+*/

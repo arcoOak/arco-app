@@ -1,0 +1,27 @@
+.small-icon-box {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  background: #f5f6fa;
+  border-radius: 8px;
+  padding: 12px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.small-icon-box__icon {
+  font-size: 1.5rem;
+  color: #4a69bd;
+}
+
+.small-icon-box__title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222f3e;
+}
+
+.small-icon-box__data {
+  font-size: 1rem;
+  color: #576574;
+}

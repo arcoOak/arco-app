@@ -41,6 +41,10 @@ body {
   padding-bottom: 1rem !important;
 }
 
+.absolute {
+  position: absolute;
+}
+
 .mb-2 {
   margin-bottom: .5rem !important;
 }
@@ -419,4 +423,71 @@ body {
 .qr-image {
   width: 200px;
   height: 200px;
+}
+
+/* comercios */
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.span-categoria {
+  background-color: white;
+  margin-right: 15px;
+  border-radius: 10px;
+  padding: .4rem 1rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  cursor: pointer;
+}
+
+.search-categoria {
+  width: 100%;
+  padding: .5rem;
+}
+
+.search-categoria input {
+  width: 100%;
+  padding: .8rem 3rem .8rem 5rem;
+  border-radius: 5px;
+  background-color: #e6e6e8;
+  border: 1px solid #e6e6e8;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+.search-categoria button {
+  position: absolute;
+  background: transparent;
+  border: none;
+  width: 70px;
+  height: 47px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-categoria input:focus,
+.search-categoria button:focus {
+  outline: none;
+}
+
+.comercios {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.comercio-card{
+  width: 300px;
+  margin: 10px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.comercio-card img{
+  height: 150px;
+  width: 150px;
 }

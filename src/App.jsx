@@ -6,6 +6,7 @@ import Layout from "./Layout";
 import Home from "./pages/Home";
 import Perfil from "./pages/Perfil";
 import Reservas from "./pages/Reserva";
+import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 import ComercioDetalle from './components/ComercioDetalle';
 import Qr from "./pages/Lectura";
@@ -67,6 +68,8 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/perfil" element={<Perfil />} />
                         <Route path="/reservas" element={<Reservas />} />
+                        <Route path="/reservas/:id" element={<ReservaUnidad />} />
+
                         {/* Pasar allBusinessesData a tu componente de lista de comercios */}
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />
                         {/* CORRECCIÓN: Añadir '/' antes de :id */}

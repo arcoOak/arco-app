@@ -1,10 +1,24 @@
 
+@keyframes fadeInUp {
+    from {
+        color: transparent;
+        box-shadow: none;
+        transform: translateY(10px);
+    }
+    to {
+        color: #333;
+        transform: translateY(0);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+}
+
 .reserva-unidad {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 12px;
+    animation: fadeInUp 0.75s ease-in-out;
 }
 
 .reserva-unidad-container {

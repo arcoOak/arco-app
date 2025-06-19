@@ -23,15 +23,21 @@
   
 }
 
+html{
+    background: rgb(240, 240, 255);
+  background-image: url('../assets/fondo.webp'); 
+  background-size: cover;               
+  background-position: center;   
+  background-attachment:fixed;
+  background-repeat: no-repeat;
+}
+
 body {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(240, 240, 255);
-  background-image: url('../assets/fondo.webp'); 
-  background-size: cover;               
-  background-position: center;   
+
 }
 
 .w-100 {

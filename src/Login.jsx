@@ -23,9 +23,9 @@ export default function Login({ onLogin }) {
     return (
         <div className="login-container">
             <div className="form-wrapper">
-                <div class="wave-container">
-                    <svg viewBox="0 0 1440 320" class="wave">
-                        <path fill="#ffffff" fill-opacity="1"
+                <div className="wave-container">
+                    <svg viewBox="0 0 1440 320" className="wave">
+                        <path fill="#ffffff" fillOpacity="1"
                             d="M0,250 C360,100 1080,300 1440,130 L1440,320 L0,320 Z"></path>
                     </svg>
                 </div>
@@ -33,11 +33,11 @@ export default function Login({ onLogin }) {
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <img src="./src/img/flotador.png" alt="flotador" />
-                            <h2 className="welcome-title">Welcome Back</h2>
-                            <p className="subtitle">Login to your account</p>
+                            <h2 className="welcome-title">Bienvenido de vuelta</h2>
+                            <p className="subtitle">Conéctese a su cuenta</p>
                             <div className="formControl">
                                 <button>
-                                    <i class='bx bx-user'></i>
+                                    <i className='bx bx-user'></i>
                                 </button>
                                 <input
                                     type="text"
@@ -53,7 +53,7 @@ export default function Login({ onLogin }) {
                         <div className="input-group">
                             <div className="formControl">
                                 <button>
-                                    <i class='bx bx-lock-keyhole'></i>
+                                    <i className='bx bx-lock-keyhole'></i>
                                 </button>
                                 <input
                                     type="password"
@@ -71,14 +71,14 @@ export default function Login({ onLogin }) {
                                 <input type="checkbox" />
                                 Remember me
                             </label>
-                            <a href="#" className="forgot-password">Forgot Password?</a>
+                            <a href="#" className="forgot-password">¿Olvidó su contraseña?</a>
                         </div>
 
-                        <button type="submit" className="login-button">Login</button>
+                        <button type="submit" className="login-button">Ingresar</button>
 
-                        <p className="signup-text">
-                            Don’t have account? <a href="#">Sign up</a>
-                        </p>
+                        {/* <p className="signup-text">
+                            ¿No posee una cuenta? <a href="#">Sign up</a>
+                        </p> */}
                     </form>
                 </div>
             </div>

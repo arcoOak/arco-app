@@ -232,6 +232,7 @@ body {
 .label-info {
   font-weight: 700;
   font-size: 14px;
+  color: #333;
 }
 
 .pass {

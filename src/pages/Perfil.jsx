@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importar useNavigate aquí
 
+import './Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
+
 export default function Perfil({ onLogout }) {
     const [activeDiv, setActiveDiv] = useState(0);
     const navigate = useNavigate(); // Hook useNavigate
@@ -173,7 +175,7 @@ export default function Perfil({ onLogout }) {
                             <div className="faqs">
                                 <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
                                     <div className="head">
-                                        <span className="label-info">Carga Familiar</span>
+                                        <span className="label-info">Grupo Familiar</span>
                                         <svg
                                             width={18}
                                             height={19}
@@ -201,11 +203,11 @@ export default function Perfil({ onLogout }) {
                             <span className="value"><i className='bx bx-lock-keyhole pass'></i></span>
                         </div>
                         <div className="info-item b-0 py-3">
-                            <span className="label-info exit">Cerrar Sesión</span>
+                            {/* <span className="label-info exit">Cerrar Sesión</span> */}
                             <button onClick={handleUserLogout} className="exit-button">
                                 <i className='bx bx-arrow-in-right-square-half exit'></i> Cerrar Sesión
                             </button>
-                            <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span>
+                            {/* <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span> */}
                         </div>
                     </div>
                 </div>

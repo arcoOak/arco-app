@@ -1,7 +1,10 @@
+// Perfil.jsx
 import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importar useNavigate aquí
 
-export default function Perfil() {
+export default function Perfil({ onLogout }) {
     const [activeDiv, setActiveDiv] = useState(0);
+    const navigate = useNavigate(); // Hook useNavigate
 
     const handleDivClick = (index) => {
         if (activeDiv === index) {
@@ -10,6 +13,11 @@ export default function Perfil() {
         }
         setActiveDiv(index);
     };
+
+    const handleUserLogout = () => {
+        navigate('/login'); // Redirige a la página de login
+    }
+
     return (
         <div className="container-fluid">
             <div className="row mb-4 mt-4" >
@@ -48,7 +56,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0' }}
                                     >
-                                        <label><i class='bx bx-user-square'></i> Johny Roria</label>
+                                        <label><i className='bx bx-user-square'></i> Johny Roria</label>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +83,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0' }}
                                     >
-                                        <label><i class='bx bx-user-id-card'></i> V25.632.154</label>
+                                        <label><i className='bx bx-user-id-card'></i> V25.632.154</label>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +110,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0' }}
                                     >
-                                        <label><i class='bx bx-phone'></i> +51 987654321</label>
+                                        <label><i className='bx bx-phone'></i> +51 987654321</label>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +137,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0' }}
                                     >
-                                        <label><i class='bx bx-location'></i> Venezuela, Caracas</label>
+                                        <label><i className='bx bx-location'></i> Venezuela, Caracas</label>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +164,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0' }}
                                     >
-                                        <label><i class='bx bx-calendar-alt'></i>  01/01/2000</label>
+                                        <label><i className='bx bx-calendar-alt'></i>  01/01/2000</label>
                                     </div>
                                 </div>
                             </div>
@@ -183,18 +191,21 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0' }}
                                     >
-                                        <label><i class='bx bx-parent-child'></i> 4 Hijos</label>
+                                        <label><i className='bx bx-parent-child'></i> 4 Hijos</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="info-item b-0 mt-2 py-3">
                             <span className="label-info pass">Cambiar Clave</span>
-                            <span className="value"><i class='bx bx-lock-keyhole pass'></i></span>
+                            <span className="value"><i className='bx bx-lock-keyhole pass'></i></span>
                         </div>
                         <div className="info-item b-0 py-3">
                             <span className="label-info exit">Cerrar Sesión</span>
-                            <span className="value"><i class='bx bx-arrow-in-right-square-half exit'></i></span>
+                            <button onClick={handleUserLogout} className="exit-button">
+                                <i className='bx bx-arrow-in-right-square-half exit'></i> Cerrar Sesión
+                            </button>
+                            <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span>
                         </div>
                     </div>
                 </div>

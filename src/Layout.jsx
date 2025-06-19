@@ -1,7 +1,8 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function Layout() {
+
     const location = useLocation();
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -21,6 +22,7 @@ export default function Layout() {
 
     return (
         <div className="app-container">
+            {/* ... Tu barra de navegación superior o inferior ... */}
             <div className="main-content">
                 <Outlet />
             </div>

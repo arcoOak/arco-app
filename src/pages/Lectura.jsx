@@ -7,16 +7,15 @@ export default function Qr() {
 
     return (
         <div className="page-container">
-            <h1 className="page-title">Tu Código QR</h1>
-            <p>Escanea este código para ingresar:</p>
+            <h1 className="page-title mt-2">Tu Código QR</h1>
+            
 
             <div className="qr-code-box">
-                {/* <QRCode
-                    size={200}
-                    level="H"
-                    includeMargin={true}
-                /> */}
-                <p className="mt-3 text-muted">ID asociado: {clienteID}</p>
+                <img src="./src/img/perfil.jpg"  className="profile-photo img" />
+                <h2 className="mb-2">Johny Roria</h2>
+                <p>Escanea este código para ingresar:</p>
+                <img src="./src/img/qr.png" className="img-qr" alt="" />
+                <p className="mt-2 text-muted">Tú Código QR es privado</p>
             </div>
         </div>
     );

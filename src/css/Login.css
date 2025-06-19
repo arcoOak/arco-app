@@ -1,0 +1,165 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.leaf-background {
+    background: url(https://wallpapers.com/images/hd/plant-background-mh4y9mexexlv960o.jpg) no-repeat center / cover;
+    /* Cambia esto por la ruta correcta */
+    background-size: cover;
+    background-position: center;
+    height: 220px;
+    width: 100%;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.form-wrapper {
+    background: white;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-radius: 20px;
+    width: 90%;
+    height: 640px;
+    max-width: 400px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-content {
+    padding: 0 2rem 2rem;
+}
+
+.wave-container {
+    position: relative;
+    height: 230px;
+    background: url('../img/bg-pool.jpg') no-repeat center/cover;
+    overflow: hidden;
+    border-radius: 20px 20px 0 0;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+
+.welcome-title {
+    color: #136583;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #888;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group img {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    right: 0;
+    top: 26%;
+}
+
+.formControl {
+    display: flex;
+}
+
+.formControl button {
+    border-radius: 8px 0 0 8px;
+    background-color: aliceblue;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.formControl button:focus {
+    outline: none;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #444;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    background-color: aliceblue;
+}
+
+.input-group input:focus {
+    outline: none;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.forgot-password {
+    color: #136583;
+    text-decoration: none;
+}
+
+.login-button {
+    width: 100%;
+    background-color: #136583;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0f4d64;
+}
+
+.signup-text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 15px;
+    color: #555;
+}
+
+.signup-text a {
+    color: #136583;
+    text-decoration: none;
+    font-weight: bold;
+}

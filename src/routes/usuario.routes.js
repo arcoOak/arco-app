@@ -1,14 +1,18 @@
 // src/routes/users.routes.js
-const express = require('express');
-const usuarioController = require('../controllers/usuarios.controller'); // Importa el controlador
+
+import express from 'express'; // Importa express usando CommonJS
+import usuarioController from '../controllers/usuarios.controller.js'; // Importa el controlador de usuarios
 
 const router = express.Router();
 
 // Rutas para usuarios
-router.get('/', usuarioController.getAllUsuarios); // GET /api/users
-router.get('/:id', usuarioController.getUsuarioById); // GET /api/users/:id
-router.post('/', usuarioController.createUsuario); // POST /api/users
-router.put('/:id', usuarioController.updateUsuario); // PUT /api/users/:id
-router.delete('/:id', usuarioController.deleteUsuario); // DELETE /api/users/:id
+router.get('/', usuarioController.getAllUsuarios); // GET /api/usuarios
+router.get('/:id', usuarioController.getUsuarioById); // GET /api/usuarios/:id
+router.post('/', usuarioController.createUsuario); // POST /api/ususuariosers
+router.put('/:id', usuarioController.updateUsuario); // PUT /api/usuarios/:id
+router.delete('/:id', usuarioController.deleteUsuario); // DELETE /api/usuarios/:id
 
-module.exports = router;
+
+router.get('/role/:role', usuarioController.getUsuariosByRole); // GET /api/usuarios/role/:role
+
+export default router; // Exporta el router para usarlo en app.js

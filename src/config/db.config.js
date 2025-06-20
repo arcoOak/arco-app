@@ -1,6 +1,10 @@
 // src/config/db.config.js
-const mysql = require('mysql2/promise'); // Usamos la versión con promesas para async/await
-require('dotenv').config(); // Cargar variables de entorno
+
+import mysql from 'mysql2/promise'; // Usamos la versión con promesas para async/await
+import dotenv from 'dotenv'; // Importar dotenv para manejar variables de entorno
+
+dotenv.config(); // Cargar variables de entorno desde .env
+// require('dotenv').config(); // Cargar variables de entorno
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -21,4 +25,4 @@ async function connectToDatabase() {
   }
 }
 
-module.exports = connectToDatabase;
+export default connectToDatabase;

@@ -69,7 +69,7 @@ export default function Login({ onLogin }) {
                         <div className="form-options">
                             <label className="remember-me">
                                 <input type="checkbox" />
-                                Remember me
+                                Recordarme
                             </label>
                             <a href="#" className="forgot-password">¿Olvidó su contraseña?</a>
                         </div>

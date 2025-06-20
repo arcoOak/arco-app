@@ -1,14 +1,12 @@
-// src/routes/index.js
-const express = require('express');
-const usuarioRoutes = require('./usuario.routes'); // Importa las rutas de usuarios
-const reservasRoutes = require('./reservas.routes'); // Importa las rutas de reservas
+
+import express from 'express'; // Importa express usando ES Modules
+import usuarioRoutes from './usuario.routes.js'; // Importa las rutas de usuarios
+import reservasRoutes from './reservas.routes.js'; // Importa las rutas de reservas
+import sociosRoutes from './socios.routes.js'; // Importa las rutas de socios
 
 const router = express.Router();
+router.use('/usuarios', usuarioRoutes); // Monta las rutas de usuarios en /api/usuarios
+router.use('/reservas', reservasRoutes); // Monta las rutas de reservas en /api
+router.use('/socios', sociosRoutes); // Monta las rutas de socios en /api/socios
 
-router.use('/users', userRoutes); // Monta las rutas de usuarios en /api/users
-router.use('/reservas', reservasRoutes); // Monta las rutas de reservas en /api/reservas
-// Agrega aquí más rutas para otros módulos, ej:
-// router.use('/products', productRoutes);
-// router.use('/auth', authRoutes);
-
-module.exports = router;
+export default router;

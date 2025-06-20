@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const appRoutes = require('./routes'); // Importa el archivo principal de rutas
+import express from 'express'; // Importa express usando ES Modules
+import cors from 'cors';       // Importa cors usando ES Modules
+import appRoutes from './routes/index.js'; // ¡Importante! Añade la extensión .js para módulos locales
 
 const app = express();
 
@@ -23,4 +23,4 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Error interno del servidor', error: err.message });
 });
 
-module.exports = app;
+export default app;

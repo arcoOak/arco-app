@@ -12,6 +12,6 @@ router.post('/', socioController.createSocio); // POST /api/usuarios
 router.put('/:id', socioController.updateSocio); // PUT /api/usuarios/:id
 router.delete('/:id', socioController.deleteSocio); // DELETE /api/usuarios/:id
 
-router.get('/buscar/:user', socioController.getSocioByUsuario); // GET /api/users/role/:role
+router.get('/buscar/:user', socioController.getSocioByUsuario); // GET /api/usuarios/buscar/:user
 
 export default router; // Exporta el router para usarlo en app.js

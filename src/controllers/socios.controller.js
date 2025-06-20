@@ -123,7 +123,7 @@ async function getSocioByUsuario(req, res) {
   let connection;
   try {
     connection = await connectToDatabase();
-    const [rows] = await connection.execute('SELECT id_socio, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios WHERE id_usuario = ?', [rolId]);
+    const [rows] = await connection.execute('SELECT id_socio, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios WHERE id_usuario = ?', [usuarioId]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Socio no encontrados' });
     }

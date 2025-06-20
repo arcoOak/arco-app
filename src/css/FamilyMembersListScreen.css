@@ -1,0 +1,154 @@
+/* src/styles/FamilyMembersListScreen.css */
+
+.family-list-container {
+    padding: 20px;
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.family-list-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.family-list-header .back-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6c63ff;
+    position: absolute;
+    left: 0;
+}
+
+.family-list-header h2 {
+    font-size: 24px;
+    color: #333;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.add-member-button-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: right;
+    /* Alinea el botón a la derecha */
+    margin-bottom: 20px;
+}
+
+.add-member-button {
+    background-color: #28a745;
+    /* Un color verde para agregar */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    /* Para alinear icono y texto */
+    align-items: center;
+    gap: 8px;
+    /* Espacio entre icono y texto */
+}
+
+.add-member-button:hover {
+    background-color: #218838;
+}
+
+.family-members-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Una columna por defecto */
+    gap: 15px;
+    /* Espacio entre las tarjetas */
+    width: 100%;
+    max-width: 500px;
+}
+
+.family-member-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    /* Ajuste para acomodar el QR si es necesario, quizás más padding o flex-wrap */
+    flex-wrap: wrap;
+    /* Permite que los elementos se envuelvan si no hay espacio */
+    justify-content: space-between;
+    /* Distribuye espacio entre elementos */
+}
+
+.family-member-card .member-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #6c63ff;
+    flex-shrink: 0;
+    /* Evita que la foto se encoja */
+}
+
+.family-member-card .member-details {
+    flex-grow: 1;
+    min-width: 150px;
+    /* Asegura que el texto no se haga demasiado pequeño */
+}
+
+/* Nuevos estilos para el QR */
+.qr-code-container {
+    padding: 5px;
+    /* Pequeño padding alrededor del QR */
+    border: 1px solid #eee;
+    /* Opcional: un borde suave */
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    /* Empuja el QR a la derecha */
+    flex-shrink: 0;
+    /* Evita que el QR se encoja */
+}
+
+.qr-code-container svg {
+    display: block;
+    /* Elimina espacio extra debajo del SVG */
+}
+
+/* Estilos para el icono de edición (ajuste si es necesario) */
+.edit-member-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #6c63ff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    z-index: 10;
+    /* Asegura que esté por encima del QR si hay superposición */
+}
+
+.edit-member-icon:hover {
+    color: #5a52d4;
+}
+
+.no-members-message {
+    text-align: center;
+    color: #777;
+    font-size: 16px;
+    margin-top: 50px;
+}

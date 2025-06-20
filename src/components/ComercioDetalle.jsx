@@ -36,7 +36,7 @@ export default function ComercioDetalle({ allBusinesses }) { // Recibe allBusine
             </button>
 
             <div className="detalle-header">
-                <img src={comercio.img} alt={comercio.name} className="detalle-img" />
+                <img src={`../${comercio.img}`} alt={comercio.name} className="detalle-img" />
                 <h1>{comercio.name}</h1>
                 <p className="detalle-description">{comercio.description}</p>
             </div>

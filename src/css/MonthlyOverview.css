@@ -1,0 +1,243 @@
+/* src/components/MonthlyOverview.css */
+
+/* Contenedor principal de la sección */
+.monthly-overview-container {
+    background-color: #f5f5f5;
+    /* Color de fondo claro similar al de la imagen */
+    border-radius: 30px;
+    /* Bordes redondeados del "teléfono" */
+    overflow: hidden;
+    /* Asegura que los elementos internos respeten el radio */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    /* Ancho máximo para simular un dispositivo móvil */
+    margin: 30px auto;
+    /* Centrar en la página */
+    padding-bottom: 20px;
+    /* Espacio inferior para el botón */
+    font-family: Arial, sans-serif;
+    /* Fuente por defecto */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sección Superior Oscura */
+.overview-header {
+    background-color: #4070f4;
+    /* Color oscuro del encabezado */
+    color: white;
+    padding: 25px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 30px;
+    /* Asegura que la curva superior del contenedor se mantenga */
+    border-top-right-radius: 30px;
+}
+
+.overview-header__title {
+    font-size: 1.1em;
+    font-weight: 500;
+    margin: 0;
+    color: white;
+    /* Ligeramente más tenue */
+}
+
+.overview-header__total-pending {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Recuadro Blanco del Monto del Mes Actual */
+.current-month-card {
+    background-color: white;
+    margin: -25px 20px 5px 20px;
+    /* Margen negativo para superponerse al header */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    /* Sombra más pronunciada */
+    text-align: center;
+    position: relative;
+    /* Para el z-index */
+    z-index: 1;
+    /* Para que quede por encima del header */
+}
+
+.current-month-card__label {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+
+.current-month-card__amount {
+    font-size: 2.4em;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* Pestañas de Historial/Estadísticas */
+.tabs-navigation {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 0;
+    /* Para que esté debajo de la tarjeta blanca */
+}
+
+.tab-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #999;
+    padding: 10px 15px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+    outline: none;
+    /* Elimina el borde de enfoque por defecto */
+}
+
+.tab-button:hover {
+    color: #555;
+}
+
+.tab-button--active {
+    color: #333;
+    /* Color para la pestaña activa */
+}
+
+.tab-button--active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    /* Ancho de la línea de subrayado */
+    height: 3px;
+    background-color: #4070f4;
+    /* Color de la línea (naranja/rojo) */
+    border-radius: 2px;
+}
+
+/* Contenido del Historial */
+.history-list-section {
+    padding: 0 20px;
+    margin-bottom: 25px;
+}
+
+.history-list {
+    /* No se aplica estilo aquí, los ítems tienen su propio estilo */
+}
+
+.statistics-placeholder {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Estilos para el elemento individual del historial (HistoryItem) */
+.history-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #939393;
+    /* Separador entre ítems */
+}
+
+.history-item__status {
+    font-weight: 700;
+    font-size: .8em;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+    /* No hay separador en el último ítem */
+}
+
+.history-item__icon-wrapper {
+    background-color: white;
+    /* Color de fondo del círculo del icono */
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    /* Sombra sutil */
+}
+
+.history-item__icon {
+    color: #4070f4;
+    /* Color de los iconos */
+    width: 24px;
+    height: 24px;
+}
+
+.history-item__details {
+    flex-grow: 1;
+    text-align: left;
+    /* Ocupa el espacio restante */
+}
+
+.history-item__category {
+    font-weight: 600;
+    color: #333;
+    font-size: 1em;
+    margin: 0;
+}
+
+.history-item__time {
+    font-size: 0.85em;
+    color: #999;
+    margin: 0;
+}
+
+.history-item__amount {
+    font-weight: 500;
+    color: #333;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+/* Botón "Ver más detalle" */
+.view-details-button {
+    background-color: #4070f4;
+    /* Fondo del mismo color que el contenedor principal */
+    color: white;
+    /* Color del texto del botón */
+    border: none;
+    border-radius: 15px;
+    padding: 15px 25px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    width: calc(100% - 40px);
+    /* Ancho del botón con padding */
+    margin: 0 20px;
+    /* Margen horizontal */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+.view-details-button:hover {
+    background-color: #4466c4 !important;
+    /* Tono más oscuro al pasar el ratón */
+}
+
+/* Media Queries para Responsividad */
+@media (min-width: 500px) {
+    .monthly-overview-container {
+        padding-bottom: 30px;
+    }
+}

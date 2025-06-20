@@ -5,6 +5,8 @@ import "./css/App.css"; // Ensure you have the CSS file for styles
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import Perfil from "./pages/Perfil";
+import EditProfileScreen from "./components/EditProfileScreen"; // Asegúrate de que la ruta sea correcta
+import FamilyMembersListScreen from './components/FamilyMembersListScreen'; // Importa el nuevo componente
 import Reservas from "./pages/Reserva";
 import Comercios from "./pages/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 import ComercioDetalle from './components/ComercioDetalle';
@@ -41,8 +43,8 @@ function App() {
 
     // ESTA es la ÚNICA declaración de allBusinesses
     const allBusinessesData = [
-        { id: 1, category: 'Comida', name: 'Burger King', description: 'Las mejores hamburguesas a la parrilla.', img: 'src/img/comercios/burguer-king.jpg', phone: '+58-212-1234567' },
-        { id: 2, category: 'Comida', name: 'KFC', description: 'Pollo frito original y crujiente.', img: 'src/img/comercios/kfc.png', phone: '+58-212-2345678' },
+        { id: 1, category: 'Comida', name: 'Burger King', description: 'Las mejores hamburguesas a la parrilla.', img: './src/img/comercios/burguer-king.jpg', phone: '+58-212-1234567' },
+        { id: 2, category: 'Comida', name: 'KFC', description: 'Pollo frito original y crujiente.', img: './src/img/comercios/kfc.png', phone: '+58-212-2345678' },
         { id: 3, category: 'Comida', name: 'Burger Shack', description: 'Hamburguesas artesanales de autor.', img: 'src/img/comercios/burguer-shack.jpg', phone: '+58-212-3456789' },
         { id: 4, category: 'Comida', name: 'McDonald\'s', description: 'Arcos dorados, siempre contigo.', img: 'src/img/comercios/mcdonald.png', phone: '+58-212-4567890' }, // ID 4
         { id: 5, category: 'Comida', name: 'Domino\'s', description: 'Pizzas frescas y entrega rápida.', img: 'src/img/comercios/dominos.png', phone: '+58-212-5678901' },
@@ -52,6 +54,37 @@ function App() {
         { id: 9, category: 'Cafetería', name: 'Starbucks', description: 'Tu café favorito, siempre contigo.', img: 'https://via.placeholder.com/100/A0522D/FFFFFF?text=SB', phone: '+58-212-9012345' },
         { id: 10, category: 'Heladería', name: 'Helados Tito', description: 'Variedad de sabores artesanales.', img: 'https://via.placeholder.com/100/ADD8E6/000000?text=HT', phone: '+58-212-0123456' },
     ];
+
+    const [currentUser, setCurrentUser] = useState({
+        id: 'user123',
+        name: 'Johny Roria',
+        action: 574,
+        avatar: '/src/img/perfil.jpg', // Asegúrate de que esta ruta sea correcta desde la raíz pública
+        cedula: 'V-25.632.154',
+        phone: '+51 987654321', // Corregido según tu código
+        mail: 'johnryan@gmail.com', // Corregido según tu código
+        address: 'Venezuela, Caracas', // Corregido según tu código
+        dob: '2000-01-01', // Formato YYYY-MM-DD para input type="date"
+        email: 'johny.roria@example.com',
+    });
+
+    const handleUpdateUser = (updatedData) => {
+        setCurrentUser(updatedData);
+        console.log('Usuario actualizado en App.js:', updatedData);
+        // Aquí es donde harías la llamada a tu API para actualizar el backend
+    };
+
+    // Nuevo estado para almacenar los familiares registrados
+    const [familyMembers, setFamilyMembers] = useState([]);
+
+    const handleRegisterFamilyMember = (newMemberData) => {
+        // Genera un ID simple para el nuevo familiar (en una app real, el backend lo haría)
+        const newMemberWithId = { ...newMemberData, id: Date.now().toString() };
+        setFamilyMembers((prevMembers) => [...prevMembers, newMemberWithId]);
+        console.log('Nuevo familiar registrado:', newMemberWithId);
+        console.log('Familiares actuales:', [...familyMembers, newMemberWithId]);
+        // Llama a tu API aquí para guardar el nuevo familiar
+    };
 
     return (
         <BrowserRouter>
@@ -66,6 +99,8 @@ function App() {
                     <Route element={<Layout onLogout={handleLogout} />}>
                         <Route path="/" element={<Home />} />
                         <Route path="/perfil" element={<Perfil />} />
+                        <Route path="/edit-profile" element={<EditProfileScreen user={currentUser} onUpdateUser={handleUpdateUser} />} />
+                        <Route path="/beneficiaries" element={<FamilyMembersListScreen userId={currentUser.id} />} />
                         <Route path="/reservas" element={<Reservas />} />
                         {/* Pasar allBusinessesData a tu componente de lista de comercios */}
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />

@@ -1,0 +1,134 @@
+/* src/components/CreditCard.css */
+
+.credit-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    padding: 25px;
+    box-sizing: border-box;
+    /* Asegura que padding y border no aumenten el tamaño final */
+    color: white;
+    /* Color de texto por defecto para la tarjeta */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    /* Sombra de texto sutil */
+    font-family: 'Inter', sans-serif;
+    /* Usar Inter si está disponible, o un sans-serif genérico */
+    background-image: linear-gradient(135deg, #4CAF50, #2E7D32);
+    /* Fondo verde por defecto */
+}
+
+/* Clases de color para diferentes tarjetas */
+.credit-card--green {
+    background-image: linear-gradient(135deg, #4CAF50, #2E7D32);
+    /* Verde */
+}
+
+.credit-card--blue {
+    background-image: linear-gradient(135deg, #2196F3, #1976D2);
+    /* Azul */
+}
+
+.credit-card--purple {
+    background-image: linear-gradient(135deg, #9C27B0, #7B1FA2);
+    /* Púrpura */
+}
+
+.credit-card--orange {
+    background-image: linear-gradient(135deg, #FF9800, #F57C00);
+    /* Naranja */
+}
+
+.credit-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.credit-card__chip {
+    width: 45px;
+    /* Tamaño del chip */
+    height: 35px;
+    border-radius: 5px;
+    background-color: #c0c0c0;
+    /* Color de placeholder para el chip */
+    /* Si usas una imagen real de chip, reemplaza el background-color y ajusta width/height */
+    /* Asegúrate de que sea una imagen PNG con transparencia si tiene bordes */
+}
+
+.credit-card__bank-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.credit-card__number {
+    font-size: 1.8em;
+    /* Tamaño del número de tarjeta */
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 15px;
+    /* Espacio debajo del chip */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.credit-card__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    /* Alinea los elementos a la parte inferior */
+}
+
+.credit-card__holder-label,
+.credit-card__expiry-label {
+    font-size: 0.7em;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
+.credit-card__holder-name,
+.credit-card__expiry-date {
+    font-size: 0.95em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.credit-card__logo {
+    width: 60px;
+    /* Tamaño del logo de Visa */
+    height: auto;
+    opacity: 0.9;
+    /* Si usas una imagen real de Visa, reemplaza el background-color */
+    /* background-color: rgba(255, 255, 255, 0.7); /* Placeholder */
+    /* Ejemplo de un logo de Visa SVG en base64 si no quieres una URL externa */
+    /* background-image: url('data:image/svg+xml;base64,...'); */
+}
+
+/* Media Queries para ajustar en pantallas más pequeñas */
+@media (max-width: 480px) {
+    .credit-card {
+        padding: 20px;
+    }
+
+    .credit-card__bank-name {
+        font-size: 1.1em;
+    }
+
+    .credit-card__number {
+        font-size: 1.5em;
+        letter-spacing: 1px;
+    }
+
+    .credit-card__chip {
+        width: 40px;
+        height: 30px;
+    }
+
+    .credit-card__logo {
+        width: 50px;
+    }
+}

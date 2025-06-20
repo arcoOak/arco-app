@@ -1,215 +1,195 @@
-// Perfil.jsx
-import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importar useNavigate aquí
+// src/components/Perfil.jsx (MODIFICADO)
+import React, { useState } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 
-export default function Perfil({ onLogout }) {
+export default function Perfil({ user, onLogout }) {
     const [activeDiv, setActiveDiv] = useState(0);
-    const navigate = useNavigate(); // Hook useNavigate
+    const navigate = useNavigate();
 
     const handleDivClick = (index) => {
-        if (activeDiv === index) {
-            setActiveDiv(0); // Collapse the div if it's already active
-            return;
+        if (index >= 1 && index <= 5) {
+            setActiveDiv(activeDiv === index ? 0 : index);
+        } else {
+            if (index === 6) { // Editar Perfil
+                navigate('/edit-profile');
+            } else if (index === 7) { // Cambiar Clave
+                alert('Funcionalidad de cambiar clave en desarrollo.');
+            } else if (index === 8) { // Cerrar Sesión
+                handleUserLogout();
+            } else if (index === 9) { // Ver Beneficiarios (Nueva acción)
+                navigate('/beneficiaries'); // Navega a la ruta de la lista de beneficiarios
+            }
+            setActiveDiv(0);
         }
-        setActiveDiv(index);
     };
 
     const handleUserLogout = () => {
-        navigate('/login'); // Redirige a la página de login
-    }
+        if (onLogout) {
+            onLogout();
+        }
+        navigate('/login');
+    };
+
+    const displayUser = user || {
+        name: 'Johny Roria',
+        action: '5665',
+        avatar: './src/img/perfil.jpg',
+        cedula: 'V-12345678',
+        phone: '+58 4245632541',
+        address: 'Venezuela, Caracas',
+        dob: '04/12/1990'
+    };
 
     return (
         <div className="container-fluid">
-            <div className="row mb-4 mt-4" >
+            {/* ... (Tu código actual de encabezado y perfil) ... */}
+            <div className="row mb-4 mt-4" > 
                 <div className="col-md-12">
                     <div className="profile-photo-container">
-                        <img src="./src/img/perfil.jpg" alt="" className="profile-photo" />
+                        <img src={displayUser.avatar} alt="Profile" className="profile-photo" />
                     </div>
-                    <h2 className="mb-2">Johny Roria</h2>
-                    <span className="profile-mail">Acción: 574</span>
+                    <h2 className="mb-2">{displayUser.name}</h2>
+                    <span className="profile-mail">Acción: {displayUser.action}</span>
                 </div>
             </div >
 
-            <div className="row mb-p">
+            <div className="row mb-2">
                 <div className="col-md-12">
                     <div className="profile-info">
 
+                        {/* Nombre y Apellido */}
                         <div className="info-item">
                             <div className="faqs">
                                 <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
                                     <div className="head">
                                         <span className="label-info">Nombre y Apellido</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
+                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
+                                        style={{ height: activeDiv === 1 ? 'auto' : '0', maxHeight: activeDiv === 1 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-user-square'></i> Johny Roria</label>
+                                        <label><i className='bx bx-user-square'></i> {displayUser.name}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Cédula */}
                         <div className="info-item">
                             <div className="faqs">
-                                <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
+                                <div className={`${activeDiv === 2 ? 'active' : ''} faq`} onClick={() => handleDivClick(2)}>
                                     <div className="head">
                                         <span className="label-info">Cédula</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
+                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
+                                        style={{ height: activeDiv === 2 ? 'auto' : '0', maxHeight: activeDiv === 2 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-user-id-card'></i> V25.632.154</label>
+                                        <label><i className='bx bx-user-id-card'></i> {displayUser.cedula}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Teléfono */}
                         <div className="info-item">
                             <div className="faqs">
-                                <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
+                                <div className={`${activeDiv === 3 ? 'active' : ''} faq`} onClick={() => handleDivClick(3)}>
                                     <div className="head">
                                         <span className="label-info">Teléfono</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
+                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
+                                        style={{ height: activeDiv === 3 ? 'auto' : '0', maxHeight: activeDiv === 3 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-phone'></i> +51 987654321</label>
+                                        <label><i className='bx bx-phone'></i> {displayUser.phone}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Dirección */}
                         <div className="info-item">
                             <div className="faqs">
-                                <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
+                                <div className={`${activeDiv === 4 ? 'active' : ''} faq`} onClick={() => handleDivClick(4)}>
                                     <div className="head">
                                         <span className="label-info">Dirección</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
+                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
+                                        style={{ height: activeDiv === 4 ? 'auto' : '0', maxHeight: activeDiv === 4 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-location'></i> Venezuela, Caracas</label>
+                                        <label><i className='bx bx-location'></i> {displayUser.address}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Fecha de Nacimiento */}
                         <div className="info-item">
                             <div className="faqs">
-                                <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
+                                <div className={`${activeDiv === 5 ? 'active' : ''} faq`} onClick={() => handleDivClick(5)}>
                                     <div className="head">
                                         <span className="label-info">Fecha de Nacimiento</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
+                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
+                                        style={{ height: activeDiv === 5 ? 'auto' : '0', maxHeight: activeDiv === 5 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-calendar-alt'></i>  01/01/2000</label>
+                                        <label><i className='bx bx-calendar-alt'></i> {displayUser.dob}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="info-item">
-                            <div className="faqs">
-                                <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
-                                    <div className="head">
-                                        <span className="label-info">Carga Familiar</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div
-                                        className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
-                                    >
-                                        <label><i className='bx bx-parent-child'></i> 4 Hijos</label>
-                                    </div>
-                                </div>
-                            </div>
+
+                        {/* Beneficiarios (para ver la lista) */}
+                        <div className="info-item b-0 mt-2 py-3" onClick={() => handleDivClick(9)}> {/* Nuevo índice 9 para ver familiares */}
+                            <span className="label-info pass">Beneficiarios</span>
+                            <span className="value"><i className='bx bx-group pass'></i></span> {/* Icono más adecuado para una lista */}
                         </div>
-                        <div className="info-item b-0 mt-2 py-3">
+
+                        {/* Editar Perfil (no colapsable, navega) */}
+                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(6)}>
+                            <span className="label-info pass">Editar Perfil</span>
+                            <span className="value"><i className='bx bx-gear pass'></i></span>
+                        </div>
+
+                        {/* Cambiar Clave (no colapsable, navega/modal) */}
+                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(7)}>
                             <span className="label-info pass">Cambiar Clave</span>
                             <span className="value"><i className='bx bx-lock-keyhole pass'></i></span>
                         </div>
-                        <div className="info-item b-0 py-3">
+
+                        {/* Cerrar Sesión (no colapsable, logout) */}
+                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(8)}>
                             <span className="label-info exit">Cerrar Sesión</span>
-                            <button onClick={handleUserLogout} className="exit-button">
-                                <i className='bx bx-arrow-in-right-square-half exit'></i> Cerrar Sesión
-                            </button>
                             <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span>
                         </div>
                     </div>
                 </div>
             </div>
+            <Outlet />
+            {/* Footer */}
+            <footer className="footer">
+                <p>© 2025 Oak Tree C.A.</p>
+                <p>Todos los derechos reservados.</p>
+                <p><a href="#">Política de Privacidad</a> | <a href="#">Términos de Uso</a></p>
+            </footer>
         </div>
     );
 }

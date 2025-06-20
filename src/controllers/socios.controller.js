@@ -8,7 +8,7 @@ async function getAllSocios(req, res) {
   try {
     connection = await connectToDatabase();
     const [rows] = await connection.execute(
-        'SELECT id_socio, id_usuario, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios'
+        'SELECT id_socio, id_usuario, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios'
     );
     res.json(rows);
   } catch (error) {
@@ -25,13 +25,13 @@ async function getSocioById(req, res) {
   let connection;
   try {
     connection = await connectToDatabase();
-    const [rows] = await connection.execute('SELECT id_usuario, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios WHERE id_socio = ?', [socioId]);
+    const [rows] = await connection.execute('SELECT id_usuario, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios WHERE id_socio = ?', [socioId]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Socio no encontrado' });
     }
     res.json(rows[0]);
   } catch (error) {
-    console.error(`Error al obtener socio con ID ${userId}:`, error);
+    console.error(`Error al obtener socio con ID ${socioId}:`, error);
     res.status(500).json({ message: 'Error interno del servidor al obtener socio' });
   } finally {
     if (connection) connection.end();
@@ -43,8 +43,8 @@ async function getSocioById(req, res) {
 
 // Función para crear un nuevo usuario
 async function createSocio(req, res) {
-  const { id_usuario, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion } = req.body;
-  if (!id_usuario || !nombre || !apellido || !documento_identificacion || !fecha_nacimiento || !telefono || !direccion) {
+  const { id_usuario, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion } = req.body;
+  if (!id_usuario || !nombre || !apellido || !documento_identidad || !fecha_nacimiento || !telefono || !direccion) {
     return res.status(400).json({ message: 'Faltan campos obligatorios' });
   }
 
@@ -53,8 +53,8 @@ async function createSocio(req, res) {
     connection = await connectToDatabase();
     // En una aplicación real, deberías hashear la contraseña antes de guardarla
     const [result] = await connection.execute(
-        'INSERT INTO socios (id_usuario, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, fecha_ingreso_club) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
-        [id_usuario, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion]
+        'INSERT INTO socios (id_usuario, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, fecha_ingreso_club) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
+        [id_usuario, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion]
     );
     res.status(201).json({ message: 'Socio creado exitosamente', userId: result.insertId });
   } catch (error) {
@@ -72,8 +72,8 @@ async function createSocio(req, res) {
 // Función para actualizar un usuario
 async function updateSocio(req, res) {
   const socioId = req.params.id;
-  const { nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion } = req.body; 
-  if (!nombre && !apellido && !documento_identificacion && !fecha_nacimiento && !telefono && !direccion) {
+  const { nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion } = req.body; 
+  if (!nombre && !apellido && !documento_identidad && !fecha_nacimiento && !telefono && !direccion) {
     return res.status(400).json({ message: 'No hay datos para actualizar' });
   }
 
@@ -81,8 +81,8 @@ async function updateSocio(req, res) {
   try {
     connection = await connectToDatabase();
     const [result] = await connection.execute(
-      'UPDATE socios SET nombre = ?, apellido = ?, documento_identificacion = ?, fecha_nacimiento = ?, telefono = ?, direccion = ? WHERE id_socio = ?',
-        [nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, socioId]
+      'UPDATE socios SET nombre = ?, apellido = ?, documento_identidad = ?, fecha_nacimiento = ?, telefono = ?, direccion = ? WHERE id_socio = ?',
+        [nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, socioId]
     );
 
     if (result.affectedRows === 0) {
@@ -123,7 +123,7 @@ async function getSocioByUsuario(req, res) {
   let connection;
   try {
     connection = await connectToDatabase();
-    const [rows] = await connection.execute('SELECT id_socio, nombre, apellido, documento_identificacion, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios WHERE id_usuario = ?', [usuarioId]);
+    const [rows] = await connection.execute('SELECT id_socio, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, fecha_ingreso_club FROM socios WHERE id_usuario = ?', [usuarioId]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Socio no encontrados' });
     }

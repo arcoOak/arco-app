@@ -1,3 +1,10 @@
+
+
+/* Created by Tivotal */
+
+/* Google Fonts(Poppins) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 #root {
   max-width: 100%;
   width: 100%;
@@ -6,11 +13,6 @@
   text-align: center;
 }
 
-/* Created by Tivotal */
-
-/* Google Fonts(Poppins) */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 * {
   font-family: "Poppins", sans-serif;
   list-style: none;
@@ -18,6 +20,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
+}
+
+html{
+    background: rgb(240, 240, 255);
+  background-image: url('../assets/fondo.webp'); 
+  background-size: cover;               
+  background-position: center;   
+  background-attachment:fixed;
+  background-repeat: no-repeat;
 }
 
 body {
@@ -25,7 +37,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(240, 240, 255);
+
 }
 
 .w-100 {
@@ -220,6 +232,7 @@ body {
 .label-info {
   font-weight: 700;
   font-size: 14px;
+  color: #333;
 }
 
 .pass {

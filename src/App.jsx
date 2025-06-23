@@ -8,6 +8,7 @@ import Perfil from "./pages/Perfil";
 import EditProfileScreen from "./components/EditProfileScreen"; // Asegúrate de que la ruta sea correcta
 import FamilyMembersListScreen from './components/FamilyMembersListScreen'; // Importa el nuevo componente
 import Reservas from "./pages/Reserva";
+import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 import ComercioDetalle from './components/ComercioDetalle';
 import Qr from "./pages/Lectura";
@@ -102,6 +103,8 @@ function App() {
                         <Route path="/edit-profile" element={<EditProfileScreen user={currentUser} onUpdateUser={handleUpdateUser} />} />
                         <Route path="/beneficiaries" element={<FamilyMembersListScreen userId={currentUser.id} />} />
                         <Route path="/reservas" element={<Reservas />} />
+                        <Route path="/reservas/:id" element={<ReservaUnidad />} />
+
                         {/* Pasar allBusinessesData a tu componente de lista de comercios */}
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />
                         {/* CORRECCIÓN: Añadir '/' antes de :id */}

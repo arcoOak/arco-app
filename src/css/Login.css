@@ -111,6 +111,7 @@
     border-radius: 0 8px 8px 0;
     font-size: 14px;
     background-color: aliceblue;
+    color: #333;
 }
 
 .input-group input:focus {
@@ -162,4 +163,8 @@
     color: #136583;
     text-decoration: none;
     font-weight: bold;
+}
+
+.bx{
+    color: #333;
 }

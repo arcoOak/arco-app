@@ -433,7 +433,7 @@ body {
   width: 100%;
   background-color: white;
   border-radius: 15px;
-  padding: 5rem 5rem 3rem;
+  padding: 5rem 4rem 3rem;
 }
 
 .qr-code-box .img {
@@ -443,8 +443,8 @@ body {
 }
 
 .img-qr {
-  width: 290px;
-  height: 290px;
+  width: 320px;
+  height: 320px;
 }
 
 .qr-image {

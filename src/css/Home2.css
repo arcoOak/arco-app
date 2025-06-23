@@ -1,0 +1,317 @@
+/* Animaciones suaves */
+* {
+    transition: all 0.3s ease;
+}
+
+.home-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar {
+    width: 70px;
+    height: 70px;
+    background: #c97c66;
+    border-radius: 50%;
+}
+
+.balance-info h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.rate {
+    font-size: 16px;
+    color: green;
+    margin-left: 10px;
+    background: #e5f7ed;
+    padding: 3px 6px;
+    border-radius: 6px;
+}
+
+.monthly {
+    color: green;
+    font-weight: bold;
+}
+
+.add-btn {
+    background: black;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.debt-open {
+    color: gray;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    background: #f0eefc;
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 5px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.next-payment-label {
+    margin: 0;
+    color: gray;
+}
+
+.next-payment-date {
+    font-weight: bold;
+}
+
+.due-days {
+    font-size: 12px;
+    color: gray;
+}
+
+.transactions {
+    margin-top: 25px;
+}
+
+.transactions h3{
+    text-align: left;
+}
+
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.tx-date {
+    color: gray;
+    font-weight: bold;
+    width: 50px;
+}
+
+.on-time {
+    background: #e5f7ed;
+    color: green;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    width: fit-content;
+}
+
+.tx-amount {
+    color: #00b894;
+    font-weight: bold;
+}
+
+.all-transactions {
+    text-align: center;
+    margin-top: 15px;
+    color: gray;
+    cursor: pointer;
+}
+
+/* Progreso circular */
+.progress-ring {
+    width: 60px;
+    height: 60px;
+}
+
+.progress-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke: #00b894;
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    animation: progress 2s ease-out forwards;
+}
+
+.percentage {
+    font-size: 10px;
+    fill: #333;
+    font-weight: bold;
+}
+
+/* Animación de la barra */
+@keyframes progress {
+    from {
+        stroke-dasharray: 0, 100;
+    }
+
+    to {
+        stroke-dasharray: 7, 100;
+    }
+}
+
+/* src/components/NewsCard.css */
+/* src/components/NewsCard.css */
+
+.news-card {
+    background-color: white;
+    border-radius: 12px;
+    /* ¡Crucial! Evita que las tarjetas se encojan */
+    /* Bordes redondeados de la tarjeta */
+    overflow: hidden;
+    /* Para que la imagen se recorte si es más grande que el contenedor con el border-radius */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    /* Sombra sutil como en el ejemplo */
+    margin-right: 15px;
+    /* Espacio entre las tarjetas en el scroll horizontal */
+    flex-shrink: 0;
+    /* Evita que las tarjetas se encojan en un contenedor flex */
+    width: 280px;
+    /* Ancho fijo para cada tarjeta, ajusta según necesites */
+    height: auto;
+    /* La altura se ajustará al contenido */
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    scroll-snap-align: start;
+    /* Espacio debajo del texto */
+}
+
+.news-card__image-container {
+    width: 100%;
+    height: 180px;
+    /* Altura de la imagen */
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+    /* Mismos bordes redondeados que la tarjeta */
+}
+
+.news-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Asegura que la imagen cubra el contenedor sin distorsionarse */
+    display: block;
+    /* Elimina espacio extra debajo de la imagen */
+    border-radius: 12px 12px 0 0;
+    /* Asegura que la imagen también tenga bordes redondeados */
+}
+
+.news-card__category {
+    font-size: 0.7em;
+    color: #007bff;
+    /* Un verde claro para la categoría */
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 15px 20px 5px 20px;
+    /* Margen interno para el texto */
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
+.news-card__title {
+    font-size: 1em;
+    font-weight: 600;
+    /* Ligeramente en negrita */
+    color: #333;
+    /* Color oscuro para el título */
+    margin: 0 20px;
+    /* Margen interno para el título */
+    line-height: 1.3;
+    text-align: left;
+}
+
+/* src/components/NewsSection.css */
+
+.news-section-container {
+    padding: 20px 0;
+    /* Padding superior e inferior para la sección */
+    /* Fondo ligero para la sección, si difiere del body */
+}
+
+.news-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    /* Alinea "Recent News" y "See All" */
+    padding: 0 20px;
+    /* Padding horizontal para el encabezado */
+    margin-bottom: 20px;
+}
+
+.news-section__title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.news-section__see-all {
+    font-size: .9em;
+    color: #007bff;
+    /* Un azul para el enlace, como en iOS */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.news-section__see-all:hover {
+    text-decoration: none;
+}
+
+.news-section__carousel {
+    /* Propiedades clave para el scroll horizontal */
+    display: flex;
+    cursor: grab;
+    overflow-x: scroll;
+    /* ¡Esta es la que habilita el scroll! */
+    -webkit-overflow-scrolling: touch;
+    /* Mejora la experiencia en iOS */
+    scroll-snap-type: x mandatory;
+    /* Opcional: Para que los ítems se "enganchen" al parar el scroll */
+    padding: 0 20px 20px 20px;
+    /* Padding horizontal para que las tarjetas no se peguen a los bordes */
+    /* El padding-bottom es para la sombra si es que sale */
+    gap: 15px;
+    /* Espacio entre las tarjetas. ¡Más moderno que margin-right en cada item! */
+
+    /* Ocultar la barra de scroll (solo visualmente, el scroll sigue funcionando) */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+.news-section__carousel::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}

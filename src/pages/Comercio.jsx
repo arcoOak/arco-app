@@ -86,60 +86,64 @@ export default function Comercio({ allBusinesses }) {
 
 
     return (
-        <div className="container-fluid">
-            <h2 className="mt-2 mb-3">Tiendas Disponibles</h2>
-            <div className="row">
-                <div className="col-md-12">
-                    <div
-                        className="categorias"
-                        ref={scrollContainerRef}
-                        onMouseDown={onMouseDown}
-                        onMouseLeave={onMouseLeave}
-                        onMouseUp={onMouseUp}
-                        onMouseMove={onMouseMove}
-                    >
-                        {categories.map((cat) => (
-                            <span
-                                key={cat.name}
-                                className={`span-categoria ${activeCategory === cat.name ? 'active' : ''}`}
-                                onClick={() => setActiveCategory(cat.name)}
-                            >
-                                <i className={`bx ${cat.icon}`}></i> {cat.name}
-                            </span>
-                        ))}
-                    </div>
-                    <div className="search-categoria">
-                        <button>
-                            <i className='bx bx-search-big'></i>
-                        </button>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Busca la tienda que necesitas"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                    <div className="comercios">
-                        {filteredBusinesses.length > 0 ? (
-                            filteredBusinesses.map((comercio) => (
-                                <div className="comercio-card" key={comercio.id}>
-                                    <img src={comercio.img} alt={comercio.name} />
-                                    <h3>{comercio.name}</h3>
-                                    <p>{comercio.description}</p>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() => handleVerMasClick(comercio.id)}
-                                    >
-                                        Ver más
-                                    </button>
-                                </div>
-                            ))
-                        ) : (
-                            <p style={{ textAlign: 'center', gridColumn: '1 / -1', color: '#777' }}>
-                                No se encontraron tiendas para esta búsqueda o categoría.
-                            </p>
-                        )}
+        <div>
+            <header className="app-header mb-3">
+                <h3>Tiendas Disponibles</h3>
+            </header>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-12">
+                        <div
+                            className="categorias"
+                            ref={scrollContainerRef}
+                            onMouseDown={onMouseDown}
+                            onMouseLeave={onMouseLeave}
+                            onMouseUp={onMouseUp}
+                            onMouseMove={onMouseMove}
+                        >
+                            {categories.map((cat) => (
+                                <span
+                                    key={cat.name}
+                                    className={`span-categoria ${activeCategory === cat.name ? 'active' : ''}`}
+                                    onClick={() => setActiveCategory(cat.name)}
+                                >
+                                    <i className={`bx ${cat.icon}`}></i> {cat.name}
+                                </span>
+                            ))}
+                        </div>
+                        <div className="search-categoria">
+                            <button>
+                                <i className='bx bx-search-big'></i>
+                            </button>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Busca la tienda que necesitas"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <div className="comercios">
+                            {filteredBusinesses.length > 0 ? (
+                                filteredBusinesses.map((comercio) => (
+                                    <div className="comercio-card" key={comercio.id}>
+                                        <img src={comercio.img} alt={comercio.name} />
+                                        <h3>{comercio.name}</h3>
+                                        <p>{comercio.description}</p>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleVerMasClick(comercio.id)}
+                                        >
+                                            Ver más
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <p style={{ textAlign: 'center', gridColumn: '1 / -1', color: '#777' }}>
+                                    No se encontraron tiendas para esta búsqueda o categoría.
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

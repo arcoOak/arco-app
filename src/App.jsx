@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import React from "react";
+
 import "./css/App.css"; // Ensure you have the CSS file for styles
 import Layout from "./Layout";
 import Home from "./pages/Home";
-import Perfil from "./pages/Perfil";
+import Perfil from "./pages/Perfil/Perfil";
 import EditProfileScreen from "./components/EditProfileScreen"; // Asegúrate de que la ruta sea correcta
-import FamilyMembersListScreen from './components/FamilyMembersListScreen'; // Importa el nuevo componente
+import FamilyMembersListScreen from './pages/Perfil/BeneficiariosLista'; // Importa el nuevo componente
 import Reservas from "./pages/Reserva";
 import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio"; // Asumo que este es tu componente principal de lista de comercios
@@ -100,8 +101,8 @@ function App() {
                     <Route element={<Layout onLogout={handleLogout} />}>
                         <Route path="/" element={<Home />} />
                         <Route path="/perfil" element={<Perfil />} />
-                        <Route path="/edit-profile" element={<EditProfileScreen user={currentUser} onUpdateUser={handleUpdateUser} />} />
-                        <Route path="/beneficiaries" element={<FamilyMembersListScreen userId={currentUser.id} />} />
+                        <Route path="/perfil/editar-perfil" element={<EditProfileScreen user={currentUser} onUpdateUser={handleUpdateUser} />} />
+                        <Route path="/perfil/beneficiarios" element={<FamilyMembersListScreen userId={currentUser.id} />} />
                         <Route path="/reservas" element={<Reservas />} />
                         <Route path="/reservas/:id" element={<ReservaUnidad />} />
 

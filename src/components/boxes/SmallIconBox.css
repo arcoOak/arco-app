@@ -25,3 +25,11 @@
   font-size: 1rem;
   color: #576574;
 }
+
+.box-form-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border: solid 1px #dfe6e9;
+}

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importar useNavigate aquí
 
-import LoadingModal from "../components/modals/LoadingModal"; // Asegúrate de tener un componente de carga
+import LoadingModal from "../../components/modals/LoadingModal"; // Asegúrate de tener un componente de carga
 
 import './Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
 
@@ -12,9 +12,12 @@ export default function Perfil({ onLogout }) {
     const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
     const navigate = useNavigate(); // Hook useNavigate
 
+    
+    const API_HOST = import.meta.env.VITE_API_HOST;
+
     useEffect(() => {
         // Cambia el ID por el que corresponda según tu lógica de autenticación
-        fetch('http://localhost:3000/api/socios/1')
+        fetch(`${API_HOST}/api/socios/1`)
             .then(res => res.json())
             .then(data => {
                 setSocio(data);
@@ -28,13 +31,13 @@ export default function Perfil({ onLogout }) {
             setActiveDiv(activeDiv === index ? 0 : index);
         } else {
             if (index === 6) { // Editar Perfil
-                navigate('/edit-profile');
+                navigate('/perfil/editar-perfil');
             } else if (index === 7) { // Cambiar Clave
                 alert('Funcionalidad de cambiar clave en desarrollo.');
             } else if (index === 8) { // Cerrar Sesión
                 handleUserLogout();
             } else if (index === 9) { // Ver Beneficiarios (Nueva acción)
-                navigate('/beneficiaries'); // Navega a la ruta de la lista de beneficiarios
+                navigate('/perfil/beneficiarios'); // Navega a la ruta de la lista de beneficiarios
             }
             setActiveDiv(0);
         }
@@ -65,7 +68,7 @@ export default function Perfil({ onLogout }) {
             <div className="row mb-4 mt-4" > 
                 <div className="col-md-12">
                     <div className="profile-photo-container">
-                        <img src={socio.avatar} alt="Profile" className="profile-photo" />
+                        <img src={socio.avatar || './src/assets/user_placeholder.svg'} alt="Profile" className="profile-photo" />
                     </div>
                     <h2 className="mb-2">{socio.nombre} {socio.apellido}</h2>
                     <span className="profile-mail">Acción: {socio.id_usuario}</span>

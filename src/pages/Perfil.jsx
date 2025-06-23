@@ -1,6 +1,6 @@
-// Perfil.jsx
-import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importar useNavigate aquí
+// src/components/Perfil.jsx (MODIFICADO)
+import React, { useState } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 
 export default function Perfil({ user, onLogout }) {
     const [activeDiv, setActiveDiv] = useState(0);
@@ -156,32 +156,17 @@ export default function Perfil({ user, onLogout }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="info-item">
-                            <div className="faqs">
-                                <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
-                                    <div className="head">
-                                        <span className="label-info">Carga Familiar</span>
-                                        <svg
-                                            width={18}
-                                            height={19}
-                                            viewBox="0 0 18 19"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z"
-                                                fill="black"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div
-                                        className="content"
-                                        style={{ height: activeDiv === 1 ? 'auto' : '0' }}
-                                    >
-                                        <label><i className='bx bx-parent-child'></i> 4 Hijos</label>
-                                    </div>
-                                </div>
-                            </div>
+
+                        {/* Beneficiarios (para ver la lista) */}
+                        <div className="info-item b-0 mt-2 py-3" onClick={() => handleDivClick(9)}> {/* Nuevo índice 9 para ver familiares */}
+                            <span className="label-info pass">Beneficiarios</span>
+                            <span className="value"><i className='bx bx-group pass'></i></span> {/* Icono más adecuado para una lista */}
+                        </div>
+
+                        {/* Editar Perfil (no colapsable, navega) */}
+                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(6)}>
+                            <span className="label-info pass">Editar Perfil</span>
+                            <span className="value"><i className='bx bx-gear pass'></i></span>
                         </div>
 
                         {/* Cambiar Clave (no colapsable, navega/modal) */}
@@ -189,11 +174,10 @@ export default function Perfil({ user, onLogout }) {
                             <span className="label-info pass">Cambiar Clave</span>
                             <span className="value"><i className='bx bx-lock-keyhole pass'></i></span>
                         </div>
-                        <div className="info-item b-0 py-3">
+
+                        {/* Cerrar Sesión (no colapsable, logout) */}
+                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(8)}>
                             <span className="label-info exit">Cerrar Sesión</span>
-                            <button onClick={handleUserLogout} className="exit-button">
-                                <i className='bx bx-arrow-in-right-square-half exit'></i> Cerrar Sesión
-                            </button>
                             <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span>
                         </div>
                     </div>

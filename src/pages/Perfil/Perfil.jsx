@@ -4,6 +4,8 @@ import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importa
 
 import LoadingModal from "../../components/modals/LoadingModal"; // Asegúrate de tener un componente de carga
 
+import { useAuth } from "../../context/AuthContext"; // Importa el contexto de autenticación
+
 import './Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
 
 export default function Perfil({ onLogout }) {
@@ -12,6 +14,7 @@ export default function Perfil({ onLogout }) {
     const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
     const navigate = useNavigate(); // Hook useNavigate
 
+    const { user, login, logout, isAuthenticated } = useAuth();
     
     const API_HOST = import.meta.env.VITE_API_HOST;
 

@@ -20,7 +20,7 @@ export default function Perfil({ onLogout }) {
 
     useEffect(() => {
         // Cambia el ID por el que corresponda según tu lógica de autenticación
-        fetch(`${API_HOST}/api/socios/1`)
+        fetch(`${API_HOST}/api/socios/${user.id_socio}`)
             .then(res => res.json())
             .then(data => {
                 setSocio(data);

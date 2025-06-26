@@ -15,6 +15,7 @@ const getLoginDB = async (username, password) => {
         email: user.email,
         fecha_creacion: user.fecha_creacion,
         id_rol: user.id_rol,
+        id_socio: user.id_socio,
         nombre: user.nombre,
         apellido: user.apellido,
         documento_identidad: user.documento_identidad,

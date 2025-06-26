@@ -10,7 +10,7 @@ export const AuthContext = createContext(null);
 
 // Proveedor del contexto
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Almacena los datos del usuario o null si no está autenticado
+  const [user, setUser] = useState({id_socio : 1}); // Almacena los datos del usuario o null si no está autenticado
   const [loading, setLoading] = useState(true); // Para saber si estamos cargando los datos iniciales
 
   useEffect(() => {

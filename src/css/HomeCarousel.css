@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
+.app-container {
+    background-color: white;
+    width: 100%;
+    max-width: 400px;
+    /* Max width for mobile-like appearance */
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.header-account-text {
+    font-size: 0.9em;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.header-balance {
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.header-right {
+    display: flex;
+    gap: 15px;
+}
+
+.header-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+}
+
+.header-icon svg {
+    fill: #213547;
+}
+
+.section-title {
+    font-size: 1em;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 20px 10px;
+    text-align: left;
+}
+
+.balance-cards {
+    display: flex;
+    gap: 15px;
+    padding: 0 20px;
+    overflow-x: auto;
+    margin-left: 20px;
+    /* Enable horizontal scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+    scroll-snap-type: x mandatory;
+    /* Snap to cards */
+    padding-bottom: 10px;
+    /* Space for scrollbar */
+    cursor: grab;
+    margin-bottom: 2rem;
+    /* Indicate draggable */
+}
+
+.balance-cards.active {
+    cursor: grabbing;
+    /* Indicate dragging */
+}
+
+.balance-card {
+    text-align: left;
+    flex-shrink: 0;
+    /* Prevent cards from shrinking */
+    width: 150px;
+    /* Fixed width for cards */
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: start;
+    /* Snap alignment */
+}
+
+.balance-card i{
+    color: white;
+}
+
+.balance-card.blue {
+    background-color: #000080;
+    /* Darker blue */
+}
+
+.balance-card.dark-blue {
+    background-color: #000050;
+    /* Even darker blue */
+}
+
+.balance-card-icon {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.balance-card-type {
+    font-size: 0.85em;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.balance-card-value {
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.antecipay-section {
+    background-color: white;
+    padding: 0 20px 20px 20px;
+}
+
+.antecipay-card {
+    background-color: #f8f8f8;
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.antecipay-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.antecipay-icon-wrapper {
+    background-color: #e0e7ff;
+    /* Light blue */
+    border-radius: 50%;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+}
+
+.antecipay-icon {
+    color: #2575fc;
+    /* Blue */
+    font-size: 1.2em;
+}
+
+.antecipay-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.antecipay-title {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #555;
+}
+
+.antecipay-value {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+}
+
+.antecipay-arrow {
+    font-size: 1.2em;
+    color: #888;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    height: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+    /* Ensure fill doesn't go outside */
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    /* Blue-purple gradient */
+    width: 70%;
+    /* Example fill percentage */
+    border-radius: 5px;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 10px;
+}
+
+.action-item {
+    background-color: #ececec;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    position: relative;
+    /* For the "Novo" badge */
+}
+
+.action-item:hover {
+    background-color: #f0f0f0;
+}
+
+.action-icon-wrapper {
+    background-color: #eef2ff;
+    /* Very light blue */
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.action-icon {
+    color: #2575fc;
+    /* Blue */
+    font-size: 1.4em;
+}
+
+.action-text {
+    font-size: 1em;
+    font-weight: 500;
+    color: #333;
+    flex-grow: 1;
+    /* Allow text to take space */
+}
+
+.action-arrow {
+    font-size: 1.2em;
+    color: #888;
+}
+
+.new-badge {
+    background-color: #2575fc;
+    /* Blue */
+    color: white;
+    font-size: 0.7em;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}

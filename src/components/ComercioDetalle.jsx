@@ -6,11 +6,11 @@ import '../css/ComercioDetalle.css'; // Crea un archivo CSS para este componente
 // Dummy data de productos para demostración
 // En una aplicación real, esto vendría de una API o del mismo comercio
 const dummyProducts = [
-    { id: 1, name: 'Hamburguesa Clásica', description: 'La original con queso y lechuga.', price: 'Bs. 5.50', img: 'https://via.placeholder.com/150/FFC0CB/000000?text=Prod1' },
-    { id: 2, name: 'Papas Fritas Grandes', description: 'Crujientes y doradas.', price: 'Bs. 2.00', img: 'https://via.placeholder.com/150/FFFACD/000000?text=Prod2' },
-    { id: 3, name: 'Refresco Cola', description: 'Bebida de cola fría.', price: 'Bs. 1.50', img: 'https://via.placeholder.com/150/E0FFFF/000000?text=Prod3' },
-    { id: 4, name: 'Sundae Chocolate', description: 'Postre de helado con sirope.', price: 'Bs. 3.00', img: 'https://via.placeholder.com/150/DDA0DD/000000?text=Prod4' },
-    { id: 5, name: 'Nuggets de Pollo (6 und)', description: 'Crujientes trozos de pollo.', price: 'Bs. 4.00', img: 'https://via.placeholder.com/150/98FB98/000000?text=Prod5' },
+    { id: 1, name: 'Hamburguesa Clásica', description: 'La original con queso y lechuga.', price: 'Bs. 550', img: '../src/img/productos/hamburguesa.jpg' },
+    { id: 2, name: 'Papas Fritas Grandes', description: 'Crujientes y doradas.', price: 'Bs. 200', img: '../src/img/productos/papas.jpg' },
+    { id: 3, name: 'Refresco Cola', description: 'Bebida de cola fría.', price: 'Bs. 150', img: '../src/img/productos/refresco.jpg' },
+    { id: 4, name: 'Sundae Chocolate', description: 'Postre de helado con sirope.', price: 'Bs. 300', img: '../src/img/productos/sundae.jpg' },
+    { id: 5, name: 'Nuggets de Pollo (6 und)', description: 'Crujientes trozos de pollo.', price: 'Bs. 400', img: '../src/img/productos/nugguets.jpg' },
 ];
 
 export default function ComercioDetalle({ allBusinesses }) { // Recibe allBusinesses como prop

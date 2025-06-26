@@ -1,0 +1,88 @@
+/* src/css/PaymentDetail.css */
+
+.payment-detail-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.detail-header h2 {
+    margin: 0 auto;
+    /* Center the title */
+    font-size: 1.5em;
+    color: #333;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 1em;
+    color: #007bff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: #e9ecef;
+}
+
+.detail-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.detail-card p {
+    margin-bottom: 10px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.detail-card p strong {
+    color: #333;
+}
+
+.payment-capture {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.capture-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #eee;
+}
+
+.payment-status {
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-paid {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}

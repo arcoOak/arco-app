@@ -1,5 +1,3 @@
-
-
 /* Created by Tivotal */
 
 /* Google Fonts(Poppins) */
@@ -20,15 +18,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
+
 }
 
-html{
-    background: rgb(240, 240, 255);
-  background-image: url('../assets/fondo.webp'); 
-  background-size: cover;               
-  background-position: center;   
-  background-attachment:fixed;
+html {
+  background: rgb(240, 240, 255);
+  background-image: url('../assets/fondo.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   background-repeat: no-repeat;
 }
 
@@ -433,7 +431,7 @@ body {
   width: 100%;
   background-color: white;
   border-radius: 15px;
-  padding: 5rem 4rem 3rem;
+  padding: 5rem 1rem 3rem;
 }
 
 .qr-code-box .img {
@@ -443,8 +441,12 @@ body {
 }
 
 .img-qr {
-  width: 320px;
-  height: 320px;
+  width: 290px;
+  height: 290px;
+}
+
+.p-0{
+  padding: 0 !important;
 }
 
 .qr-image {
@@ -462,7 +464,7 @@ body {
   /* Smooth scrolling on iOS */
   white-space: nowrap;
   /* Prevents items from wrapping */
-  padding: 10px 20px;
+  padding: 10px 0; 
   /* Add some padding on the sides */
   gap: 10px;
   /* Space between category items */

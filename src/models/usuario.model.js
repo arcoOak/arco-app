@@ -49,7 +49,17 @@ async function createUsuarioDB(email, contrasena, id_rol) {
         'INSERT INTO usuarios (email, contrasena_hash, id_rol, fecha_creacion, activo) VALUES (?, ?, ?, NOW(), 1)',
         [email, contrasena, id_rol]
     );
-    return result.insertId;
+
+    if (result.affectedRows === 0) {
+      return null; // No se creó el usuario
+    }
+
+    const [row] = await getUsuarioByIdDB(result.insertId);
+    if (row.length === 0) {
+      throw new Error('Usuario no encontrado después de la creación');
+    }
+    return row; // Devuelve el usuario recién creado
+    
   } catch (error) {
     console.error('Error al crear usuario:', error);
     // Manejo de errores específicos, ej. email duplicado
@@ -68,7 +78,16 @@ async function updateUsuarioDB(userId, nombre, email) {
       'UPDATE usuarios SET email = COALESCE(?, email), nombre = COALESCE(?, nombre) WHERE id_usuario = ?',
         [email, nombre, userId]
     );
-    return result.affectedRows;
+    
+    if (result.affectedRows === 0) {
+      return null; // No se encontró el usuario para actualizar
+    }
+
+    const row = await getUsuarioByIdDB(userId);
+    if (!row) {
+      throw new Error('Usuario no encontrado después de la actualización');
+    }
+    return row; // Devuelve el usuario actualizado
 
   } catch (error) {
     console.error(`Error al actualizar usuario con ID ${userId}:`, error);

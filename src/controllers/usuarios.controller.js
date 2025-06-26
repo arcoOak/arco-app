@@ -50,8 +50,8 @@ async function updateUsuario(req, res) {
 
   try {
     const updatedRows = await updateUsuarioDB(id, nombre, email);
-    if (updatedRows === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
-    res.json({ message: 'Usuario actualizado correctamente' });
+    if (!updatedRows) return res.status(404).json({ message: 'Usuario no encontrado' });
+    res.json(updatedRows);
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor al actualizar usuario' });
   }

@@ -79,11 +79,11 @@
 .family-member-card {
     background-color: #fff;
     border-radius: 15px;
-    padding: 15px;
+    padding: 12px 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 5px;
     position: relative;
     /* Ajuste para acomodar el QR si es necesario, quizás más padding o flex-wrap */
     flex-wrap: wrap;
@@ -153,15 +153,7 @@
     margin-top: 50px;
 }
 
-.box-form-container{
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 8px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+
 
 .box-form-container-label{
     font-size: 0.875rem;
@@ -170,6 +162,7 @@
     text-align: left;
     padding-inline: 8px;
     font-weight: 600;
+    display: none;
 }
 
 .box-form-container-input{
@@ -177,8 +170,24 @@
     padding: 8px;
     border: 1px solid #dfe6e9;
     border-radius: 5px;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     background-color: #fff;
     color: #333;
     box-sizing: border-box;
+}
+
+.member-details p{
+    font-size: 0.875rem !important;
+}
+
+.member-details h3 {
+    font-size: 1rem;
+    color: #333;
+    margin: 0;
+}
+
+.member-actions{
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
 }

@@ -33,7 +33,7 @@ export default function FamilyMembersListScreen({ userId }) {
                         lastName: 'Hernández',
                         cedula: 'V-00998877',
                         birthYear: 1988,
-                        relationship: 'Esposo',
+                        relationship: 'Esposa',
                         photo: '../src/img/beneficiarios/beneficiario2.jpg'
                     },
                     {
@@ -51,7 +51,7 @@ export default function FamilyMembersListScreen({ userId }) {
                         lastName: 'Roria',
                         cedula: 'V-00112233',
                         birthYear: 2015,
-                        relationship: 'Hija',
+                        relationship: 'Hijo',
                         photo: '../src/img/beneficiarios/beneficiario3.jpg'
                     },
                 ];
@@ -152,7 +152,7 @@ export default function FamilyMembersListScreen({ userId }) {
                                 <div className="qr-code-container">
                                     <QRCode
                                         value={member.qrCodeData}
-                                        size={70} // Tamaño del QR
+                                        size={100} // Tamaño del QR
                                         level="L" // Nivel de corrección de error (L, M, Q, H)
                                     />
                                     {/* <span className="qr-label">QR</span>  Opcional: etiqueta para el QR */}

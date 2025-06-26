@@ -51,12 +51,39 @@ button:focus {
   margin: 10px 0;
 }
 
+.text-left {
+  text-align: left;
+}
+
+.titleHome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding: 0 1.6rem;
+}
+
+.titleHome img {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+}
+
+.titleHome i{
+  font-size: 24px;
+}
+
+.titleHomeSide{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 section {
   background: #ffffff;
-  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 20px;
-  margin: 20px 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -260,7 +287,7 @@ ul li {
   justify-content: space-between;
   align-items: baseline;
   /* Alinea "Recent News" y "See All" */
-  padding: 0 20px;
+  padding: 0;
   /* Padding horizontal para el encabezado */
   margin-bottom: 20px;
 }

@@ -76,6 +76,12 @@
     max-width: 500px;
 }
 
+@media screen and (max-width: 440px) {
+    .family-member-card {
+        flex-direction: column;
+    }
+}
+
 .family-member-card {
     background-color: #fff;
     border-radius: 15px;
@@ -118,7 +124,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
+    margin: auto;
     /* Empuja el QR a la derecha */
     flex-shrink: 0;
     /* Evita que el QR se encoja */

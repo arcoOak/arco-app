@@ -1,0 +1,45 @@
+.exit-button i {
+    color: #fff;
+}
+
+.bx {
+    color: #333;
+}
+
+.p-p {
+    padding: 0 2rem !important;
+}
+
+.profile-info {
+    padding: .5rem 1rem !important;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px !important;
+    height: auto !important;
+    border-radius: 25px !important;
+    margin-bottom: 2rem;
+}
+
+.info-item {
+    border-bottom: 1px solid #ededed !important;
+}
+
+.label-info {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+.label-info i {
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+.b-0{
+    border: 0 !important;
+}
+
+.pass {
+    color: #03206f !important;
+}
+
+.exit {
+    color: #c31313 !important;
+}

@@ -82,17 +82,14 @@ export default function Comercio({ allBusinesses }) {
             business.description.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredBusinesses(finalFiltered);
-    }, [activeCategory, searchTerm, allBusinesses]); // ¡Importante: allBusinesses debe ser una dependencia!
-
+    }, [activeCategory, searchTerm, allBusinesses]);
 
     return (
-        <div>
-            <header className="app-header mb-3">
-                <h3>Tiendas Disponibles</h3>
-            </header>
+        <section>
+            <h2 className='mb-2 mt-2'>Tiendas Disponibles</h2>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-12 p-0">
                         <div
                             className="categorias"
                             ref={scrollContainerRef}
@@ -123,7 +120,7 @@ export default function Comercio({ allBusinesses }) {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <div className="comercios">
+                        <div className="comercios p-0">
                             {filteredBusinesses.length > 0 ? (
                                 filteredBusinesses.map((comercio) => (
                                     <div className="comercio-card" key={comercio.id}>
@@ -147,6 +144,6 @@ export default function Comercio({ allBusinesses }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </section >
     );
 }

@@ -11,9 +11,9 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     /* Ancho máximo para simular un dispositivo móvil */
-    margin: 30px auto;
+    margin: 0 auto;
     /* Centrar en la página */
-    padding-bottom: 20px;
+    padding: 20px;
     /* Espacio inferior para el botón */
     font-family: Arial, sans-serif;
     /* Fuente por defecto */
@@ -23,7 +23,7 @@
 
 /* Sección Superior Oscura */
 .overview-header {
-    background-color: #4070f4;
+    background-color: #000080;
     /* Color oscuro del encabezado */
     color: white;
     padding: 25px 20px;
@@ -122,7 +122,7 @@
     width: 60%;
     /* Ancho de la línea de subrayado */
     height: 3px;
-    background-color: #4070f4;
+    background-color: #000080;
     /* Color de la línea (naranja/rojo) */
     border-radius: 2px;
 }
@@ -139,7 +139,6 @@
 
 .statistics-placeholder {
     text-align: center;
-    padding: 30px;
     color: #666;
     font-style: italic;
 }
@@ -154,7 +153,7 @@
 }
 
 .history-item__status {
-    font-weight: 700;
+    font-weight: 500;
     font-size: .8em;
 }
 
@@ -177,7 +176,7 @@
 }
 
 .history-item__icon {
-    color: #4070f4;
+    color: #000080;
     /* Color de los iconos */
     width: 24px;
     height: 24px;
@@ -189,10 +188,21 @@
     /* Ocupa el espacio restante */
 }
 
+.history-item__info{
+    text-align: right;
+}
+
 .history-item__category {
     font-weight: 600;
     color: #333;
     font-size: 1em;
+    margin: 0;
+}
+
+.transacction-item__category {
+    font-weight: 600;
+    color: #333;
+    font-size: .9em;
     margin: 0;
 }
 
@@ -211,7 +221,7 @@
 
 /* Botón "Ver más detalle" */
 .view-details-button {
-    background-color: #4070f4;
+    background-color: #000080;
     /* Fondo del mismo color que el contenedor principal */
     color: white;
     /* Color del texto del botón */
@@ -231,13 +241,17 @@
 }
 
 .view-details-button:hover {
-    background-color: #4466c4 !important;
+    background-color: #2f2fd1 !important;
     /* Tono más oscuro al pasar el ratón */
 }
 
-/* Media Queries para Responsividad */
-@media (min-width: 500px) {
-    .monthly-overview-container {
-        padding-bottom: 30px;
-    }
+.history-item-clickable {
+    cursor: pointer;
+    /* Add any hover effects if desired */
+    transition: background-color 0.2s ease;
+}
+
+.history-item-clickable:hover {
+    background-color: #f0f0f0;
+    /* Light grey on hover */
 }

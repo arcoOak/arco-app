@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importa
 
 import LoadingModal from "../components/modals/LoadingModal"; // Asegúrate de tener un componente de carga
 
-import './Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
+import '../css/Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
 
 export default function Perfil({ onLogout }) {
     const [activeDiv, setActiveDiv] = useState(0);
@@ -62,10 +62,10 @@ export default function Perfil({ onLogout }) {
     return (
         <div className="container-fluid">
             {/* ... (Tu código actual de encabezado y perfil) ... */}
-            <div className="row mb-4 mt-4" > 
+            <div className="row mb-4 mt-4" >
                 <div className="col-md-12">
                     <div className="profile-photo-container">
-                        <img src={socio.avatar} alt="Profile" className="profile-photo" />
+                        <img src={socio.avatar || './src/img/perfil.jpg'} alt="Profile" className="profile-photo" />
                     </div>
                     <h2 className="mb-2">{socio.nombre} {socio.apellido}</h2>
                     <span className="profile-mail">Acción: {socio.id_usuario}</span>
@@ -73,7 +73,7 @@ export default function Perfil({ onLogout }) {
             </div >
 
             <div className="row mb-2">
-                <div className="col-md-12">
+                <div className="col-md-12 p-p">
                     <div className="profile-info">
 
                         {/* Nombre y Apellido */}
@@ -81,7 +81,7 @@ export default function Perfil({ onLogout }) {
                             <div className="faqs">
                                 <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
                                     <div className="head">
-                                        <span className="label-info">Nombre y Apellido</span>
+                                        <span className="label-info">< i class='bx  bx-user bx-lg'  ></i>  Nombre y Apellido</span>
                                         <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
@@ -90,7 +90,7 @@ export default function Perfil({ onLogout }) {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0', maxHeight: activeDiv === 1 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-user-square'></i> {socio.nombre} {socio.apellido}</label>
+                                        <label>{socio.nombre} {socio.apellido}</label>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ export default function Perfil({ onLogout }) {
                             <div className="faqs">
                                 <div className={`${activeDiv === 2 ? 'active' : ''} faq`} onClick={() => handleDivClick(2)}>
                                     <div className="head">
-                                        <span className="label-info">Cédula</span>
+                                        <span className="label-info">< i class='bx  bx-user-id-card bx-lg'  ></i>  Cédula</span>
                                         <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
@@ -110,7 +110,7 @@ export default function Perfil({ onLogout }) {
                                         className="content"
                                         style={{ height: activeDiv === 2 ? 'auto' : '0' }}
                                     >
-                                        <label><i className='bx bx-user-id-card'></i> V{socio.documento_identidad}</label>
+                                        <label>V{socio.documento_identidad}</label>
                                     </div>
                                 </div>
                             </div>
@@ -121,16 +121,16 @@ export default function Perfil({ onLogout }) {
                             <div className="faqs">
                                 <div className={`${activeDiv === 3 ? 'active' : ''} faq`} onClick={() => handleDivClick(3)}>
                                     <div className="head">
-                                        <span className="label-info">Teléfono</span>
+                                        <span className="label-info">< i class='bx  bx-phone bx-lg'  ></i> Teléfono</span>
                                         <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 3 ? 'auto' : '0', maxHeight: activeDiv === 3 ? '50px' : '0px'}}
+                                        style={{ height: activeDiv === 3 ? 'auto' : '0', maxHeight: activeDiv === 3 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-phone'></i>{socio.telefono}</label>
+                                        <label>{socio.telefono}</label>
                                     </div>
                                 </div>
                             </div>
@@ -141,63 +141,96 @@ export default function Perfil({ onLogout }) {
                             <div className="faqs">
                                 <div className={`${activeDiv === 4 ? 'active' : ''} faq`} onClick={() => handleDivClick(4)}>
                                     <div className="head">
-                                        <span className="label-info">Dirección</span>
+                                        <span className="label-info">< i class='bx  bx-location-alt-2 bx-lg'  ></i> Dirección</span>
                                         <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 4 ? 'auto' : '0' , maxHeight: activeDiv === 4 ? '50px' : '0px' }}
+                                        style={{ height: activeDiv === 4 ? 'auto' : '0', maxHeight: activeDiv === 4 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-location'></i> {socio.direccion} </label>
+                                        <label>{socio.direccion} </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Fecha de Nacimiento */}
-                        <div className="info-item">
+                        <div className="info-item b-0">
                             <div className="faqs">
                                 <div className={`${activeDiv === 5 ? 'active' : ''} faq`} onClick={() => handleDivClick(5)}>
                                     <div className="head">
-                                        <span className="label-info">Fecha de Nacimiento</span>
+                                        <span className="label-info">< i class='bx  bx-calendar-alt bx-lg'  ></i>  Fecha de Nacimiento</span>
                                         <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
                                         </svg>
                                     </div>
                                     <div
                                         className="content"
-                                        style={{ height: activeDiv === 5 ? 'auto' : '0' , maxHeight: activeDiv === 5 ? '50px' : '0px'  }}
+                                        style={{ height: activeDiv === 5 ? 'auto' : '0', maxHeight: activeDiv === 5 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-calendar-alt'></i> {socio.fecha_nacimiento} </label>
+                                        <label>{socio.fecha_nacimiento} </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                    </div>
+
+                    <div className="profile-info">
+
                         {/* Beneficiarios (para ver la lista) */}
-                        <div className="info-item b-0 mt-2 py-3" onClick={() => handleDivClick(9)}> {/* Nuevo índice 9 para ver familiares */}
-                            <span className="label-info pass">Beneficiarios</span>
-                            <span className="value"><i className='bx bx-group pass'></i></span> {/* Icono más adecuado para una lista */}
+                        <div className="info-item" onClick={() => handleDivClick(9)}>
+                            <div className="faqs">
+                                <div className="faq">
+                                    <div className="head">
+                                        <span className="label-info"><i className='bx bx-group pass'></i> Beneficiarios</span>
+                                        <svg width={18} height={19} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M7.82054 20.7313C8.21107 21.1218 8.84423 21.1218 9.23476 20.7313L15.8792 14.0868C17.0505 12.9155 17.0508 11.0167 15.88 9.84497L9.3097 3.26958C8.91918 2.87905 8.28601 2.87905 7.89549 3.26958C7.50497 3.6601 7.50497 4.29327 7.89549 4.68379L14.4675 11.2558C14.8581 11.6464 14.8581 12.2795 14.4675 12.67L7.82054 19.317C7.43002 19.7076 7.43002 20.3407 7.82054 20.7313Z" fill="#0F0F0F" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Editar Perfil (no colapsable, navega) */}
-                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(6)}>
-                            <span className="label-info pass">Editar Perfil</span>
-                            <span className="value"><i className='bx bx-gear pass'></i></span>
+                        <div className="info-item" onClick={() => handleDivClick(6)}>
+                            <div className="faqs">
+                                <div className="faq">
+                                    <div className="head">
+                                        <span className="label-info"><i className='bx bx-gear pass'></i> Editar Perfil</span>
+                                        <svg width={18} height={19} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M7.82054 20.7313C8.21107 21.1218 8.84423 21.1218 9.23476 20.7313L15.8792 14.0868C17.0505 12.9155 17.0508 11.0167 15.88 9.84497L9.3097 3.26958C8.91918 2.87905 8.28601 2.87905 7.89549 3.26958C7.50497 3.6601 7.50497 4.29327 7.89549 4.68379L14.4675 11.2558C14.8581 11.6464 14.8581 12.2795 14.4675 12.67L7.82054 19.317C7.43002 19.7076 7.43002 20.3407 7.82054 20.7313Z" fill="#0F0F0F" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Cambiar Clave (no colapsable, navega/modal) */}
-                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(7)}>
-                            <span className="label-info pass">Cambiar Clave</span>
-                            <span className="value"><i className='bx bx-lock-keyhole pass'></i></span>
+                        <div className="info-item" onClick={() => handleDivClick(7)}>
+                            <div className="faqs">
+                                <div className="faq">
+                                    <div className="head">
+                                        <span className="label-info"><i className='bx bx-lock-keyhole pass'></i> Cambiar Clave</span>
+                                        <svg width={18} height={19} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M7.82054 20.7313C8.21107 21.1218 8.84423 21.1218 9.23476 20.7313L15.8792 14.0868C17.0505 12.9155 17.0508 11.0167 15.88 9.84497L9.3097 3.26958C8.91918 2.87905 8.28601 2.87905 7.89549 3.26958C7.50497 3.6601 7.50497 4.29327 7.89549 4.68379L14.4675 11.2558C14.8581 11.6464 14.8581 12.2795 14.4675 12.67L7.82054 19.317C7.43002 19.7076 7.43002 20.3407 7.82054 20.7313Z" fill="#0F0F0F" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Cerrar Sesión (no colapsable, logout) */}
-                        <div className="info-item b-0 py-3" onClick={() => handleDivClick(8)}>
-                            <span className="label-info exit">Cerrar Sesión</span>
-                            <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span>
+                        <div className="info-item b-0" onClick={() => handleDivClick(8)}>
+                            <div className="faqs">
+                                <div className="faq">
+                                    <div className="head">
+                                        <span className="label-info"><i className='bx bx-arrow-in-right-square-half exit'></i> Cerrar Sesión</span>
+                                        <svg width={18} height={19} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M7.82054 20.7313C8.21107 21.1218 8.84423 21.1218 9.23476 20.7313L15.8792 14.0868C17.0505 12.9155 17.0508 11.0167 15.88 9.84497L9.3097 3.26958C8.91918 2.87905 8.28601 2.87905 7.89549 3.26958C7.50497 3.6601 7.50497 4.29327 7.89549 4.68379L14.4675 11.2558C14.8581 11.6464 14.8581 12.2795 14.4675 12.67L7.82054 19.317C7.43002 19.7076 7.43002 20.3407 7.82054 20.7313Z" fill="#0F0F0F" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

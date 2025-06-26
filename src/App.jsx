@@ -4,6 +4,8 @@ import React from "react";
 import "./css/App.css"; // Ensure you have the CSS file for styles
 import Layout from "./Layout";
 import Home from "./pages/Home";
+import MonthlyOverview from "./components/MonthlyOverview";
+import PaymentDetail from './components/PaymentDetail';
 import Perfil from "./pages/Perfil";
 import EditProfileScreen from "./components/EditProfileScreen"; // Asegúrate de que la ruta sea correcta
 import FamilyMembersListScreen from './components/FamilyMembersListScreen'; // Importa el nuevo componente
@@ -99,13 +101,13 @@ function App() {
                     {/* El Layout ahora se aplicará solo a las rutas autenticadas */}
                     <Route element={<Layout onLogout={handleLogout} />}>
                         <Route path="/" element={<Home />} />
+                        <Route path="/monthly-overview" element={<MonthlyOverview />} />
+                        <Route path="/payment-detail/:id" element={<PaymentDetail />} />
                         <Route path="/perfil" element={<Perfil />} />
                         <Route path="/edit-profile" element={<EditProfileScreen user={currentUser} onUpdateUser={handleUpdateUser} />} />
                         <Route path="/beneficiaries" element={<FamilyMembersListScreen userId={currentUser.id} />} />
                         <Route path="/reservas" element={<Reservas />} />
                         <Route path="/reservas/:id" element={<ReservaUnidad />} />
-
-                        {/* Pasar allBusinessesData a tu componente de lista de comercios */}
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />
                         {/* CORRECCIÓN: Añadir '/' antes de :id */}
                         <Route path="/comercio/:id" element={<ComercioDetalle allBusinesses={allBusinessesData} />} />

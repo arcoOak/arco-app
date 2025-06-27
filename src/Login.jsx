@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/Login.css'; // Asegúrate de tener un archivo CSS para los estilos
 
-export default function Login({ onLogin }) {
+import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
+
+import LoadingModal from './components/modals/LoadingModal'; // Importa el modal de carga
+
+export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const { user, login, logout, isAuthenticated, loading } = useAuth();
+
+    const handleSubmit = async (e) => {
+        
         e.preventDefault();
         setError(''); // Limpiar errores previos
 
         // Lógica de autenticación simple (sustituir con una API real)
-        if (username === 'usuario' && password === 'contrasena') {
-            onLogin(); // Llama a la función de login pasada desde App.jsx
-            navigate('/'); // Redirige a la página de comercios después del login
+        if (username  && password ) {
+            const success = await login(username, password); // Espera el resultado
+            //console.log('Login attempt:', { username, password, success });
+            if (success) {
+                navigate('/'); // Redirige a la página principal después del login
+            } else {
+                setError('Usuario o contraseña incorrectos.');
+            }
         } else {
             setError('Usuario o contraseña incorrectos.');
         }
     };
+
+    useEffect(()=>{
+        if (isAuthenticated) {
+            // Si el usuario ya está autenticado, redirigir a la página principal
+            navigate('/');
+        }
+    },[])
+
+    
 
     return (
         <>
@@ -98,6 +119,8 @@ export default function Login({ onLogin }) {
                     </form>
                 </div>
             </div>
+            <LoadingModal visible={loading} mensaje='Validando...' ></LoadingModal>
+
         </>
     );
 }

@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext"; // Importa el contexto de a
 
 import './Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
 
-export default function Perfil({ onLogout }) {
+export default function Perfil() {
     const [activeDiv, setActiveDiv] = useState(0);
     const [socio, setSocio] = useState(null); // Estado para almacenar los datos del socio
     const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
@@ -47,9 +47,7 @@ export default function Perfil({ onLogout }) {
     };
 
     const handleUserLogout = () => {
-        if (onLogout) {
-            onLogout();
-        }
+        logout();
         navigate('/login');
     };
 

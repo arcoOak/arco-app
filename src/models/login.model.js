@@ -1,3 +1,4 @@
+import { response } from 'express';
 import connectToDatabase from '../config/db.config.js';
 import bcrypt from 'bcryptjs';
 
@@ -5,9 +6,20 @@ const getLoginDB = async (username, password) => {
     let connection;
     try {
     connection = await connectToDatabase();
-    const [user] = await connection.execute(
+    const [rows] = await connection.execute(
       `SELECT a.*, b.*, c.nombre_genero FROM usuarios a LEFT JOIN socios b ON a.id_usuario = b.id_socio LEFT JOIN data_genero c ON b.id_genero = c.id_genero WHERE a.email = ? AND a.activo = 1`, [username]
     );
+
+    const user = rows[0];
+
+    // const hash = await bcrypt.hash('test', 10);
+    // console.log('Hash:', hash);
+
+    // console.log('Usuario encontrado:', user);
+    // console.log('Contraseña proporcionada:', password);
+    // console.log('Contraseña almacenada (hash):', user.contrasena_hash);
+    // console.log('Comparando contraseñas:', await bcrypt.compare(password, user.contrasena_hash));
+
     if (user && await bcrypt.compare(password, user.contrasena_hash)) {
       // login exitoso
       return {
@@ -23,7 +35,10 @@ const getLoginDB = async (username, password) => {
         telefono: user.telefono,
         direccion: user.direccion,
         nombre_genero: user.nombre_genero,
+        response: true,
       };
+    }else{
+      return {response: false}; // usuario no encontrado o contraseña incorrecta
     }
   } finally {
     if (connection) connection.end();

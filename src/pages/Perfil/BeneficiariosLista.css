@@ -67,8 +67,8 @@
 }
 
 .family-members-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     /* Una columna por defecto */
     gap: 15px;
     /* Espacio entre las tarjetas */
@@ -83,6 +83,8 @@
 }
 
 .family-member-card {
+    display: flex;
+    flex-direction: row;
     background-color: #fff;
     border-radius: 15px;
     padding: 12px 8px;

@@ -10,7 +10,10 @@ export const AuthContext = createContext(null);
 
 // Proveedor del contexto
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({id_socio : 1}); // Almacena los datos del usuario o null si no está autenticado
+  //const [user, setUser] = useState(); // Almacena los datos del usuario o null si no está autenticado
+  //const [isAuthenticated, setIsAuthenticated] = useState(!!user); // Para saber si el usuario está autenticado
+  const [user, setUser] = useState(null); // Almacena los datos del usuario o null si no está autenticado
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Para saber si el usuario está autenticado
   const [loading, setLoading] = useState(true); // Para saber si estamos cargando los datos iniciales
 
   useEffect(() => {
@@ -19,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true); // Si hay un usuario almacenado, consideramos que está autenticado
     }
     setLoading(false);
   }, []);
@@ -27,11 +31,22 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     //setError(null);
     try {
+      //console.log('Intentando iniciar sesión con:', { username, password });
       const userData = await authService.loginApi(username, password);
-      setUser(userData);
-      localStorage.setItem('currentUser', JSON.stringify(userData));
-      setLoading(false);
-      return true;
+      //console.log('Datos del usuario recibidos:', userData);
+
+      if(userData.response === false) {
+        //setError('Usuario o contraseña incorrectos');
+        setLoading(false);
+        return false;
+      }else{
+        setUser(userData);
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        setIsAuthenticated(true); // Actualizar el estado de autenticación
+        setLoading(false);
+        return true;
+      }
+
     } catch (err) {
       //setError('Usuario o contraseña incorrectos');
       setLoading(false);
@@ -41,6 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    setIsAuthenticated(false);
     localStorage.removeItem('currentUser'); // Limpiar los datos persistidos
     // Aquí podrías notificar a tu API de backend que la sesión ha terminado
     // Redirigir al usuario a la página de login o inicio
@@ -51,12 +67,12 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     logout,
-    isAuthenticated: !!user, // Un booleano para saber si el usuario está autenticado
+    isAuthenticated, // Un booleano para saber si el usuario está autenticado
   };
 
-  if (loading) {
-    return <LoadingModal>Cargando sesión...</LoadingModal>; // O un spinner/componente de carga
-  }
+  // if (loading) {
+  //   return <LoadingModal>Cargando sesión...</LoadingModal>; // O un spinner/componente de carga
+  // }
 
   return (
     <AuthContext.Provider value={value}>

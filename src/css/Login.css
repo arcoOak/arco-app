@@ -5,7 +5,7 @@
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #f0f2f5;
+    /* background-color: #f0f2f5; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,6 +164,7 @@ body {
     font-size: 1em;
     padding: 0;
     color: #333;
+    background-color: #fff;
 }
 
 .input-field::placeholder {
@@ -308,7 +309,7 @@ body {
     }
 
     .login-card {
-        width: 100%;
+        width: 90%;
         border-radius: 20px;
         padding: 30px 20px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);

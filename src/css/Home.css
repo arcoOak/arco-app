@@ -81,7 +81,7 @@ button:focus {
 }
 
 section {
-  background: #ffffff;
+  /* background: #ffffff; */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;

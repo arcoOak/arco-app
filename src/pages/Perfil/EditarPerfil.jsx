@@ -1,18 +1,26 @@
 // src/components/EditProfileScreen.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProfileForm from './ProfileForm';
-import '../css/EditProfile.css'; // Asegúrate de tener este CSS para los estilos
+import ProfileForm from '../../components/ProfileForm';
+import '../../css/EditProfile.css'; // Asegúrate de tener este CSS para los estilos
+import { useAuth } from "../../context/AuthContext"; // Importa el contexto de autenticación
 
-const EditProfileScreen = ({ user, onUpdateUser }) => {
+const EditarPerfil = () => {
+
+    const { user, login, logout, editarUsuario, isAuthenticated, loading } = useAuth();
+
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState(user);
 
-    const handleSaveProfile = (updatedData) => {
+    useEffect(() => {
+        console.log('Datos del usuario:', user);
+    },[])
+
+    const handleSaveProfile = async (updatedData) => {
         console.log('Datos del perfil guardados:', updatedData);
-        if (onUpdateUser) {
-            onUpdateUser(updatedData);
-        }
+        
+        editarUsuario(updatedData)
+
         alert('Perfil actualizado exitosamente!');
         navigate('/perfil'); // Navega de vuelta a la ruta de perfil
     };
@@ -52,4 +60,4 @@ const EditProfileScreen = ({ user, onUpdateUser }) => {
     );
 };
 
-export default EditProfileScreen;
+export default EditarPerfil;

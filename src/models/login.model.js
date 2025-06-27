@@ -34,6 +34,7 @@ const getLoginDB = async (username, password) => {
         fecha_nacimiento: user.fecha_nacimiento,
         telefono: user.telefono,
         direccion: user.direccion,
+        id_genero: user.id_genero,
         nombre_genero: user.nombre_genero,
         response: true,
       };

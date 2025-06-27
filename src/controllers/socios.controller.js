@@ -48,6 +48,7 @@ async function createSocio(req, res) {
 async function updateSocio(req, res) {
   const socioId = req.params.id;
   const { nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, id_genero } = req.body;
+  console.log(`Actualizando socio con ID: ${socioId}`, req.body);
   if (!nombre && !apellido && !documento_identidad && !fecha_nacimiento && !telefono && !direccion && !id_genero) {
     return res.status(400).json({ message: 'No hay datos para actualizar' });
   }

@@ -20,6 +20,8 @@ const getLogin = async (req, res) => {
             });
         }
 
+        console.log('Login exitoso:', loginData);
+
         return res.json(loginData);
     } catch (error) {
         console.error('Error al obtener login:', error);

@@ -17,6 +17,7 @@ const logoutApi = async () => {
     //navigate('/login'); // Redirigir al login después de cerrar sesión
 }
 
+
 export default {
     loginApi, logoutApi
 };

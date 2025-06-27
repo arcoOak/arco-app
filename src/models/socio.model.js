@@ -57,6 +57,7 @@ async function createSocioDB({ id_usuario, nombre, apellido, documento_identidad
 // Actualizar socio
 async function updateSocioDB(socioId, { nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, id_genero }) {
   let connection;
+  console.log(`Actualizando socio con ID: ${socioId}`, { nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, id_genero });
   try {
     connection = await connectToDatabase();
     const [result] = await connection.execute(

@@ -2,6 +2,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import authService from '../services/auth.service';
 
+import modificarSocio from '../services/modificar.service'; 
+
 import LoadingModal from '../components/modals/LoadingModal';
 
 
@@ -62,11 +64,23 @@ export const AuthProvider = ({ children }) => {
     // Redirigir al usuario a la página de login o inicio
   };
 
+  const editarUsuario = async (newUserData) => {
+    const updatedUser = await modificarSocio.modificarSocioData(newUserData);
+    console.log('Datos del usuario actualizados:', updatedUser);
+    if(updatedUser !== null && updatedUser !== undefined ) {
+      //setUser(updatedUser);
+      //localStorage.setItem('currentUser', JSON.stringify(updatedUser)); // Actualizar los datos
+    }
+  
+    
+  }
+
   const value = {
     user,
     loading,
     login,
     logout,
+    editarUsuario,
     isAuthenticated, // Un booleano para saber si el usuario está autenticado
   };
 

@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import MonthlyOverview from "./components/MonthlyOverview";
 import PaymentDetail from './components/PaymentDetail';
 import Perfil from "./pages/Perfil/Perfil";
-import EditProfileScreen from "./components/EditProfileScreen"; // Asegúrate de que la ruta sea correcta
+import EditarPerfil from "./pages/Perfil/EditarPerfil"; // Asegúrate de que la ruta sea correcta
 import BeneficiariosLista from './pages/Perfil/BeneficiariosLista'; // Importa el nuevo componente
 import Reservas from "./pages/Reserva";
 import ReservaUnidad from "./pages/ReservaUnidad";
@@ -54,9 +54,11 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/monthly-overview" element={<MonthlyOverview />} />
                         <Route path="/payment-detail/:id" element={<PaymentDetail />} />
-                        <Route path="/perfil" element={<Perfil />} />
-                        <Route path="/perfil/editar-perfil" element={<EditProfileScreen />} />
+                        {/*Ruta de Perfiles*/}
+                        <Route path="/perfil" element={<Perfil user={user} />} />
+                        <Route path="/perfil/editar-perfil" element={<EditarPerfil user={user} />} />
                         <Route path="/perfil/beneficiarios" element={<BeneficiariosLista />} />
+
                         <Route path="/reservas" element={<Reservas />} />
                         <Route path="/reservas/:id" element={<ReservaUnidad />} />
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />

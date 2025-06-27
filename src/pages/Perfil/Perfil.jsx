@@ -20,13 +20,17 @@ export default function Perfil() {
 
     useEffect(() => {
         // Cambia el ID por el que corresponda según tu lógica de autenticación
-        fetch(`${API_HOST}/api/socios/${user.id_socio}`)
-            .then(res => res.json())
-            .then(data => {
-                setSocio(data);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
+        // fetch(`${API_HOST}/api/socios/${user.id_socio}`)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         setSocio(data);
+        //         setLoading(false);
+        //     })
+        //     .catch(() => setLoading(false));
+
+        setSocio(user); // Asigna los datos del usuario autenticado al estado socio
+        setLoading(false);
+
     }, []);
 
     const handleDivClick = (index) => {

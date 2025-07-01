@@ -7,7 +7,7 @@ const ProfileForm = ({ initialData, onSave, onCancel }) => {
 
     useEffect(() => {
         setFormData(initialData);
-        console.log('Datos iniciales del formulario:', initialData);
+        //console.log('Datos iniciales del formulario:', initialData);
     }, [initialData]);
 
     const handleChange = (e) => {

@@ -65,13 +65,39 @@ export const AuthProvider = ({ children }) => {
   };
 
   const editarUsuario = async (newUserData) => {
-    const updatedUser = await modificarSocio.modificarSocioData(newUserData);
-    console.log('Datos del usuario actualizados:', updatedUser);
-    if(updatedUser !== null && updatedUser !== undefined ) {
-      //setUser(updatedUser);
-      //localStorage.setItem('currentUser', JSON.stringify(updatedUser)); // Actualizar los datos
+    setLoading(true);
+    const datosAEditar = {
+      nombre: newUserData.nombre,
+      apellido: newUserData.apellido,
+      documento_identidad: newUserData.documento_identidad,
+      fecha_nacimiento: newUserData.fecha_nacimiento,
+      telefono: newUserData.telefono,
+      direccion: newUserData.direccion,
+      id_genero: newUserData.id_genero
     }
+    //console.log('Datos del usuario a editar:', datosAEditar);
+    const updatedUser = await modificarSocio.modificarSocioData(datosAEditar, newUserData.id_socio);
+    //console.log('Datos del usuario actualizados:', updatedUser);
+    if(updatedUser !== null && updatedUser !== undefined ) {
+      //console.log('Datos del usuario actualizados:', updatedUser);
+
+      const userData = user;
+      
+      Object.entries(updatedUser).forEach( ([key, value]) => {
+        userData[key] = value; // Actualizar los datos del usuario
+      });
+
+      //console.log('Datos del usuario actualizados en el estado:', userData);
+      setUser(userData); // Actualizar el estado del usuario
+
+      localStorage.setItem('currentUser', JSON.stringify(userData)); // Actualizar los datos
+      setLoading(false); // Finalizar el estado de carga
+      return true; // Indicar que la edición fue exitosa
+    }
+
+    return false; // Indicar que la edición falló
   
+    //setLoading(false);
     
   }
 

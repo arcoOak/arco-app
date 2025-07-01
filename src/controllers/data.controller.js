@@ -1,5 +1,5 @@
 import {
-    getGenerosDB, getParentescos, getParentescosByGenero
+    getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDisponibleDB, getCategoriasComercioDB
 } from '../models/data.model.js';
 
 const getGeneros = async (req, res) => {
@@ -12,9 +12,9 @@ const getGeneros = async (req, res) => {
     }
 }
 
-const getParentescosList = async (req, res) => {
+const getParentescos = async (req, res) => {
     try {
-        const parentescos = await getParentescos();
+        const parentescos = await getParentescosDB();
         res.json(parentescos);
     } catch (error) {
         console.error('Error al obtener parentescos:', error);
@@ -22,9 +22,9 @@ const getParentescosList = async (req, res) => {
     }
 }
 
-const getParentescosByGeneroList = async (req, res) => {
+const getParentescosByGenero = async (req, res) => {
     try {
-        const parentescos = await getParentescosByGenero();
+        const parentescos = await getParentescosByGeneroDB();
         res.json(parentescos);
     } catch (error) {
         console.error('Error al obtener parentescos por género:', error);
@@ -32,8 +32,30 @@ const getParentescosByGeneroList = async (req, res) => {
     }
 }
 
+const getCategoriasComercioDisponible = async (req, res) => {
+    try {
+        const categorias = await getCategoriasComercioDisponibleDB();
+        res.json(categorias);
+    } catch (error) {
+        console.error('Error al obtener categorías de comercio disponibles:', error);
+        res.status(500).json({ message: 'Error interno del servidor al obtener categorías de comercio disponibles' });
+    }   
+}
+
+const getCategoriasComercio = async (req, res) => {
+    try {
+        const categorias = await getCategoriasComercioDB();
+        res.json(categorias);
+    } catch (error) {
+        console.error('Error al obtener categorías de comercio:', error);
+        res.status(500).json({ message: 'Error interno del servidor al obtener categorías de comercio' });
+    }
+}
+
 export default{
     getGeneros,
-    getParentescosList,
-    getParentescosByGeneroList
+    getParentescos,
+    getParentescosByGenero,
+    getCategoriasComercioDisponible,
+    getCategoriasComercio
 }

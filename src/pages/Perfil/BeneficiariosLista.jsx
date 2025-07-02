@@ -25,7 +25,9 @@ import ConfirmarModal from '../../components/modals/ConfirmarModal';
 import FormatearFecha from '../../utils/FormatearFecha';
 import { Edit } from 'lucide-react';
 
-import beneficiariosService  from '../../services/data_db.service'; // Importa los servicios necesarios
+import dataService  from '../../services/data_db.service'; // Importa los servicios necesarios
+
+import familiaresService from '../../services/familiares.service';
 
 import { useAuth } from "../../context/AuthContext"; // Importa el contexto de autenticación
 
@@ -74,9 +76,9 @@ export default function BeneficiariosLista() {
             try {
                 // 3. Usar Promise.all para ejecutar todas las peticiones en paralelo
                 const [beneficiariesData, generosData, parentescosData] = await Promise.all([
-                    beneficiariosService.getBeneficiariosBySocioId(user.id_usuario), // Usar el ID del usuario real
-                    beneficiariosService.getGeneros(),
-                    beneficiariosService.getParentescos()
+                    familiaresService.getBeneficiariosBySocioId(user.id_usuario), // Usar el ID del usuario real
+                    dataService.getGeneros(),
+                    dataService.getParentescos()
                 ]);
                 setBeneficiaries(beneficiariesData);
                 setGeneros(generosData);

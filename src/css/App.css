@@ -544,6 +544,7 @@ body {
   background: transparent;
   font-size: 1em;
   padding: 5px 10px;
+  color: #333;
 }
 
 .search-categoria input::placeholder {

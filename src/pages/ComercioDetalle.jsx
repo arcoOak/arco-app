@@ -1,49 +1,60 @@
 // src/components/ComercioDetalle.jsx (o ComercioDetalle.js)
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../css/ComercioDetalle.css'; // Crea un archivo CSS para este componente
 
-// Dummy data de productos para demostración
-// En una aplicación real, esto vendría de una API o del mismo comercio
-const dummyProducts = [
-    { id: 1, name: 'Hamburguesa Clásica', description: 'La original con queso y lechuga.', price: 'Bs. 550', img: '../src/img/productos/hamburguesa.jpg' },
-    { id: 2, name: 'Papas Fritas Grandes', description: 'Crujientes y doradas.', price: 'Bs. 200', img: '../src/img/productos/papas.jpg' },
-    { id: 3, name: 'Refresco Cola', description: 'Bebida de cola fría.', price: 'Bs. 150', img: '../src/img/productos/refresco.jpg' },
-    { id: 4, name: 'Sundae Chocolate', description: 'Postre de helado con sirope.', price: 'Bs. 300', img: '../src/img/productos/sundae.jpg' },
-    { id: 5, name: 'Nuggets de Pollo (6 und)', description: 'Crujientes trozos de pollo.', price: 'Bs. 400', img: '../src/img/productos/nugguets.jpg' },
-];
 
-export default function ComercioDetalle({ allBusinesses }) { // Recibe allBusinesses como prop
+import comercioService from '../services/comercio.service'; // Importa el servicio de comercios
+import LoadingModal from '../components/modals/LoadingModal';
+
+import comercioImagePlaceholder from '../assets/comercio_placeholder.avif';
+
+export default function ComercioDetalle() { // Recibe allBusinesses como prop
     const { id } = useParams(); // Obtiene el ID del comercio de la URL
     const navigate = useNavigate(); // Hook para navegar programáticamente
+    const [loading, setLoading] = useState(false); // Estado para manejar la carga de datos
+    const [comercio, setComercio] = useState(null);
 
-    // Buscar el comercio por ID
-    const comercio = allBusinesses.find(b => b.id === parseInt(id));
+    useEffect(() => {
+        setLoading(true); // Inicia la carga de datos
+        // Aquí podrías hacer una llamada a la API para obtener los detalles del comercio por ID
+        const fetchComercio = async () => {
+            try {
+                // Simula una llamada a la API para obtener el comercio por ID
+                const comercioData = await comercioService.getComercioById(id);
+                if (!comercioData) {
+                    throw new Error('Comercio no encontrado');
+                }
+                setComercio(comercioData);
+            } catch (error) {
+                console.error('Error fetching comercio:', error);
+                setComercio(null); // Si hay un error, establecemos comercio como null
+            }
+            setLoading(false); // Finaliza la carga de datos
+        };
 
-    if (!comercio) {
-        return (
-            <div className="detalle-container no-comercio">
-                <h2>Comercio no encontrado.</h2>
-                <button className="back-button" onClick={() => navigate('/comercios')}>Volver a Tiendas</button>
-            </div>
-        );
-    }
+        fetchComercio();
+    }, []);
+
 
     return (
+
+        <React.Fragment>
+        <LoadingModal visible={loading}></LoadingModal>
         <div className="detalle-container">
             <button className="back-button" onClick={() => navigate('/comercios')}>
                 <i className='bx bx-arrow-back'></i> Volver
             </button>
 
             <div className="detalle-header">
-                <img src={`../${comercio.img}`} alt={comercio.name} className="detalle-img" />
+                <img src={`../${comercio.img || comercioImagePlaceholder}`} alt={comercio.nombre_comercio} className="detalle-img" />
                 <h1>{comercio.name}</h1>
-                <p className="detalle-description">{comercio.description}</p>
+                <p className="detalle-description">{comercio.descripcion_comercio}</p>
             </div>
 
             <div className="detalle-info-section">
                 <h2>Información de Contacto</h2>
-                <p><strong>Horario:</strong> Lunes a Viernes: 9:00 AM - 9:00 PM | Sábado y Domingo: 10:00 AM - 10:00 PM</p>
+                <p><strong>Horario:</strong> Lunes a Viernes: {comercio.hora_apertura} - ${comercio.hora_cierre}  | Sábado y Domingo: 10:00 AM - 10:00 PM</p>
                 <p><strong>Teléfono:</strong> <a href={`tel:${comercio.phone || '+584123456789'}`}>{comercio.phone || '+58-412-3456789'}</a></p>
                 {/* Puedes añadir más información aquí como dirección, redes sociales, etc. */}
             </div>
@@ -64,5 +75,6 @@ export default function ComercioDetalle({ allBusinesses }) { // Recibe allBusine
                 </div>
             </div>
         </div>
+        </React.Fragment>
     );
 }

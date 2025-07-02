@@ -1,15 +1,5 @@
 const API_HOST = import.meta.env.VITE_API_HOST;
 
-
-const getBeneficiariosBySocioId = async (socioId) => {
-  const response = await fetch(`${API_HOST}/api/familiares/buscar/${socioId}`,{
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  });
-  if (!response.ok) throw new Error('Error al obtener los beneficiarios');
-  return response.json();
-};
-
 const getGeneros = async () => {
   const response = await fetch(`${API_HOST}/api/data/generos`,{
     method: 'GET',
@@ -28,14 +18,7 @@ const getParentescos = async () => {
   return response.json();
 };
 
-const getCategoriasComercioActivos = async () => {
-    const response = await fetch(`${API_HOST}/api/data/categorias-comercio/activos`,{
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  });
-  if (!response.ok) throw new Error('Error al obtener los parentescos');
-  return response.json();
-}
+
 
 const getCategoriasComercio = async () => {
     const response = await fetch(`${API_HOST}/api/data/categorias-comercio`,{
@@ -46,5 +29,5 @@ const getCategoriasComercio = async () => {
     return response.json();
 }
 
-export default { getBeneficiariosBySocioId, getGeneros, getParentescos, getCategoriasComercioActivos, getCategoriasComercio };
+export default { getGeneros, getParentescos, getCategoriasComercio };
 

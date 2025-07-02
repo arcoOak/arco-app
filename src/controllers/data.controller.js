@@ -1,5 +1,5 @@
 import {
-    getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDisponibleDB, getCategoriasComercioDB
+    getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDB
 } from '../models/data.model.js';
 
 const getGeneros = async (req, res) => {
@@ -32,15 +32,7 @@ const getParentescosByGenero = async (req, res) => {
     }
 }
 
-const getCategoriasComercioDisponible = async (req, res) => {
-    try {
-        const categorias = await getCategoriasComercioDisponibleDB();
-        res.json(categorias);
-    } catch (error) {
-        console.error('Error al obtener categorías de comercio disponibles:', error);
-        res.status(500).json({ message: 'Error interno del servidor al obtener categorías de comercio disponibles' });
-    }   
-}
+
 
 const getCategoriasComercio = async (req, res) => {
     try {
@@ -56,6 +48,5 @@ export default{
     getGeneros,
     getParentescos,
     getParentescosByGenero,
-    getCategoriasComercioDisponible,
     getCategoriasComercio
 }

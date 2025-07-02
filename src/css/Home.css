@@ -82,14 +82,14 @@ button:focus {
 
 section {
   /* background: #ffffff; */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); */
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 section:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); */
 }
 
 h2 {

@@ -49,18 +49,7 @@ const getParentescosByGeneroDB = async () => {
   }
 }
 
-const getCategoriasComercioDisponibleDB = async ()=>{
-  //let connection;
-  try {
-    //connection = await connectToDatabase();
-    const [rows] = await pool.execute(
-      `SELECT a.id_categoria_comercio, b.nombre_categoria_comercio FROM comercios a JOIN data_categoria_comercio b ON a.id_categoria_comercio = b.id_categoria_comercio WHERE a.activo = 1 GROUP BY a.id_categoria_comercio`
-    );
-    return rows;
-  } finally {
-    //if (connection) connection.end();
-  }
-}
+
 
 const getCategoriasComercioDB = async ()=>{
   //let connection;
@@ -75,4 +64,4 @@ const getCategoriasComercioDB = async ()=>{
   }
 }
 
-export { getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDisponibleDB, getCategoriasComercioDB };
+export { getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDB };

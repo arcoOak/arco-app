@@ -505,6 +505,7 @@ body {
   align-items: center;
   flex-shrink: 0;
   /* Prevents categories from shrinking */
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
 }
 
 .span-categoria i {
@@ -522,7 +523,7 @@ body {
   background-color: #007bff;
   /* Example active color */
   color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  
 }
 
 .search-categoria {

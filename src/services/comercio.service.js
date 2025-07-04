@@ -37,6 +37,8 @@ const getCategoriasComercioActivos = async () => {
   return response.json();
 }
 
+
+
 export default {
     getComercios,
     getComerciosActivos,

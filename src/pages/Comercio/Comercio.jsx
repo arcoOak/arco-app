@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 import './Comercio.css'; // Importa el CSS específico para este componente
 
-import LoadingModal from '../components/modals/LoadingModal';
+import LoadingModal from '../../components/modals/LoadingModal';
 
-import comercioService from '../services/comercio.service'; // Importa el servicio de comercios
+import { useDragToScroll } from '../../hooks/useDragToScroll'; // Importa el hook personalizado para arrastrar y desplazar
 
-import comercioImagePlaceholder from '../assets/comercio_placeholder.avif';
+import comercioService from '../../services/comercio.service'; // Importa el servicio de comercios
+
+import comercioImagePlaceholder from '../../assets/comercio_placeholder.webp';
 
 // Si usas este componente Comercio, la lista 'allBusinesses' DEBE ser pasada como una prop
 export default function Comercio() {
@@ -18,6 +20,8 @@ export default function Comercio() {
 
     const [categoriasActivas, setCategoriasActivas] = useState([]);
     const [comercios, setComercios] = useState([]);
+
+    const { scrollContainerRef, dragHandlers } = useDragToScroll();
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -43,48 +47,10 @@ export default function Comercio() {
             }
         }
         fetchInitialData();
-    }, [])
-    ;
+    }, []);
     const [activeCategory, setActiveCategory] = useState(0); // To highlight the active category
 
     const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
-
-    const scrollContainerRef = useRef(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
-
-    const onMouseDown = (e) => {
-        if (!scrollContainerRef.current) return;
-        setIsDragging(true);
-        e.preventDefault(); // Prevent default behavior to avoid text selection on drag
-        setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-        setScrollLeft(scrollContainerRef.current.scrollLeft);
-        scrollContainerRef.current.style.cursor = 'grabbing';
-    };
-
-    const onMouseLeave = () => {
-        setIsDragging(false);
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.style.cursor = 'grab';
-        }
-    };
-
-    const onMouseUp = () => {
-        setIsDragging(false);
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.style.cursor = 'grab';
-        }
-    };
-
-    const onMouseMove = (e) => {
-        if (!isDragging || !scrollContainerRef.current) return;
-        e.preventDefault();
-        const x = e.pageX - scrollContainerRef.current.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-    };
-    // --- End Drag Scrolling Logic ---
 
     // Función para manejar el clic en "Ver más"
     const handleVerMasClick = (comercioId) => {
@@ -95,6 +61,17 @@ export default function Comercio() {
         console.log('Categoría seleccionada:', categoriaId);
         setActiveCategory(categoriaId);
     };
+
+    // Creamos una lista de categorías para mostrar que incluye "Todos"
+    const displayCategorias = useMemo(() => [
+        {
+            id_categoria_comercio: 0,
+            nombre_categoria_comercio: 'Todos',
+            icon_fa: 'fa-store'
+        },
+        ...categoriasActivas
+    ], [categoriasActivas]);
+
 
 
     // Filtrar negocios basado en la categoría activa y el término de búsqueda
@@ -133,28 +110,20 @@ export default function Comercio() {
                         <div
                             className="categorias"
                             ref={scrollContainerRef}
-                            onMouseDown={onMouseDown}
-                            onMouseLeave={onMouseLeave}
-                            onMouseUp={onMouseUp}
-                            onMouseMove={onMouseMove}
+                            onMouseDown={dragHandlers.onMouseDown}
+                            onMouseLeave={dragHandlers.onMouseLeave}
+                            onMouseUp={dragHandlers.onMouseUp}
+                            onMouseMove={dragHandlers.onMouseMove}
                         >
 
-                        <span
-                                    key={0}
-                                    className={`span-categoria ${activeCategory === 0 ? 'active' : ''}`}
-                                    onClick={() => handleSeleccionarCategoria(0)}
-                                >
-                            <i className={`fa fa-store`}></i> Todos
-                        </span>
-
-                            {categoriasActivas.map((cat) => (
-                                <span
+                        {displayCategorias.map((cat) => (
+                                <button
                                     key={cat.id_categoria_comercio}
                                     className={`span-categoria ${activeCategory === cat.id_categoria_comercio ? 'active' : ''}`}
                                     onClick={() => handleSeleccionarCategoria(cat.id_categoria_comercio)}
                                 >
                                     <i className={`fa ${cat.icon_fa}`}></i> {cat.nombre_categoria_comercio}
-                                </span>
+                                </button>
                             ))}
                         </div>
                         <div className="search-categoria">
@@ -172,16 +141,16 @@ export default function Comercio() {
                         <div className="comercios p-0">
                             {filteredBusinesses.length > 0 ? (
                                 filteredBusinesses.map((comercio) => (
-                                    <div className="comercio-card" key={comercio.id_comercio}>
-                                        <img src={comercio.img} alt={comercio.nombre_comercio} />
+                                    <div className="comercio-card" key={comercio.id_comercio} onClick={() => handleVerMasClick(comercio.id_comercio)}>
+                                        <img src={comercio.img || comercioImagePlaceholder} alt={comercio.nombre_comercio} />
                                         <h3>{comercio.nombre_comercio}</h3>
-                                        <p>{comercio.descripcion_comercio}</p>
-                                        <button
+                                        {/* <p>{comercio.descripcion_comercio}</p> */}
+                                        {/* <button
                                             className="btn btn-primary comercio-card-button"
                                             onClick={() => handleVerMasClick(comercio.id_comercio)}
                                         >
                                             Ver más
-                                        </button>
+                                        </button> */}
                                     </div>
                                 ))
                             ) : (

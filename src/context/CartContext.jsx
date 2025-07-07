@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect ,useContext } from 'react';
+import React, { createContext, useState, useEffect ,useContext, useMemo } from 'react';
 
 
 
@@ -27,6 +27,7 @@ export const CartProvider = ({ children }) => {
     //Guardar los datos del carrito en localStorage cada vez que cambie
     useEffect(() => {
         if(!loading){
+            //console.log('Carrito actualizado:', elementosCarrito);
             localStorage.setItem('carrito', JSON.stringify(elementosCarrito));
         }
     }, [elementosCarrito, loading]);
@@ -69,7 +70,7 @@ export const CartProvider = ({ children }) => {
     const updateCantidad = (productId, valorCambio)=>{
         setElementosCarrito((prevCarrito) => {
         
-            prevCarrito.map((ele) => {
+            return prevCarrito.map((ele) => {
                 if(ele.id_producto === productId) {
                     const nuevaCantidad = ele.cantidad + valorCambio; // Calcular la nueva cantidad
                     if( nuevaCantidad <= 0){
@@ -92,9 +93,17 @@ export const CartProvider = ({ children }) => {
         setElementosCarrito([]); // Limpiar el carrito
         localStorage.removeItem('carrito'); // Eliminar el carrito del localStorage
     }
+
+    const isProductoEnCarrito = (productId) => {
+        return elementosCarrito.some(ele => ele.id_producto === productId);
+    }
+
+    const totalItems = useMemo(() => {
+        return elementosCarrito.reduce((total, item) => total + item.cantidad, 0);
+    }, [elementosCarrito]);
     
     return (
-        <CartContext.Provider value={{ elementosCarrito, addToCarrito, removeFromCarrito, updateCantidad, limpiarCarrito, loading }}>
+        <CartContext.Provider value={{ elementosCarrito, addToCarrito, removeFromCarrito, updateCantidad, limpiarCarrito, isProductoEnCarrito, totalItems,  loading }}>
             {children}
         </CartContext.Provider>
     );

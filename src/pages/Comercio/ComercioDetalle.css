@@ -215,3 +215,21 @@
     font-style: italic;
     padding: 20px 0;
 }
+
+.producto-anadido {
+    font-size: 0.75em;
+    color: #28a745;
+    margin-bottom: 10px;
+    font-weight: 500;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+        scale: 0.95;
+        opacity: 0;
+    }
+    to {
+        scale: 1;
+        opacity: 1;
+    }
+}

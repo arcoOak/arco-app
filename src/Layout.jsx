@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import { useCarrito } from "./context/CartContext";
 import VistaCarrito from "./components/cart/VistaCarrito";
@@ -10,13 +10,8 @@ export default function Layout() {
     const location = useLocation();
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const { elementosCarrito } = useCarrito(); // Obtiene los elementos del carrito desde el contexto
+    const { elementosCarrito, totalItems } = useCarrito(); // Obtiene los elementos del carrito desde el contexto
     const [carritoVisible, setCarritoVisible] = useState(false); // Estado para controlar la visibilidad del carrito
-    const [modalVisible, setModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
-
-    const totalItems = useMemo(() => {
-        return elementosCarrito.reduce((total, item) => total + item.cantidad, 0);
-    }, [elementosCarrito]);
 
     const menuItems = [
         { icon: "bx bxs-home-alt-2", label: "Inicio", path: "/" },
@@ -36,6 +31,9 @@ export default function Layout() {
         <div className="app-container">
             {/* ... Tu barra de navegación superior o inferior ... */}
             <ModalCarrito visible={totalItems > 0} cantidad={totalItems} onPress={() => setCarritoVisible(!carritoVisible)} />
+            {carritoVisible && 
+            (<VistaCarrito onClose={() => setCarritoVisible(false)}></VistaCarrito>)
+            }
 
             <div className="main-content">
                 <Outlet />

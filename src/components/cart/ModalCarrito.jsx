@@ -9,7 +9,7 @@ const ModalCarrito = ({ visible, cantidad, onPress }) => {
     return (
         ( visible &&
         <button className="carrito-flotante" onClick={() => handleClick()}>
-            <i className='fa fa-shopping-cart'></i>
+            <i className="fa-solid fa-bag-shopping"></i>
             <span className="carrito-contador">{cantidad}</span>
         </button>
         )

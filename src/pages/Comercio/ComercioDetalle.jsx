@@ -16,7 +16,7 @@ import aguaPlaceholder from '../../assets/agua.jpg';
 
 import { useCarrito } from '../../context/CartContext';
 
-const ProductoCard = ({ producto, handleAddToCarrito }) => (
+const ProductoCard = ({ producto, handleAddToCarrito, productoEnCarrito }) => (
     <div className="producto-card" key={producto.id_producto}
         style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.4)), url(${hamburguesaPlaceholder || productoImagePlaceholder})`
@@ -29,10 +29,17 @@ const ProductoCard = ({ producto, handleAddToCarrito }) => (
             <p className="producto-description">{producto.descripcion_producto}</p>
             {/* Es buena práctica formatear el precio, por ejemplo, con toFixed(2) */}
             <span className="producto-price">${Number(producto.precio_producto).toFixed(2)}</span>
+
+            {productoEnCarrito && 
+            <span className="producto-anadido">Añadido al Carrito</span>
+            }
+
+            {!productoEnCarrito &&
             <button className="add-to-cart-button" onClick={() => handleAddToCarrito(producto)}>
                 <i className='fa fa-shopping-cart'></i>
                 Añadir al Carrito
             </button>
+            }
         </div>
     </div>
 );
@@ -46,7 +53,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
 
     const [showExitosoModal, setShowExitosoModal] = useState(false); // Estado para manejar el modal de éxito
 
-    const { addToCarrito } = useCarrito(); // Hook para manejar el carrito de compras
+    const { addToCarrito, isProductoEnCarrito } = useCarrito(); // Hook para manejar el carrito de compras
 
     useEffect(() => {
         setLoading(true); // Inicia la carga de datos
@@ -84,8 +91,9 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
         addToCarrito(producto);
         setShowExitosoModal(true); // Muestra el modal de éxito
         setTimeout(() => {
-            setShowExitosoModal(false); // Oculta el modal después de 2 segundos
+            setShowExitosoModal(false); // Oculta el modal después de un tiempo
         }, 2000);
+
     }
 
     if (!comercio) {
@@ -133,7 +141,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                 <div className="productos-grid">
                     { 
                     productos.map(producto => (
-                         <ProductoCard producto={producto} handleAddToCarrito={handleAddToCarrito} key={producto.id_producto} />
+                         <ProductoCard producto={producto} handleAddToCarrito={handleAddToCarrito} key={producto.id_producto} productoEnCarrito={isProductoEnCarrito(producto.id_producto)} />
                     ))
                     }
                     {productos.length === 0 && <p className="no-products">No hay productos disponibles en este momento.</p>} 

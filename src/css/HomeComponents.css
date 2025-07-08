@@ -1,0 +1,325 @@
+:root {
+    /* Colors */
+    --bg-dark: #1a1a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+    --text-dark: #292929;
+
+    --card-gradient-start: #12182b;
+    /* Adjust based on image */
+    --card-gradient-end: #00ccff;
+    /* Adjust based on image */
+    --card-brown-start: #12182b;
+    /* Adjust based on image */
+    --card-brown-end: #8a5a4a;
+    /* Adjust based on image */
+    --button-orange: #ff6f00;
+    --divider-color: #333333;
+
+    /* Font Sizes */
+    --font-size-lg: 1.5rem;
+    --font-size-md: 1rem;
+    --font-size-sm: 0.8rem;
+
+    /* Spacing */
+    --spacing-lg: 20px;
+    --spacing-md: 15px;
+    --spacing-sm: 10px;
+
+    /* Border Radius */
+    --border-radius-lg: 20px;
+    --border-radius-md: 10px;
+    --border-radius-sm: 5px;
+}
+
+.welcome-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.user-name {
+    font-size: var(--font-size-md);
+    font-weight: bold;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+}
+
+.icon-button:hover {
+    background: transparent !important;
+}
+
+.icon-button i {
+    color: var(--text-dark) !important;
+}
+
+
+/* Avatar */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    /* Fallback */
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Cards */
+
+.card-container {
+    width: 100%;
+    height: 240px;
+}
+
+.card {
+    width: 90%;
+    /* Adjust as needed */
+    max-width: 320px;
+    /* Max width for cards */
+    height: 180px;
+    /* Fixed height for consistency */
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    /* For the overlapping effect */
+    top: 100px;
+    /* Adjust based on header height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.blue-card {
+    background: linear-gradient(135deg, var(--card-gradient-start), var(--card-gradient-end));
+    z-index: 3;
+    /* Bring forward */
+}
+
+.brown-card {
+    background: linear-gradient(135deg, var(--card-brown-start), var(--card-brown-end));
+    top: 130px;
+    /* Offset for the overlapping card */
+    left: calc(50% + 40px);
+    /* Move slightly to the right */
+    transform: translateX(-50%) rotate(5deg);
+    /* Slight rotation */
+    z-index: 1;
+    /* Send backward */
+    opacity: 0.9;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-balance-label {
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+}
+
+.card-icons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.card-icons i {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.card-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ff4500;
+    /* Orange/red dot */
+}
+
+.card-balance {
+    font-size: 2.5rem;
+    /* Large balance number */
+    font-weight: bold;
+}
+
+.card-balance .currency {
+    font-size: 1.5rem;
+    margin-right: 5px;
+}
+
+.card-number {
+    font-size: var(--font-size-md);
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* Transactions Section */
+.transactions-section {
+    flex-grow: 1;
+    /* Occupy remaining space */
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    padding-top: 20px;
+    /* Space for the cards to overlap */
+    /* Push content down to start below cards */
+    position: relative;
+    z-index: 4;
+    /* Ensure it's above cards */
+    overflow-y: auto;
+    border: solid 2px var(--divider-color);
+    /* Enable scrolling for transactions */
+}
+
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+.transactions-title {
+    font-size: var(--font-size-lg);
+    margin: 0;
+}
+
+.transactions-controls .icon-button {
+    font-size: 1rem;
+    color: var(--text-dark) !important;
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    border-radius: var(--border-radius-md);
+    background-color: #333;
+    /* Dark background for the icon */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.transaction-icon {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.transaction-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.transaction-title {
+    color: var(--text-dark);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+}
+
+.transaction-time {
+    color: var(--text-dark);
+    font-size: var(--font-size-sm);
+}
+
+.transaction-amount {
+    font-size: var(--font-size-md);
+    font-weight: bold;
+    margin-left: var(--spacing-md);
+    flex-shrink: 0;
+    /* Prevent it from shrinking */
+}
+
+.amount-debit {
+    color: var(--text-dark);
+}
+
+.amount-credit {
+    color: #348938;
+    /* Green for positive amounts */
+}
+
+/* Navigation */
+.navigation {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--bg-dark);
+    padding: var(--spacing-md) 0;
+    border-top: 1px solid var(--divider-color);
+    z-index: 5;
+    /* Ensure it's on top */
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-item-active {
+    background-color: var(--button-orange);
+    color: var(--text-primary);
+    padding: var(--spacing-md);
+    /* Make active button larger */
+    border-radius: var(--border-radius-md);
+    transform: translateY(-5px);
+    /* Slight lift */
+}
+
+.nav-item:hover {
+    color: var(--text-primary);
+}

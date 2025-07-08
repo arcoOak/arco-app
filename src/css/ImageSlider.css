@@ -18,6 +18,11 @@
     /* Limita el ancho en pantallas grandes */
 }
 
+.cardTitle{
+    display: flex;
+
+}
+
 .slide {
     user-select: none;
     display: block;
@@ -65,12 +70,12 @@
 /* Media Queries para Responsividad */
 @media (max-width: 480px) {
     .container {
-        height: 250px;
+        height: 230px;
         /* Ajusta la altura del contenedor en móviles */
     }
 
     .slide {
-        min-height: 200px;
+        min-height: 180px;
         /* Ajusta la altura mínima de las tarjetas en móviles */
     }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/Login.css'; // Asegúrate de tener un archivo CSS para los estilos
+import Preloader from './components/Preloader';
 
 import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
 
@@ -10,6 +11,7 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showPostLoginPreloader, setShowPostLoginPreloader] = useState(false); // Nuevo estado para el preloader post-login
     const navigate = useNavigate();
 
     const { user, login, logout, isAuthenticated, loading } = useAuth();
@@ -44,7 +46,10 @@ export default function Login() {
 
     return (
         <>
-            <div className="login-page">
+
+            {showPostLoginPreloader && <Preloader />} {/* Muestra el preloader si showPostLoginPreloader es true */}
+
+            <div className="login-page"  style={{ display: showPostLoginPreloader ? 'none' : 'block' }}>
                 <div className="login-card">
                     <img src="./src/img/logo.png" alt="logo" />
 

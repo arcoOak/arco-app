@@ -1,0 +1,131 @@
+.trainer-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    /* Alinea "Recent News" y "See All" */
+    padding: 0;
+    /* Padding horizontal para el encabezado */
+    margin-bottom: 20px;
+}
+
+.trainer-section__title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.trainer-section__see-all {
+    font-size: .9em;
+    color: #007bff;
+    /* Un azul para el enlace, como en iOS */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.trainer-section__see-all:hover {
+    text-decoration: none;
+}
+
+.trainer-section__carousel {
+    /* Propiedades clave para el scroll horizontal */
+    display: flex;
+    cursor: grab;
+    overflow-x: scroll;
+    /* ¡Esta es la que habilita el scroll! */
+    -webkit-overflow-scrolling: touch;
+    /* Mejora la experiencia en iOS */
+    scroll-snap-type: x mandatory;
+    /* Opcional: Para que los ítems se "enganchen" al parar el scroll */
+    padding: 0 20px 20px 20px;
+    /* Padding horizontal para que las tarjetas no se peguen a los bordes */
+    /* El padding-bottom es para la sombra si es que sale */
+    gap: 15px;
+    /* Espacio entre las tarjetas. ¡Más moderno que margin-right en cada item! */
+
+    /* Ocultar la barra de scroll (solo visualmente, el scroll sigue funcionando) */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+.trainer-section__carousel::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.trainer-card {
+    background-color: white;
+    border-radius: 12px;
+    /* ¡Crucial! Evita que las tarjetas se encojan */
+    /* Bordes redondeados de la tarjeta */
+    overflow: hidden;
+    /* Para que la imagen se recorte si es más grande que el contenedor con el border-radius */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    /* Sombra sutil como en el ejemplo */
+    margin-right: 15px;
+    /* Espacio entre las tarjetas en el scroll horizontal */
+    flex-shrink: 0;
+    /* Evita que las tarjetas se encojan en un contenedor flex */
+    width: 325px;
+    /* Ancho fijo para cada tarjeta, ajusta según necesites */
+    height: auto;
+    /* La altura se ajustará al contenido */
+    display: flex;
+    scroll-snap-align: start;
+    /* Espacio debajo del texto */
+}
+
+.trainer-card__image-container {
+    border-radius: 12px;
+    width: 40%;
+    padding: .7rem;
+    /* Mismos bordes redondeados que la tarjeta */
+}
+
+.trainer-card__image {
+    width: 100px;
+    height: 109px;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+}
+
+.trainer-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 70%;
+    padding: 1rem 1rem 1rem 0;
+}
+
+.trainer-card__category {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    text-align: left;
+    color: #606060;
+    font-weight: 600;
+}
+
+.trainer-card__title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.trainer-card__title h1 {
+    font-size: 1em;
+    font-weight: 600;
+    /* Ligeramente en negrita */
+    color: #333;
+    /* Color oscuro para el título */
+    margin: 0 20px;
+    /* Margen interno para el título */
+    line-height: 1.3;
+    text-align: left;
+}
+
+.trainer-price {
+    display: flex;
+    justify-content: space-between;
+}

@@ -8,31 +8,17 @@ const ImageSlider = () => {
     const cardData = [
         {
             id: 'card_1',
-            cardNumber: '1234567878944561',
-            cardHolder: 'Johny Roria',
-            bankName: 'BANK NAME',
-            expiryDate: '00/00',
-            color: 'credit-card--green',
+            cardNumber: '4561',
+            saldo: '4860.5',
+            color: 'credit-card--blue',
             iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
             iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png', // URL para el logo de Visa
         },
         {
             id: 'card_2',
-            cardNumber: '4561234578941234',
-            cardHolder: 'Johny Roria',
-            bankName: 'GLOBAL BANK',
-            expiryDate: '01/25',
-            color: 'credit-card--blue',
-            iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
-            iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png',
-        },
-        {
-            id: 'card_3',
-            cardNumber: '7894123445615678',
-            cardHolder: 'Johny Roria',
-            bankName: 'CITY BANK',
-            expiryDate: '02/26',
-            color: 'credit-card--purple',
+            cardNumber: '1234',
+            saldo: '600',
+            color: 'credit-card--brown',
             iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
             iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png',
         },
@@ -106,6 +92,8 @@ const ImageSlider = () => {
     };
 
     return (
+
+
         <div className="container">
             {slides.map(slide => (
                 <div
@@ -123,9 +111,7 @@ const ImageSlider = () => {
                     {/* Aquí renderizamos el componente CreditCard en lugar de la imagen de fondo */}
                     <CreditCard
                         cardNumber={slide.cardNumber}
-                        cardHolder={slide.cardHolder}
-                        bankName={slide.bankName}
-                        expiryDate={slide.expiryDate}
+                        saldo={slide.saldo}
                         cardColorClass={slide.color}
                         iconChip={slide.iconChip}
                         iconVisa={slide.iconVisa}

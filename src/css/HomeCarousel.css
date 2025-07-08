@@ -2,7 +2,7 @@
 
 
 .app-container {
-    /* background-color: white; */
+    background-color: #f4f7fc;
     width: 100%;
     max-width: 400px;
     /* Max width for mobile-like appearance */
@@ -14,7 +14,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px 20px 5px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
 }
@@ -22,7 +22,7 @@
 .header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px !important;
     flex-direction: column;
 }
 
@@ -223,10 +223,11 @@
 }
 
 .action-item {
-    background-color: #ececec;
+    background-color: #fff;
     border-radius: 15px;
     padding: 15px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -241,7 +242,7 @@
 }
 
 .action-icon-wrapper {
-    background-color: #eef2ff;
+    background-color: #b4c8ff;
     /* Very light blue */
     border-radius: 50%;
     padding: 10px;

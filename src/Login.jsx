@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/Login.css'; // Asegúrate de tener un archivo CSS para los estilos
+import Preloader from './components/Preloader';
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showPostLoginPreloader, setShowPostLoginPreloader] = useState(false); // Nuevo estado para el preloader post-login
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -14,8 +16,14 @@ export default function Login({ onLogin }) {
 
         // Lógica de autenticación simple (sustituir con una API real)
         if (username === 'usuario' && password === 'contrasena') {
-            onLogin(); // Llama a la función de login pasada desde App.jsx
-            navigate('/'); // Redirige a la página de comercios después del login
+            setShowPostLoginPreloader(true); // Mostrar el preloader
+
+            // Simula un retardo para la carga (ej. llamada a una API)
+            setTimeout(() => {
+                onLogin(); // Llama a la función de login pasada desde App.jsx
+                setShowPostLoginPreloader(false); // Ocultar el preloader después de la "carga"
+                navigate('/'); // Redirige a la página de comercios después del login
+            }, 1500); // Muestra el preloader por 1.5 segundos (ajusta el tiempo según necesites)
         } else {
             setError('Usuario o contraseña incorrectos.');
         }
@@ -23,7 +31,10 @@ export default function Login({ onLogin }) {
 
     return (
         <>
-            <div className="login-page">
+
+            {showPostLoginPreloader && <Preloader />} {/* Muestra el preloader si showPostLoginPreloader es true */}
+
+            <div className="login-page"  style={{ display: showPostLoginPreloader ? 'none' : 'block' }}>
                 <div className="login-card">
                     <img src="./src/img/logo.png" alt="logo" />
 

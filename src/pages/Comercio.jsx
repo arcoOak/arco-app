@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../css/Comercio.css'; // Asegúrate de importar tu CSS principal
 // import './your-component-styles.css'; // Asegúrate de importar tu CSS principal
 
 // Si usas este componente Comercio, la lista 'allBusinesses' DEBE ser pasada como una prop

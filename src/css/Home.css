@@ -64,32 +64,49 @@ button:focus {
   padding: 0 1.6rem;
 }
 
+.titleNotification {
+  width: 40px;
+  border: solid 1px #d3d8de;
+  border-radius: 10px;
+}
+
 .titleHome img {
   width: 50px;
   height: 50px;
   border-radius: 15px;
 }
 
-.titleHome i{
+.titleHome i {
   font-size: 24px;
 }
 
-.titleHomeSide{
+.notification {
+  width: 7px;
+  height: 7px;
+  background-color: red;
+  border-radius: 50%;
+  position: relative;
+  left: 21px;
+  top: 9px;
+}
+
+.titleHomeSide {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
+.titleHomeSide {
+  font-size: 13px;
+  color: #4f4f4f;
+}
+
 section {
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 section:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 h2 {
@@ -205,6 +222,10 @@ ul li {
   color: #2d3436;
 }
 
+.dues-section{
+  padding: 2rem;
+
+}
 
 .news-card {
   background-color: white;
@@ -219,7 +240,7 @@ ul li {
   /* Espacio entre las tarjetas en el scroll horizontal */
   flex-shrink: 0;
   /* Evita que las tarjetas se encojan en un contenedor flex */
-  width: 280px;
+  width: 325px;
   /* Ancho fijo para cada tarjeta, ajusta según necesites */
   height: auto;
   /* La altura se ajustará al contenido */
@@ -277,7 +298,8 @@ ul li {
 /* src/components/NewsSection.css */
 
 .news-section-container {
-  padding: 20px 20px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   /* Padding superior e inferior para la sección */
   /* Fondo ligero para la sección, si difiere del body */
 }
@@ -354,4 +376,20 @@ ul li {
 
 .payment_action button i {
   font-size: 2.2em;
+}
+
+.addCard {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.addCard label {
+  margin-left: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.addCard i {
+  font-size: 13px;
 }

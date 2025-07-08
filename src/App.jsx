@@ -4,20 +4,25 @@ import React from "react";
 import "./css/App.css"; // Ensure you have the CSS file for styles
 import Layout from "./Layout";
 import Home from "./pages/Home";
-import MonthlyOverview from "./components/MonthlyOverview";
+import Notifications from "./components/Notifications";
 import PaymentDetail from './components/PaymentDetail';
 import Perfil from "./pages/Perfil";
 import EditProfileScreen from "./components/EditProfileScreen"; // Asegúrate de que la ruta sea correcta
 import FamilyMembersListScreen from './components/FamilyMembersListScreen'; // Importa el nuevo componente
 import Reservas from "./pages/Reserva";
-import ReservaUnidad from "./pages/ReservaUnidad";
+import ReservaDetalle from "./components/ReservaDetalle"; // Asegúrate de que la ruta sea correcta
+//import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 import ComercioDetalle from './components/ComercioDetalle';
 import Qr from "./pages/Lectura";
 import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
 import Login from "./login"; // Importa tu componente de Login
+import Preloader from "./components/Preloader"; // Importa el componente Preloader
 
 function App() {
+
+    // Estado para controlar la visibilidad del preloader inicial
+    const [showInitialPreloader, setShowInitialPreloader] = useState(true);
 
     // Estado de autenticación
     // Usamos localStorage para persistir el estado de login
@@ -25,6 +30,14 @@ function App() {
         const storedAuth = localStorage.getItem('isAuthenticated');
         return storedAuth === 'true'; // Convertir el string a boolean
     });
+
+    // Efecto para ocultar el preloader inicial después de un tiempo
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowInitialPreloader(false);
+        }, 2000); // Muestra el preloader por 2 segundos (ajusta el tiempo según necesites)
+        return () => clearTimeout(timer); // Limpia el temporizador al desmontar
+    }, []);
 
     // Efecto para guardar el estado de autenticación en localStorage
     useEffect(() => {
@@ -43,6 +56,16 @@ function App() {
         // navigate('/login'); // No se puede usar useNavigate directamente aquí
         // Se usaría en un componente hijo que llame a handleLogout
     };
+
+    // ESTA es la ÚNICA declaración de allBusinesses
+    const concesionarios = [
+        { id: 1, category: 'Deportes', name: 'Tenis', description: 'Cancha de Tenis', img: './src/img/reservas/tenis.jpg' },
+        { id: 2, category: 'Deportes', name: 'Padel', description: 'Cancha de Padel', img: './src/img/reservas/padel.jpg' },
+        { id: 3, category: 'Deportes', name: 'Fútbol Sala', description: 'Cancha de Fútbol Sala', img: './src/img/reservas/futbol-sala.jpg' },
+        { id: 4, category: 'Deportes', name: 'Fútbol Campo', description: 'Cancha de Fútbol Campo', img: './src/img/reservas/futbol-campo.jpg' },
+        { id: 5, category: 'Espacios', name: 'Salón de Fiestas', description: 'Salón de Eventos', img: './src/img/reservas/kfc.png' },
+        { id: 6, category: 'Parilleras', name: 'Parrillera', description: 'Parrillera de Carbón', img: 'src/img/reservas/parrillera.jpg' },
+    ];
 
     // ESTA es la ÚNICA declaración de allBusinesses
     const allBusinessesData = [
@@ -101,13 +124,14 @@ function App() {
                     {/* El Layout ahora se aplicará solo a las rutas autenticadas */}
                     <Route element={<Layout onLogout={handleLogout} />}>
                         <Route path="/" element={<Home />} />
-                        <Route path="/monthly-overview" element={<MonthlyOverview />} />
+                        <Route path="/notifications" element={<Notifications />} />
                         <Route path="/payment-detail/:id" element={<PaymentDetail />} />
                         <Route path="/perfil" element={<Perfil />} />
                         <Route path="/edit-profile" element={<EditProfileScreen user={currentUser} onUpdateUser={handleUpdateUser} />} />
                         <Route path="/beneficiaries" element={<FamilyMembersListScreen userId={currentUser.id} />} />
-                        <Route path="/reservas" element={<Reservas />} />
-                        <Route path="/reservas/:id" element={<ReservaUnidad />} />
+                        <Route path="/reservas" element={<Reservas concesionarios={concesionarios} />} />
+                        <Route path="/reserva/:id" element={<ReservaDetalle concesionarios={concesionarios} />} />
+                        {/* <Route path="/reservas/:id" element={<ReservaUnidad />} /> */}
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />
                         {/* CORRECCIÓN: Añadir '/' antes de :id */}
                         <Route path="/comercio/:id" element={<ComercioDetalle allBusinesses={allBusinessesData} />} />

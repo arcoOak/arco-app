@@ -1,0 +1,172 @@
+/* Dashboard.css */
+
+.dashboard-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px 20px 0;
+    border-radius: 20px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.dashboard-header h2 {
+    margin: 4px 0 0;
+    font-size: 1.5rem;
+}
+
+.icon {
+    font-size: 1.4rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.balance-section {
+    background-color: transparent;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px 20px 0;
+    margin-bottom: 24px;
+}
+
+.balance-header {
+    text-align: left;
+}
+
+.balance-amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 2rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.balance-actions {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.balance-button {
+    display: flex;
+    justify-content: space-around;
+}
+
+.balance-label {
+    display: flex;
+}
+
+.balance-label label {
+    width: 50%;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.balance-actions button {
+    width: 55px;
+    height: 55px;
+    margin: 6px 0;
+    background-color: #4070f4;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.balance-actions button i {
+    font-size: 24px;
+}
+
+.balance-actions button:hover {
+    background-color: #d0e4ff;
+}
+
+.investments-section {
+    padding: 0 1.4rem;
+}
+
+.investments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.investments-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.view-all {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 10px 0;
+    margin: 0;
+}
+
+.investments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.investments-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+    font-size: 0.95rem;
+}
+
+.investments-list li:last-child {
+    border-bottom: none;
+}
+
+.positive {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.negative {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.balance-text {
+    display: inline-block;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.balance-text.hidden {
+    opacity: 1;
+    transform: scale(0.95);
+}
+
+.balance-text.visible {
+    opacity: 1;
+    transform: scale(1);
+}

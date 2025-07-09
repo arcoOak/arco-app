@@ -1,5 +1,13 @@
 /* src/components/CreditCard.css */
 
+:root {
+    --card-gradient-start: #006ac7;
+    --card-gradient-end: #00ccff;
+
+    --card-brown-start: #5a3a2a;
+    --card-brown-end: #8a5a4a;
+}
+
 .credit-card {
     width: 100%;
     height: 100%;
@@ -27,14 +35,40 @@
 }
 
 .credit-card--blue {
-    background-image: linear-gradient(135deg, #2196F3, #1976D2);
+    background: linear-gradient(116deg, #4070f4, #00081e);
     /* Azul */
 }
 
-.credit-card--purple {
-    background-image: linear-gradient(135deg, #9C27B0, #7B1FA2);
-    /* Púrpura */
+.credit-card--blue::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: rotate(45deg);
 }
+
+.credit-card--brown {
+    /* background: linear-gradient(135deg, var(--card-brown-start), var(--card-brown-end)); */
+    background: linear-gradient(135deg, #4b0082 0%, #8A2BE2 100%)
+}
+
+.credit-card--brown::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: rotate(45deg);
+}
+
+
 
 .credit-card--orange {
     background-image: linear-gradient(135deg, #FF9800, #F57C00);
@@ -65,20 +99,17 @@
 }
 
 .credit-card__number {
-    font-size: 1.8em;
-    /* Tamaño del número de tarjeta */
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-align: center;
-    margin-top: 15px;
-    /* Espacio debajo del chip */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    font-weight: 500;
+    font-size: 2em;
 }
 
 .credit-card__bottom {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    font-size: 1.3em;
+
     /* Alinea los elementos a la parte inferior */
 }
 
@@ -116,11 +147,6 @@
 
     .credit-card__bank-name {
         font-size: 1.1em;
-    }
-
-    .credit-card__number {
-        font-size: 1.5em;
-        letter-spacing: 1px;
     }
 
     .credit-card__chip {

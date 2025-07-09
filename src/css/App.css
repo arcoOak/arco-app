@@ -612,4 +612,24 @@ body {
 .comercio-card .btn:hover {
   background-color: #0056b3;
   transform: translateY(-2px);
+
+}
+.qr-code-box .img {
+  width: 150px;
+  height: 150px;
+  margin-top: -130px;
+}
+
+.img-qr {
+  width: 290px;
+  height: 290px;
+}
+
+.p-0{
+  padding: 0 !important;
+}
+
+.qr-image {
+  width: 200px;
+  height: 200px;
 }

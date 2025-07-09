@@ -34,16 +34,13 @@ const HistoryItem = ({ category, time, amount, iconType, statPay }) => {
                 <p className="history-item__time">{time}</p>
             </div>
             <div>
-                <p className="history-item__amount">
-                    {amount < 0 ? `- $${Math.abs(amount).toFixed(2)}` : `$${amount.toFixed(2)}`}
-                </p>
                 {statPay === 'debth' ? (
-                    <p className="history-item__status" style={{ color: 'red' }}>
-                        Pendiente
+                    <p className="history-item__amount">
+                        {amount < 0 ? `- $${Math.abs(amount).toFixed(2)}` : `$${amount.toFixed(2)}`}
                     </p>
                 ) : (
-                    <p className="history-item__status" style={{ color: 'green' }}>
-                        Pagado
+                    <p className="history-item__amount" style={{ color: 'green' }}>
+                        + {amount < 0 ? `- $${Math.abs(amount).toFixed(2)}` : `$${amount.toFixed(2)}`}
                     </p>
                 )}
                 {/* <label>5 Entradas por adelantar</label> */}

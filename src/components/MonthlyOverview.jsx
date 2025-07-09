@@ -51,31 +51,36 @@ const MonthlyOverview = () => {
     return (
         <div className="monthly-overview-container">
             {/* Sección Superior Oscura */}
-            <div className="overview-header">
-                <h3 className="overview-header__title">Saldo Actual</h3>
-                <span className="overview-header__total-pending">${totalPending.toLocaleString()}</span>
+             <div className="overview-header">
+                <i className="fa fa-chevron-up"></i>
             </div>
 
             {/* Recuadro Blanco del Monto del Mes Actual */}
-            <div className="current-month-card">
+            {/* <div className="current-month-card">
                 <p className="current-month-card__label">Junio</p>
                 <p className="current-month-card__amount">${currentMonthDue.toFixed(2)}</p>
-            </div>
+            </div> */}
 
             {/* Pestañas de Historial/Estadísticas */}
             <div className="tabs-navigation">
-                <button
-                    className={`tab-button ${activeTab === 'History' ? 'tab-button--active' : ''}`}
-                    onClick={() => setActiveTab('History')}
-                >
-                    Resúmen
-                </button>
-                <button
-                    className={`tab-button ${activeTab === 'Statistics' ? 'tab-button--active' : ''}`}
-                    onClick={() => setActiveTab('Statistics')}
-                >
-                    Historial
-                </button>
+                <div>
+                    <button
+                        className={`tab-button ${activeTab === 'History' ? 'tab-button--active' : ''}`}
+                        onClick={() => setActiveTab('History')}
+                    >
+                        Resúmen
+                    </button>
+                    <button
+                        className={`tab-button ${activeTab === 'Statistics' ? 'tab-button--active' : ''}`}
+                        onClick={() => setActiveTab('Statistics')}
+                    >
+                        Transacciones
+                    </button>
+                </div>
+                <div>
+                    <button className="icon-button"><i className="fa fa-search"></i></button>
+                    <button className="icon-button"><i className="fa fa-sliders-h"></i></button>
+                </div>
             </div>
 
             {/* Contenido del Historial (o Estadísticas) */}
@@ -125,9 +130,9 @@ const MonthlyOverview = () => {
                 you'd adjust `handleViewDetails` logic.
                 Here, I'm making it navigate to the first item's detail as an example.
             */}
-            {activeTab === 'History' && (
+            {/* {activeTab === 'History' && (
                 <button className="view-details-button" onClick={handleViewDetails}>Ver más detalle</button>
-            )}
+            )} */}
             {/* Placeholder para estadísticas si no hay datos */}
         </div>
     );

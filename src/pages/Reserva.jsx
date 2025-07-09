@@ -1,116 +1,144 @@
-import React, {useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // <-- Agrega esta línea
-import './Reserva.css'; // Asegúrate de tener un archivo CSS para estilos
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../css/Reserva.css'; // Asegúrate de importar tu CSS principal
 
-import ButtonsRow from '../components/buttons/ButtonsRow'; // Asegúrate de que la ruta sea correcta
-
-
-const limitarLetras = (texto, limite) => {
-    if (texto.length > limite) {
-        return texto.substring(0, limite) + '...';
-    }
-    return texto;
-}
-
-
-const Reserva = () => {
+export default function Reserva({ concesionarios }) {
     const navigate = useNavigate();
 
-    const [reservas, setReservas] = useState([
-        { 
-            id_espacio: 1, 
-            nombre_espacio: "Reserva 1", 
-            descripcion: "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            capacidad: 10,
-            costo: 50,
-            categoria: 1,
-            src: 'src/assets/field.webp'
-         },
-        { 
-            id_espacio: 2, 
-            nombre_espacio: "Reserva 2", 
-            descripcion: "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            capacidad: 20,
-            costo: 100,
-            categoria: 2,
-            src: 'src/assets/field.webp'
-         },
-         { 
-            id_espacio: 3, 
-            nombre_espacio: "Reserva 3", 
-            descripcion: "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            capacidad: 5,
-            costo: 30,
-            categoria: 1,
-            src: 'src/assets/field.webp'
-         },
-    ]);
+    // State for categories
+    const initialCategories = [
+        { name: 'Deportes', icon: 'bx-tennis-ball' },
+        { name: 'Espacios', icon: 'bx-party' },
+        { name: 'Parilleras', icon: 'bx-meat' },
+    ];
+    const [categories, setCategories] = useState(initialCategories);
+    const [activeCategory, setActiveCategory] = useState('Deportes'); // To highlight the active category
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
 
-    const [categoriasReservas, setCategoriasReservas] = useState([
-        { id: 1, nombre: "Deportes" },
-        { id: 2, nombre: "Eventos" },
-        { id: 3, nombre: "Reuniones" },
-    ])
+    // --- Drag Scrolling Logic for Categories ---
+    const scrollContainerRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
 
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+    const onMouseDown = (e) => {
+        if (!scrollContainerRef.current) return;
+        setIsDragging(true);
+        e.preventDefault(); // Prevent default behavior to avoid text selection on drag
+        setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+        setScrollLeft(scrollContainerRef.current.scrollLeft);
+        scrollContainerRef.current.style.cursor = 'grabbing';
+    };
 
+    const onMouseLeave = () => {
+        setIsDragging(false);
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.style.cursor = 'grab';
+        }
+    };
 
-    const buttons = categoriasReservas.map(categoria => ({
-        label: categoria.nombre,
-        onClick: () => {
-            setCategoriaSeleccionada(categoria.id);
-        },  
-        className: categoriaSeleccionada === categoria.id ? 'active' : ''
-    }))
+    const onMouseUp = () => {
+        setIsDragging(false);
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.style.cursor = 'grab';
+        }
+    };
 
-    const reservasFiltradas = categoriaSeleccionada
-        ? reservas.filter(r => r.categoria === categoriaSeleccionada)
-        : reservas;
+    const onMouseMove = (e) => {
+        if (!isDragging || !scrollContainerRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - scrollContainerRef.current.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+    };
+    // --- End Drag Scrolling Logic ---
 
-    
+    // Función para manejar el clic en "Ver más"
+    const handleVerMasClick = (reservaId) => {
+        navigate(`/reserva/${reservaId}`);
+    };
+
+    // Filtrar negocios basado en la categoría activa y el término de búsqueda
+    const [filteredReservas, setfilteredReservas] = useState([]);
+
+    useEffect(() => {
+        // Asegúrate de que concesionarios no sea undefined o null antes de filtrar
+        if (!concesionarios) {
+            setfilteredReservas([]);
+            return;
+        }
+
+        const businessesByCategory = concesionarios.filter(
+            (business) => business.category === activeCategory
+        );
+
+        const finalFiltered = businessesByCategory.filter(business =>
+            business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            business.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setfilteredReservas(finalFiltered);
+    }, [activeCategory, searchTerm, concesionarios]);
+
     return (
-        <div className="page-container">
-            <h2 className="page-title">Reservas</h2>
-            <p>Aquí puedes ver o gestionar tus reservas.</p>
-
-            <ButtonsRow buttons={buttons} />
-
-            <div className="espacios_lista">
-                {reservasFiltradas.length === 0 && (
-                    <p>No hay reservas para esta categoría.</p>
-                )}
-                {reservasFiltradas.map((reserva, idx) => (
-                    <Link 
-                        to={`/reservas/${reserva.id_espacio}`}
-                        key={reserva.id_espacio}
-                    >
-
-                    <div 
-                        className='espacios_lista_item' 
-                        key={reserva.id_espacio}
-                        style={{ animationDelay: `${idx * 0.05}s` }}
-                    >
-                        <div style={{ backgroundImage: `url(${reserva.src})` }} className='espacios_lista_item_image'>
-                            <h3 className='espacios_lista_item_title'>
-                                {reserva.nombre_espacio}
-                            </h3>
+        <section>
+            <h2 className='mb-2 mt-2'>Reservas</h2>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-12 p-0">
+                        <div
+                            className="categorias"
+                            ref={scrollContainerRef}
+                            onMouseDown={onMouseDown}
+                            onMouseLeave={onMouseLeave}
+                            onMouseUp={onMouseUp}
+                            onMouseMove={onMouseMove}
+                        >
+                            {categories.map((cat) => (
+                                <span
+                                    key={cat.name}
+                                    className={`span-categoria ${activeCategory === cat.name ? 'active' : ''}`}
+                                    onClick={() => setActiveCategory(cat.name)}
+                                >
+                                    <i className={`bx ${cat.icon}`}></i> {cat.name}
+                                </span>
+                            ))}
                         </div>
-
-                        <div className='espacios_lista_item_content'>
-                            <p className='espacios_lista_item_description'>
-                                {limitarLetras(reserva.descripcion, 50)}
-                            </p>
-                            <p className='espacios_lista_item_capacity'>
-                                <b>Capacidad:</b> {reserva.capacidad} {reserva.capacidad === 1 ? 'persona' : 'personas'}
-                            </p>
+                        <div className="search-categoria">
+                            <button>
+                                <i className='bx bx-search-big'></i>
+                            </button>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Busca el espacio que necesitas"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <div className="comercios p-0">
+                            {filteredReservas.length > 0 ? (
+                                filteredReservas.map((reserva) => (
+                                    <div className="reserva-card" key={reserva.id}>
+                                        <img src={reserva.img} alt={reserva.name} />
+                                        <h3>{reserva.name}</h3>
+                                        <p>{reserva.description}</p>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleVerMasClick(reserva.id)}
+                                        >
+                                            Ver más
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <p style={{ textAlign: 'center', gridColumn: '1 / -1', color: '#777' }}>
+                                    No se encontraron tiendas para esta búsqueda o categoría.
+                                </p>
+                            )}
                         </div>
                     </div>
-                    </Link>
-                ))
-                }
+                </div>
             </div>
-        </div>
+        </section >
     );
 }
-
-export default Reserva;

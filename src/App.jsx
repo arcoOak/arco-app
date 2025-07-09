@@ -14,7 +14,7 @@ import Reservas from "./pages/Reserva";
 import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 import ComercioDetalle from './pages/Comercio/ComercioDetalle';
-import Qr from "./pages/Lectura";
+import LecturaQr from "./pages/LecturaQr";
 import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
 
 import Login from "./Login"; // Importa el componente de Login
@@ -55,7 +55,7 @@ function App() {
                         <Route path="/reservas/:id" element={<ReservaUnidad />} />
                         <Route path="/comercios" element={<Comercios  />} />
                         <Route path="/comercio/:id" element={<ComercioDetalle  />} />
-                        <Route path="/qr" element={<Qr />} />
+                        <Route path="/qr" element={<LecturaQr />} />
                     </Route>
                 </Route>
 

@@ -425,34 +425,7 @@ body {
   border-bottom: 1px solid #ddd;
 }
 
-.qr-code-box {
-  margin-top: 5rem;
-  text-align: center;
-  width: 100%;
-  background-color: white;
-  border-radius: 15px;
-  padding: 5rem 1rem 3rem;
-}
 
-.qr-code-box .img {
-  width: 150px;
-  height: 150px;
-  margin-top: -130px;
-}
-
-.img-qr {
-  width: 290px;
-  height: 290px;
-}
-
-.p-0{
-  padding: 0 !important;
-}
-
-.qr-image {
-  width: 200px;
-  height: 200px;
-}
 
 /* comercios */
 .categorias {

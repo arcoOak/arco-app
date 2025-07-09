@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/Reserva.css'; // Asegúrate de importar tu CSS principal
+import './Reserva.css'; // Asegúrate de importar tu CSS principal
 
 export default function Reserva({ concesionarios }) {
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ export default function Reserva({ concesionarios }) {
 
     // Función para manejar el clic en "Ver más"
     const handleVerMasClick = (reservaId) => {
-        navigate(`/reserva/${reservaId}`);
+        navigate(`/reservas/${reservaId}`);
     };
 
     // Filtrar negocios basado en la categoría activa y el término de búsqueda

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useState, useEffect } from 'react';
-import '../css/BookingTable.css'; // Crea un archivo CSS para este componente
+import './ReservaDetalle.css'; // Crea un archivo CSS para este componente
 
 const reservaProducts = [
     { id: 1, name: 'Hamburguesa Clásica', description: 'La original con queso y lechuga.', price: 'Bs. 550', img: '../src/img/productos/hamburguesa.jpg' },

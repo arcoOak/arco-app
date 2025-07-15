@@ -19,7 +19,8 @@ async function getAllSocios(req, res) {
 
 async function getSocioById(req, res) {
   try {
-    const socio = await getSocioByIdDB(req.params.id);
+    const { id } = req.params;
+    const socio = await getSocioByIdDB(id);
     if (!socio) return res.status(404).json({ message: 'Socio no encontrado' });
     res.json(socio);
   } catch (error) {

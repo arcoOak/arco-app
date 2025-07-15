@@ -13,12 +13,14 @@ import Carousel from '../components/Carousel'; // Importa tu componente Carousel
 import BalanceSection from '../components/BalanceSection';
 import TransacctionSection from '../components/TransacctionSection';
 
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+
 
 export default function App() {
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
-    // Función para manejar el clic en "Ver más"
+    const { user, login, logout, isAuthenticated } = useAuth();
 
     // State for drag functionality
     const [isDragging, setIsDragging] = useState(false);
@@ -75,12 +77,12 @@ export default function App() {
                     <img src="../src/img/perfil.jpg" alt="Logo" className="logo" />
                     <div className="text-left">
                         <p>Bienvenido!</p>
-                        <h3>Johny Roria</h3>
+                        <h3>{user.nombre + ' ' + user.apellido}</h3>
                     </div>
                 </div>
                 <div
                     className="titleNotification" 
-                    onClick={navigate('notifications')}
+                    onClick={() => navigate('notifications')}
                 >
                     <div className="notification"></div>
                     <i className='bx bx-bell'></i>

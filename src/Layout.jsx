@@ -15,7 +15,7 @@ export default function Layout() {
 
     const menuItems = [
         { icon: "bx bxs-home-alt-2", label: "Inicio", path: "/" },
-        { icon: "bx bxs-calendar-alt", label: "Reservas", path: "/reservas" },
+        { icon: "bx bxs-calendar-alt", label: "Espacios", path: "/espacios" },
         { icon: "bx bxs-qr-scan", label: "QR", path: "/qr" },
         { icon: "bx bxs-store", label: "Comercios", path: "/comercios" },
         { icon: "bx bxs-user", label: "Perfil", path: "/perfil" },

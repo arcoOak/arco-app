@@ -10,7 +10,7 @@ import PaymentDetail from './components/PaymentDetail';
 import Perfil from "./pages/Perfil/Perfil";
 import EditarPerfil from "./pages/Perfil/EditarPerfil"; // Asegúrate de que la ruta sea correcta
 import BeneficiariosLista from './pages/Perfil/BeneficiariosLista'; // Importa el nuevo componente
-import Reservas from "./pages/Reserva/Reserva";
+import Espacios from "./pages/Espacios/Espacios";
 
 /////
 //import ReservaUnidad from "./pages/ReservaUnidad";
@@ -23,7 +23,7 @@ import LecturaQr from "./pages/LecturaQr";
 
 
 ////
-import ReservaDetalle from "./pages/Reserva/ReservaDetalle"; // Asegúrate de que la ruta sea correcta
+import EspaciosDetalle from "./pages/Espacios/EspaciosDetalle"; // Asegúrate de que la ruta sea correcta
 //import ReservaUnidad from "./pages/ReservaUnidad";
 //import Comercios from "./pages/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 //import ComercioDetalle from './components/ComercioDetalle';
@@ -110,8 +110,8 @@ function App() {
                         <Route path="/perfil/editar-perfil" element={<EditarPerfil user={user} />} />
                         <Route path="/perfil/beneficiarios" element={<BeneficiariosLista />} />
 
-                        <Route path="/reservas" element={<Reservas concesionarios={concesionarios} />} />
-                        <Route path="/reservas/:id" element={<ReservaDetalle concesionarios={concesionarios} />} />
+                        <Route path="/espacios" element={<Espacios />} />
+                        <Route path="/espacios/:id" element={<EspaciosDetalle concesionarios={concesionarios} />} />
                         <Route path="/comercios" element={<Comercios  />} />
                         <Route path="/comercio/:id" element={<ComercioDetalle   />} />
                         <Route path="/qr" element={<LecturaQr />} />

@@ -1,6 +1,7 @@
 
 import express from 'express'; // Importa express usando ES Modules
 import usuarioRoutes from './usuario.routes.js'; // Importa las rutas de usuarios
+import espacioRoutes from './espacio.routes.js'; // Importa las rutas de espacios
 import reservasRoutes from './reservas.routes.js'; // Importa las rutas de reservas
 import qrtokenRoutes from './qrtoken.routes.js'; // Importa las rutas de token QR
 import comercioRoutes from './comercio.routes.js'; // Importa las rutas de comercio
@@ -13,6 +14,7 @@ import loginRoutes from './login.routes.js'; // Importa las rutas de login
 
 const router = express.Router();
 router.use('/usuarios', usuarioRoutes); // Monta las rutas de usuarios en /api/usuarios
+router.use('/espacios', espacioRoutes); // Monta las rutas de espacios en /api/espacios
 router.use('/reservas', reservasRoutes); // Monta las rutas de reservas en /api
 router.use('/qrtoken', qrtokenRoutes); // Monta las rutas de token QR en /api/qrtoken
 router.use('/comercios', comercioRoutes); // Monta las rutas de comercio en /api/comercios

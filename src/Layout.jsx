@@ -1,14 +1,21 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+import { useCarrito } from "./context/CartContext";
+import VistaCarrito from "./components/cart/VistaCarrito";
+import ModalCarrito from "./components/cart/ModalCarrito";
+
 export default function Layout() {
 
     const location = useLocation();
     const [activeIndex, setActiveIndex] = useState(0);
 
+    const { elementosCarrito, totalItems } = useCarrito(); // Obtiene los elementos del carrito desde el contexto
+    const [carritoVisible, setCarritoVisible] = useState(false); // Estado para controlar la visibilidad del carrito
+
     const menuItems = [
         { icon: "bx bxs-home-alt-2", label: "Inicio", path: "/" },
-        { icon: "bx bxs-calendar-alt", label: "Reservas", path: "/reservas" },
+        { icon: "bx bxs-calendar-alt", label: "Espacios", path: "/espacios" },
         { icon: "bx bxs-qr-scan", label: "QR", path: "/qr" },
         { icon: "bx bxs-store", label: "Comercios", path: "/comercios" },
         { icon: "bx bxs-user", label: "Perfil", path: "/perfil" },
@@ -23,6 +30,11 @@ export default function Layout() {
     return (
         <div className="app-container">
             {/* ... Tu barra de navegación superior o inferior ... */}
+            <ModalCarrito visible={totalItems > 0} cantidad={totalItems} onPress={() => setCarritoVisible(!carritoVisible)} />
+            {carritoVisible && 
+            (<VistaCarrito onClose={() => setCarritoVisible(false)}></VistaCarrito>)
+            }
+
             <div className="main-content">
                 <Outlet />
             </div>

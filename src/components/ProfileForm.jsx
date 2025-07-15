@@ -7,6 +7,7 @@ const ProfileForm = ({ initialData, onSave, onCancel }) => {
 
     useEffect(() => {
         setFormData(initialData);
+        //console.log('Datos iniciales del formulario:', initialData);
     }, [initialData]);
 
     const handleChange = (e) => {
@@ -25,74 +26,26 @@ const ProfileForm = ({ initialData, onSave, onCancel }) => {
     return (
         <form className="profile-form" onSubmit={handleSubmit}>
             <div className="form-group">
-                <label htmlFor="fullName">Nombre y Apellido</label>
-
-                <input
-                    type="text"
-                    id="fullName"
-                    name="name"
-                    value={formData.name || ''}
-                    onChange={handleChange}
-                    placeholder="Ej: Johny Roria"
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="cedula">Cédula</label>
-                <input
-                    type="text"
-                    id="cedula"
-                    name="cedula"
-                    value={formData.cedula || ''}
-                    onChange={handleChange}
-                    placeholder="Ej: V-12345678"
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="phone">Teléfono</label>
+                <label htmlFor="telefono">Teléfono</label>
                 <input
                     type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone || ''}
+                    id="telefono"
+                    name="telefono"
+                    value={formData.telefono || ''}
                     onChange={handleChange}
                     placeholder="Ej: +58 412 1234567"
                     required
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="phone">Correo</label>
-                <input
-                    type="mail"
-                    id="mail"
-                    name="mail"
-                    value={formData.mail || ''}
-                    onChange={handleChange}
-                    placeholder="correo@gmail.com"
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="address">Dirección</label>
+                <label htmlFor="direccion">Dirección</label>
                 <input
                     type="text"
-                    id="address"
-                    name="address"
-                    value={formData.address || ''}
+                    id="direccion"
+                    name="direccion"
+                    value={formData.direccion || ''}
                     onChange={handleChange}
                     placeholder="Ej: Av. Principal, Urb. El Sol"
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="dob">Fecha de Nacimiento</label>
-                <input
-                    type="date"
-                    id="dob"
-                    name="dob"
-                    value={formData.dob || ''}
-                    onChange={handleChange}
                     required
                 />
             </div>

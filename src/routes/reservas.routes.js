@@ -4,11 +4,14 @@ import reservasController from '../controllers/reservas.controller.js'; // Impor
 
 const router = express.Router();
 
-// Rutas para usuarios
-// router.get('/', reservasController.getAllReservas); // GET /api/users
-// router.get('/:id', reservasController.getReservaById); // GET /api/users/:id
-// router.post('/', reservasController.createReserva); // POST /api/users
-// router.put('/:id', reservasController.updateReserva); // PUT /api/users/:id
-// router.delete('/:id', reservasController.deleteReserva); // DELETE /api/users/:id
+router.get('/:id_reserva', reservasController.getReservaById);
+router.get('/unidad/:id_espacio', reservasController.getReservasByEspacioUnidad);
+router.get('/usuario/:id_usuario', reservasController.getReservasPorUsuario);
+router.get('/mensual/unidad/:id_espacio/:mes', reservasController.getReservasByEspacioUnidadMes);
+router.get('/mensual/usuario/:id_usuario/:mes', reservasController.getReservaByUsuarioMes);
+router.get('/horas/unidad/:id_unidad/:fecha', reservasController.getHorasReservadasPorUnidadFecha);
+router.get('/horas/reserva/:id_reserva', reservasController.getHorasReservadasPorReserva);
+
+router.post('/', reservasController.createReserva);
 
 export default router; // Exporta el router para usarlo en app.js

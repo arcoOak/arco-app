@@ -15,4 +15,6 @@ router.delete('/:id', usuarioController.deleteUsuario); // DELETE /api/usuarios/
 
 router.get('/role/:role', usuarioController.getUsuariosByRole); // GET /api/usuarios/role/:role
 
+router.put('/contrasena/:id_usuario', usuarioController.updateContrasenaUsuario); // PUT /api/usuarios/contrasena/:id_usuario
+
 export default router; // Exporta el router para usarlo en app.js

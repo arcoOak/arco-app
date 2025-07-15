@@ -21,7 +21,8 @@ async function getAllFamiliares(req, res) {
 // Obtener familiar por ID
 async function getFamiliarById(req, res) {
   try {
-    const familiar = await getFamiliarByIdDB(req.params.id);
+    const { id } = req.params;
+    const familiar = await getFamiliarByIdDB(id);
     if (!familiar) return res.status(404).json({ message: 'Familiar no encontrado' });
     res.json(familiar);
   } catch (error) {

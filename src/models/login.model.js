@@ -1,18 +1,23 @@
 import { response } from 'express';
-import connectToDatabase from '../config/db.config.js';
+
+// import {connectToDatabase, poolConection} from '../config/db.config.js';
+import pool from '../config/db.config.js';
+
 import bcrypt from 'bcryptjs';
 
+const SALT_ROUNDS = 10;
+
 const getLoginDB = async (username, password) => {
-    let connection;
+    //let connection;
     try {
-    connection = await connectToDatabase();
-    const [rows] = await connection.execute(
+    //connection = await connectToDatabase();
+    const [rows] = await pool.execute(
       `SELECT a.*, b.*, c.nombre_genero FROM usuarios a LEFT JOIN socios b ON a.id_usuario = b.id_socio LEFT JOIN data_genero c ON b.id_genero = c.id_genero WHERE a.email = ? AND a.activo = 1`, [username]
     );
 
     const user = rows[0];
 
-    // const hash = await bcrypt.hash('test', 10);
+    // const hash = await bcrypt.hash('test', SALT_ROUNDS);
     // console.log('Hash:', hash);
 
     // console.log('Usuario encontrado:', user);
@@ -34,6 +39,7 @@ const getLoginDB = async (username, password) => {
         fecha_nacimiento: user.fecha_nacimiento,
         telefono: user.telefono,
         direccion: user.direccion,
+        id_genero: user.id_genero,
         nombre_genero: user.nombre_genero,
         response: true,
       };
@@ -41,7 +47,7 @@ const getLoginDB = async (username, password) => {
       return {response: false}; // usuario no encontrado o contraseña incorrecta
     }
   } finally {
-    if (connection) connection.end();
+    //if (connection) connection.end();
   }
 }
 

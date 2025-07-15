@@ -1,32 +1,40 @@
 // Perfil.jsx
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom"; // Asegúrate de importar useNavigate aquí
 
 import LoadingModal from "../../components/modals/LoadingModal"; // Asegúrate de tener un componente de carga
 
 import { useAuth } from "../../context/AuthContext"; // Importa el contexto de autenticación
 
+import FormatearFecha from "../../utils/FormatearFecha";
+
+import userImagePlaceholder from '../../assets/user_placeholder.svg';
+
 import './Perfil.css'; // Asegúrate de tener un archivo CSS para estilos
 
 export default function Perfil() {
     const [activeDiv, setActiveDiv] = useState(0);
-    const [socio, setSocio] = useState(null); // Estado para almacenar los datos del socio
-    const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
+    //const [socio, setSocio] = useState(null); // Estado para almacenar los datos del socio
+    //const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
     const navigate = useNavigate(); // Hook useNavigate
 
-    const { user, login, logout, isAuthenticated } = useAuth();
+    const { user, login, logout, loading, setLoading , isAuthenticated } = useAuth();
     
     const API_HOST = import.meta.env.VITE_API_HOST;
 
     useEffect(() => {
         // Cambia el ID por el que corresponda según tu lógica de autenticación
-        fetch(`${API_HOST}/api/socios/${user.id_socio}`)
-            .then(res => res.json())
-            .then(data => {
-                setSocio(data);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
+        // fetch(`${API_HOST}/api/socios/${user.id_socio}`)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         setSocio(data);
+        //         setLoading(false);
+        //     })
+        //     .catch(() => setLoading(false));
+
+        //setSocio(user); // Asigna los datos del usuario autenticado al estado socio
+        //setLoading(false);
+
     }, []);
 
     const handleDivClick = (index) => {
@@ -51,28 +59,28 @@ export default function Perfil() {
         navigate('/login');
     };
 
-    const displayUser = socio || {
-        name: 'Johny Roria',
-        action: '5665',
-        avatar: './src/img/perfil.jpg',
-        cedula: 'V-12345678',
-        phone: '+58 4245632541',
-        address: 'Venezuela, Caracas',
-        dob: '04/12/1990'
-    };
-
-    if (loading) return <LoadingModal visible='true'>Cargando...</LoadingModal>;
+    // const displayUser = socio || {
+    //     name: 'Johny Roria',
+    //     action: '5665',
+    //     avatar: './src/img/perfil.jpg',
+    //     cedula: 'V-12345678',
+    //     phone: '+58 4245632541',
+    //     address: 'Venezuela, Caracas',
+    //     dob: '04/12/1990'
+    // };
 
     return (
+        <React.Fragment>
+        <LoadingModal visible={loading}></LoadingModal>
         <div className="container-fluid">
             {/* ... (Tu código actual de encabezado y perfil) ... */}
             <div className="row mb-4 mt-4" > 
                 <div className="col-md-12">
                     <div className="profile-photo-container">
-                        <img src={socio.avatar || './src/assets/user_placeholder.svg'} alt="Profile" className="profile-photo" />
+                        <img src={user.avatar || userImagePlaceholder} alt="Profile" className="profile-photo" />
                     </div>
-                    <h2 className="mb-2">{socio.nombre} {socio.apellido}</h2>
-                    <span className="profile-mail">Acción: {socio.id_usuario}</span>
+                    <h2 className="mb-2">{user.nombre} {user.apellido}</h2>
+                    <span className="profile-mail">Acción: {user.id_usuario}</span>
                 </div>
             </div >
 
@@ -94,7 +102,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 1 ? 'auto' : '0', maxHeight: activeDiv === 1 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-user-square'></i> {socio.nombre} {socio.apellido}</label>
+                                        <label><i className='bx bx-user-square'></i> {user.nombre} {user.apellido}</label>
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +122,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 2 ? 'auto' : '0' }}
                                     >
-                                        <label><i className='bx bx-user-id-card'></i> V{socio.documento_identidad}</label>
+                                        <label><i className='bx bx-user-id-card'></i> V{user.documento_identidad}</label>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +142,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 3 ? 'auto' : '0', maxHeight: activeDiv === 3 ? '50px' : '0px'}}
                                     >
-                                        <label><i className='bx bx-phone'></i>{socio.telefono}</label>
+                                        <label><i className='bx bx-phone'></i>{user.telefono}</label>
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +162,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 4 ? 'auto' : '0' , maxHeight: activeDiv === 4 ? '50px' : '0px' }}
                                     >
-                                        <label><i className='bx bx-location'></i> {socio.direccion} </label>
+                                        <label><i className='bx bx-location'></i> {user.direccion} </label>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +182,7 @@ export default function Perfil() {
                                         className="content"
                                         style={{ height: activeDiv === 5 ? 'auto' : '0' , maxHeight: activeDiv === 5 ? '50px' : '0px'  }}
                                     >
-                                        <label><i className='bx bx-calendar-alt'></i> {socio.fecha_nacimiento} </label>
+                                        <label><i className='bx bx-calendar-alt'></i> {FormatearFecha(user.fecha_nacimiento)} </label>
                                     </div>
                                 </div>
                             </div>
@@ -214,5 +222,6 @@ export default function Perfil() {
                 <p><a href="#">Política de Privacidad</a> | <a href="#">Términos de Uso</a></p>
             </footer>
         </div>
+        </React.Fragment>
     );
 }

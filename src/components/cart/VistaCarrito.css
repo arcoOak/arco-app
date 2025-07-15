@@ -1,0 +1,222 @@
+/* src/pages/Carrito/VistaCarrito.css */
+
+.vista-carrito-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.vista-carrito {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-height: 95vh;
+    overflow-y: hidden;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.vista-carrito-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 1rem;
+}
+
+.vista-carrito-header i{
+    font-size: 1.5rem;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.vista-carrito-cerrar{
+    font-size: 1.5rem;
+    padding: 0rem 0.5rem;
+    background-color: #e74c3c;
+    border: none 2px #2c3e50;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.vista-carrito-header,
+.vista-carrito-footer {
+    flex-shrink: 0; /* Evita que estos elementos se encojan */
+}
+
+.vista-carrito-title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #2c3e50;
+    
+}
+
+.vista-carrito-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    flex-grow: 1; /* Permite que la lista ocupe el espacio restante */
+}
+
+.vista-carrito-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.vista-carrito-item:last-child {
+    border-bottom: none;
+}
+
+/* Imagen del producto */
+.vista-carrito-imagen {
+    width: 80%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+}
+
+/* Contenedor para nombre y precio */
+.vista-carrito-item > span {
+    font-size: 1rem;
+    color: #34495e;
+    font-weight: 500;
+}
+
+/* Contenedor para los controles de cantidad */
+.vista-carrito-item .controles-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.vista-carrito-item .controles-cantidad span {
+    font-size: 1rem;
+    min-width: 90px;
+    text-align: center;
+    color: #7f8c8d;
+}
+
+/* Botones de cantidad (+ y -) */
+.vista-carrito-item .controles-cantidad button {
+    background-color: #ecf0f1;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.vista-carrito-item .controles-cantidad button:hover {
+    background-color: #bdc3c7;
+    color: #2c3e50;
+}
+
+.vista-carrito-item .controles-cantidad button:active {
+    transform: scale(0.92);
+}
+
+/* Botón para eliminar el item */
+.vista-carrito-item .boton-eliminar {
+    background-color: #e74c3c;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.vista-carrito-item .boton-eliminar:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.vista-carrito-total {
+    text-align: right;
+    font-size: 1.25rem;
+    color: #2c3e50;
+    padding-top: 1.5rem;
+    border-top: 2px solid #ecf0f1;
+    font-weight: bold;
+}
+
+.vista-carrito-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.vista-carrito-acciones button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.vista-carrito-acciones button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vista-carrito-boton-pagar {
+    background-color: #2980b9;
+    color: white;
+}
+
+.vista-carrito-boton-limpiar {
+    background-color: #f1f1f1;
+    color: #7f8c8d;
+    border: 1px solid #e0e0e0;
+}
+
+/* Estilo para el mensaje de carrito vacío */
+.vista-carrito-vacio {
+    text-align: center;
+    padding: 2rem 2rem 8rem;
+}
+
+.vista-carrito-mensaje {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+

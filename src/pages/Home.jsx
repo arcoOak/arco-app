@@ -17,12 +17,14 @@ import BalanceSection from '../components/BalanceSection';
 import TransacctionSection from '../components/TransacctionSection';
 import Slider from '../components/Slider';
 
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+
 
 export default function App() {
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
-    // Función para manejar el clic en "Ver más"
+    const { user, login, logout, isAuthenticated } = useAuth();
 
     // State for drag functionality
     const [isDragging, setIsDragging] = useState(false);

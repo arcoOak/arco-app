@@ -4,7 +4,8 @@ import {
   createUsuarioDB,
   updateUsuarioDB,
   deleteUsuarioDB,
-  getUsuariosByRoleDB
+  getUsuariosByRoleDB,
+  updateContrasenaUsuarioDB
 } from '../models/usuario.model.js';
 
 async function getAllUsuarios(req, res) {
@@ -76,11 +77,28 @@ async function getUsuariosByRole(req, res) {
   }
 }
 
+async function updateContrasenaUsuario(req, res) {
+  try{
+    const { id_usuario } = req.params;
+    const { contrasena, contrasenaNueva } = req.body;
+
+    if (!contrasena || !contrasenaNueva) {
+      return res.status(400).json({ message: 'Faltan datos requeridos para actualizar la contraseña' });
+    }
+
+    const updatedRows = await updateContrasenaUsuarioDB(id_usuario, contrasena, contrasenaNueva);
+
+  } catch (error) {
+    return res.status(500).json({ message: 'Error interno del servidor al actualizar la contraseña del usuario' });
+  }
+}
+
 export default {
   getAllUsuarios,
   getUsuarioById,
   createUsuario,
   updateUsuario,
   deleteUsuario,
-  getUsuariosByRole
+  getUsuariosByRole,
+  updateContrasenaUsuario
 };

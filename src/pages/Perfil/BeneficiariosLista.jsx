@@ -25,14 +25,22 @@ import ConfirmarModal from '../../components/modals/ConfirmarModal';
 import FormatearFecha from '../../utils/FormatearFecha';
 import { Edit } from 'lucide-react';
 
+import dataService  from '../../services/data_db.service'; // Importa los servicios necesarios
 
-export default function BeneficiariosLista({ userId }) {
+import familiaresService from '../../services/familiares.service';
+
+import { useAuth } from "../../context/AuthContext"; // Importa el contexto de autenticación
+
+
+export default function BeneficiariosLista() {
     const navigate = useNavigate();
     const [beneficiaries, setBeneficiaries] = useState([]);
     const [generos, setGeneros] = useState([]);
     const [parentescos, setParentescos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const { user, login, logout , isAuthenticated } = useAuth();
 
     const [showExitosoModal, setShowExitosoModal] = useState(false);
     const [showConfirmarModal, setShowConfirmarModal] = useState(false);
@@ -41,7 +49,7 @@ export default function BeneficiariosLista({ userId }) {
 
     const [dataBeneficiarioNuevo, setDataBeneficiarioNuevo] = useState({
         id_familiar: '',
-        id_usuario: userId,
+        id_usuario: user.id_usuario, // Asumiendo que el ID del socio está en user.id_socio
         nombre: '',
         apellido: '',
         documento_identidad: '',
@@ -60,36 +68,28 @@ export default function BeneficiariosLista({ userId }) {
 
     useEffect(() => {
         // Cambia el ID por el que corresponda según tu lógica de autenticación
-        fetch(`${API_HOST}/api/familiares/buscar/1`)
-            .then(res => res.json())
-            .then(data => {
-
-                setBeneficiaries(data);
-
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
+        setLoading(true);
         
-        // Cargar géneros
-        fetch(`${API_HOST}/api/data/generos`).then(res => res.json())
-            .then(data => {
-                setGeneros(data);
-            })
-            .catch(err => {
-                console.error("Error fetching generos:", err);
-                //setError("Error al cargar géneros");
-            });
+        if (!user) return;
 
-        // Cargar parentescos
-        fetch(`${API_HOST}/api/data/parentesco/genero`).then(res => res.json())
-            .then(data => {
-                setParentescos(data);
-            })
-            .catch(err => {
-                console.error("Error fetching parentescos:", err);
-                //setError("Error al cargar parentescos");
-            });
-
+        const fetchInitialData = async () => {
+            try {
+                // 3. Usar Promise.all para ejecutar todas las peticiones en paralelo
+                const [beneficiariesData, generosData, parentescosData] = await Promise.all([
+                    familiaresService.getBeneficiariosBySocioId(user.id_usuario), // Usar el ID del usuario real
+                    dataService.getGeneros(),
+                    dataService.getParentescos()
+                ]);
+                setBeneficiaries(beneficiariesData);
+                setGeneros(generosData);
+                setParentescos(parentescosData);
+            } catch(err) {
+                console.error("Error al cargar datos iniciales:", err);
+            }finally{
+                setLoading(false);
+            }
+        }
+        fetchInitialData();
     }, []);
 
     useEffect(() => {
@@ -116,73 +116,10 @@ export default function BeneficiariosLista({ userId }) {
     const generateQrCodeData = (cedula, id) => {
         // Idealmente, aquí usarías una URL de tu aplicación que resuelva al perfil del beneficiario
         // Por ejemplo: `https://tudominio.com/beneficiario/${id}`
-        // O simplemente un texto que identifique al beneficiario: `Beneficiario:${cedula}`
         // Para demostración, usaremos un servicio público de QR que codifica texto.
         // Asegúrate de que los datos codificados sean únicos para cada beneficiario.
-        return `Socio:${userId}-Beneficiario:${id}-CI:${cedula}`;
+        return `Socio:${user.id_socio}-Beneficiario:${id}-CI:${cedula}`;
     };
-
-    // const fetchBeneficiaries = useCallback(async () => {
-    //     setLoading(true);
-    //     setError(null);
-    //     try {
-    //         const response = await new Promise(resolve => setTimeout(() => {
-    //             const dummyData = [
-    //                 {
-    //                     id: 'fam1',
-    //                     name: 'María',
-    //                     lastName: 'Hernández',
-    //                     cedula: 'V-00998877',
-    //                     birthYear: 1988,
-    //                     relationship: 'Esposo',
-    //                     photo: '../src/img/beneficiarios/beneficiario2.jpg'
-    //                 },
-    //                 {
-    //                     id: 'fam2',
-    //                     name: 'Ana',
-    //                     lastName: 'Roria',
-    //                     cedula: 'V-11223344',
-    //                     birthYear: 2010,
-    //                     relationship: 'Hija',
-    //                     photo: '../src/img/beneficiarios/beneficiario1.jpg'
-    //                 },
-    //                 {
-    //                     id: 'fam3',
-    //                     name: 'Carlos',
-    //                     lastName: 'Roria',
-    //                     cedula: 'V-00112233',
-    //                     birthYear: 2015,
-    //                     relationship: 'Hija',
-    //                     photo: '../src/img/beneficiarios/beneficiario3.jpg'
-    //                 },
-    //             ];
-    //             resolve({
-    //                 ok: true,
-    //                 json: () => Promise.resolve(dummyData.map(member => ({
-    //                     ...member,
-    //                     qrCodeData: generateQrCodeData(member.cedula, member.id) // Agrega el QR data a cada miembro
-    //                 })))
-    //             });
-    //         }, 1000));
-
-    //         if (!response.ok) {
-    //             throw new Error('Error al cargar los beneficiarios. Código: ' + response.status);
-    //         }
-    //         const data = await response.json();
-    //         setBeneficiaries(data);
-    //     } catch (err) {
-    //         console.error("Error fetching beneficiaries:", err);
-    //         setError(err.message);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }, [userId]); // generateQrCodeData no es una dependencia porque sus dependencias son estáticas o ya están en userId
-
-    // useEffect(() => {
-    //     if (userId) {
-    //         fetchBeneficiaries();
-    //     }
-    // }, [userId, fetchBeneficiaries]);
 
     const handleBackClick = () => {
         navigate('/perfil');
@@ -191,7 +128,7 @@ export default function BeneficiariosLista({ userId }) {
     const handleAddMemberClick = () => {
         setDataBeneficiarioNuevo({
             id_familiar: '',
-            id_usuario: userId,
+            id_usuario: user.id_usuario, // Asumiendo que el ID del socio está en user.id_socio
             nombre: '',
             apellido: '',
             documento_identidad: '',
@@ -333,23 +270,10 @@ export default function BeneficiariosLista({ userId }) {
 
     }
 
-    if (loading) return <LoadingModal visible='true'>Cargando...</LoadingModal>;
-
-    if (error) {
-        return (
-            <div className="family-list-container">
-                <div className="family-list-header">
-                    <button className="back-button" onClick={handleBackClick}>←</button>
-                    <h2>Error al Cargar Beneficiarios</h2>
-                </div>
-                <p style={{ textAlign: 'center', color: 'red', marginTop: '20px' }}>Ocurrió un error: {error}</p>
-                <button className="add-member-button" onClick={fetchBeneficiaries} style={{ marginTop: '20px', backgroundColor: '#dc3545' }}>Reintentar</button>
-            </div>
-        );
-    }
 
     return (
         <React.Fragment>
+        <LoadingModal visible={loading}>Cargando...</LoadingModal>
         <ConfirmarModal onConfirm={()=>handleConfirmacion(true)} onCancel={()=>handleConfirmacion(false)} visible={showConfirmarModal}></ConfirmarModal>
         <ExitosoModal visible={showExitosoModal}></ExitosoModal>
         <div className="family-list-container">

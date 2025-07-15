@@ -2,6 +2,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import authService from '../services/auth.service';
 
+import modificarSocio from '../services/modificar.service'; 
+
 import LoadingModal from '../components/modals/LoadingModal';
 
 
@@ -11,21 +13,32 @@ export const AuthContext = createContext(null);
 // Proveedor del contexto
 export const AuthProvider = ({ children }) => {
   //const [user, setUser] = useState(); // Almacena los datos del usuario o null si no está autenticado
-  //const [isAuthenticated, setIsAuthenticated] = useState(!!user); // Para saber si el usuario está autenticado
   const [user, setUser] = useState(null); // Almacena los datos del usuario o null si no está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Para saber si el usuario está autenticado
+  //const [isAuthenticated, setIsAuthenticated] = useState(!!user); // Para saber si el usuario está autenticado
   const [loading, setLoading] = useState(true); // Para saber si estamos cargando los datos iniciales
 
   useEffect(() => {
     // Aquí puedes intentar cargar los datos del usuario desde localStorage o una cookie
     // Cuando la aplicación se carga por primera vez
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true); // Si hay un usuario almacenado, consideramos que está autenticado
+    try{
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      //setIsAuthenticated(true); // Si hay un usuario almacenado, consideramos que está autenticado
+    }} catch (error) {
+      console.error('Error al cargar el usuario desde localStorage:', error);
+      localStorage.removeItem('currentUser'); // Limpiar en caso de error
+      setUser(null); // Asegurarse de que el usuario sea null en caso de error
+    }finally{
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
+
+  // useEffect(() => {
+  //   // Actualizar el estado de autenticación cuando el usuario cambia
+  //   setIsAuthenticated(!!user);
+  //   //console.log('Estado de autenticación actualizado:', isAuthenticated);
+  // }, [user]);
 
   const login = async (username, password) => {
     setLoading(true);
@@ -37,36 +50,76 @@ export const AuthProvider = ({ children }) => {
 
       if(userData.response === false) {
         //setError('Usuario o contraseña incorrectos');
-        setLoading(false);
+        //setLoading(false);
         return false;
       }else{
         setUser(userData);
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        setIsAuthenticated(true); // Actualizar el estado de autenticación
-        setLoading(false);
+        //setIsAuthenticated(true); // Actualizar el estado de autenticación
+        
         return true;
       }
 
     } catch (err) {
-      //setError('Usuario o contraseña incorrectos');
+        console.error("Error en el login:", err);
+        return false;
+
+    } finally {
       setLoading(false);
-      return false;
     }
   };
 
   const logout = () => {
     setUser(null);
-    setIsAuthenticated(false);
+    //setIsAuthenticated(false);
     localStorage.removeItem('currentUser'); // Limpiar los datos persistidos
     // Aquí podrías notificar a tu API de backend que la sesión ha terminado
     // Redirigir al usuario a la página de login o inicio
   };
 
+  const editarUsuario = async (newUserData) => {
+    setLoading(true);
+    const datosAEditar = {
+      nombre: newUserData.nombre,
+      apellido: newUserData.apellido,
+      documento_identidad: newUserData.documento_identidad,
+      fecha_nacimiento: newUserData.fecha_nacimiento,
+      telefono: newUserData.telefono,
+      direccion: newUserData.direccion,
+      id_genero: newUserData.id_genero
+    }
+    try {
+      const updatedFields = await modificarSocio.modificarSocioData(datosAEditar, newUserData.id_socio);
+      if (updatedFields) {
+        // Tratar el estado como inmutable: crear un nuevo objeto en lugar de mutar el existente
+        const updatedUserData = { ...user, ...updatedFields };
+        setUser(updatedUserData);
+        localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
+        return true; // Indicar que la edición fue exitosa
+      }
+      return false; // Indicar que la edición falló
+    } catch (err) {
+      console.error("Error al editar el usuario:", err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+
+    //return false; // Indicar que la edición falló
+  
+    //setLoading(false);
+    
+  }
+
+  // isAuthenticated es un valor derivado del estado 'user'.
+  // No necesita su propio estado con useState y useEffect.
+  const isAuthenticated = !!user;
   const value = {
     user,
     loading,
     login,
     logout,
+    editarUsuario,
     isAuthenticated, // Un booleano para saber si el usuario está autenticado
   };
 

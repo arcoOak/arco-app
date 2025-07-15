@@ -1,7 +1,6 @@
 /* src/components/EditProfileScreen.css */
 .edit-profile-container {
     padding: 20px;
-    background-color: #f0f2f5;
     min-height: 100vh;
     font-family: Arial, sans-serif;
     display: flex;
@@ -92,7 +91,7 @@
 .profile-form {
     background-color: #fff;
     border-radius: 15px;
-    padding: 25px;
+    padding: 12px;
     width: 90%;
     max-width: 500px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -112,9 +111,11 @@
 }
 
 .form-group input {
-    width: calc(100% - 20px);
-    padding: 12px 10px;
+    width: 100%;
+    padding: 8px 6px;
     border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
     border-radius: 8px;
     font-size: 16px;
     box-sizing: border-box;
@@ -130,15 +131,14 @@
 .form-buttons {
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
 }
 
 .cancel-button,
 .save-button {
-    padding: 12px 25px;
+    padding: 8px 12px;
     border: none;
     border-radius: 25px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
 }

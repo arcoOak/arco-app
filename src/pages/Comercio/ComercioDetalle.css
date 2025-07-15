@@ -3,7 +3,6 @@
 .detalle-container {
     max-width: 450px;
     margin: 0 auto;
-    background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     min-height: 100vh;
     padding: 20px;
@@ -50,13 +49,14 @@
 }
 
 .detalle-img {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
     border: 5px solid #eee;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
+    background-color: #fff;
+    padding: 1rem;
 }
 
 .detalle-header h1 {
@@ -73,7 +73,7 @@
 
 .detalle-info-section,
 .detalle-catalogo-section {
-    background-color: #f8f8f8;
+    background-color: #fff;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
@@ -105,21 +105,39 @@
 }
 
 .productos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .producto-card {
-    background-color: #fff;
+    /* background-color: #fff; */
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
     text-align: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: end;
     align-items: center;
     transition: transform 0.2s ease;
+    background-position:initial;
+    background-size: cover;
+    background-color: white;
+    background-repeat: no-repeat;
+    height: 200px;
+}
+
+
+.producto-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    background-color: #ffffffdd;
+    border-radius: 5px;
+    padding: 1rem 0.5rem 0.5rem;
+    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.5);
 }
 
 .producto-card:hover {
@@ -127,11 +145,12 @@
 }
 
 .producto-img {
-    width: 100%;
-    height: 80px;
+    width: 40%;
+    height: 100%;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .producto-name {
@@ -148,8 +167,9 @@
 
 .producto-description {
     font-size: 0.75em;
-    color: #888;
+    color: #666;
     margin-bottom: 8px;
+    font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     /* Show only 2 lines */
@@ -171,13 +191,15 @@
     /* Green button */
     color: #fff;
     border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
+    padding: 6px 12px;
     cursor: pointer;
-    font-size: 0.85em;
-    font-weight: 600;
+    font-size: 0.75em;
+    font-weight: 500;
     transition: background-color 0.3s ease;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     /* Full width within card */
 }
 
@@ -192,4 +214,22 @@
     color: #777;
     font-style: italic;
     padding: 20px 0;
+}
+
+.producto-anadido {
+    font-size: 0.75em;
+    color: #28a745;
+    margin-bottom: 10px;
+    font-weight: 500;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+        scale: 0.95;
+        opacity: 0;
+    }
+    to {
+        scale: 1;
+        opacity: 1;
+    }
 }

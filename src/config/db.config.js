@@ -14,15 +14,35 @@ const dbConfig = {
   port: process.env.DB_PORT,
 };
 
-async function connectToDatabase() {
-  try {
-    const connection = await mysql.createConnection(dbConfig);
-    console.log('Conexión a MySQL establecida con éxito!');
-    return connection;
-  } catch (error) {
-    console.error('Error al conectar a MySQL:', error);
-    process.exit(1); // Terminar el proceso si no se puede conectar a la DB
-  }
+const dbConfigPool = {
+  queueLimit: 0, // Sin límite de cola
+  connectionLimit: 100, // Número máximo de conexiones en el pool
+  waitForConnections: true, // Esperar conexiones si el pool está lleno
+  ...dbConfig, // Usar la misma configuración de conexión
 }
 
-export default connectToDatabase;
+// async function connectToDatabase() {
+//   try {
+//     const connection = await mysql.createConnection(dbConfig);
+//     console.log('Conexión a MySQL establecida con éxito!');
+//     return connection;
+//   } catch (error) {
+//     console.error('Error al conectar a MySQL:', error);
+//     process.exit(1); // Terminar el proceso si no se puede conectar a la DB
+//   }
+// }
+
+// async function poolConection() {
+//   try {
+//     const pool = mysql.createPool(dbConfigPool);
+//     console.log('Conexión a Pool de conexiones MySQL creada con éxito!');
+//     return pool;
+//   } catch (error) {
+//     console.error('Error al crear el pool de conexiones a MySQL:', error);
+//     process.exit(1); // Terminar el proceso si no se puede crear el pool
+//   }
+// }
+
+const pool = mysql.createPool(dbConfigPool);
+
+export default pool;

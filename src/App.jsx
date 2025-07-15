@@ -32,7 +32,6 @@ import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
 import Login from "./Login"; // Importa tu componente de Login
 import Preloader from "./components/Preloader"; // Importa el componente Preloader
 import FAQPage from "./pages/Faqs"
-import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import TermsOfUse from "./pages/TermsOfUse"
 ///////

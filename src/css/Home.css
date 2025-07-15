@@ -59,15 +59,8 @@ button:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   padding: 0 1.6rem;
-}
-
-.titleNotification {
-  width: 40px;
-  border: solid 1px #d3d8de;
-  border-radius: 10px;
 }
 
 .titleHome img {
@@ -86,7 +79,7 @@ button:focus {
   background-color: red;
   border-radius: 50%;
   position: relative;
-  left: 21px;
+  left: 15px;
   top: 9px;
 }
 
@@ -222,7 +215,7 @@ ul li {
   color: #2d3436;
 }
 
-.dues-section{
+.dues-section {
   padding: 2rem;
 
 }
@@ -321,9 +314,13 @@ ul li {
   margin: 0;
 }
 
+.button__see-all{
+  background-color: #4070f4;
+}
+
 .news-section__see-all {
   font-size: .9em;
-  color: #007bff;
+  color: white;
   /* Un azul para el enlace, como en iOS */
   text-decoration: none;
   font-weight: 500;
@@ -377,11 +374,13 @@ ul li {
 .payment_action button i {
   font-size: 2.2em;
 }
-
+ 
 .addCard {
   display: flex;
   justify-content: space-between;
   padding: 0 2rem;
+  margin-top: 1rem;
+  align-items: end;
 }
 
 .addCard label {

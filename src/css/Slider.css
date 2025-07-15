@@ -1,0 +1,13 @@
+.swiper-cube .swiper-cube-shadow:before {
+    opacity: .4;
+}
+
+.slider-section {
+    width: 100%;
+    text-align: left;
+}
+
+.swiper-slide img {
+    width: 100% !important;
+    border-radius: 5px;
+}

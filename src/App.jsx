@@ -17,24 +17,25 @@ import Comercios from "./pages/Comercio"; // Asumo que este es tu componente pri
 import ComercioDetalle from './components/ComercioDetalle';
 import Qr from "./pages/Lectura";
 import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
-import Login from "./login"; // Importa tu componente de Login
+import Login from "./Login"; // Importa tu componente de Login
 import Preloader from "./components/Preloader"; // Importa el componente Preloader
-
+import FAQPage from "./pages/Faqs"
 import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
-
+import PrivacyPolicy from "./pages/PrivacyPolicy"
+import TermsOfUse from "./pages/TermsOfUse"
 
 function App() {
 
-    const { user, login, logout, isAuthenticated } = useAuth(); // Usa el contexto de autenticación
+    const { user, login, logout, isAuthenticated} = useAuth(); // Usa el contexto de autenticación
     // Estado para controlar la visibilidad del preloader inicial
     const [showInitialPreloader, setShowInitialPreloader] = useState(true);
 
     // Estado de autenticación
     // Usamos localStorage para persistir el estado de login
-    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    /* const [isAuthenticated, setIsAuthenticated] = useState(() => {
         const storedAuth = localStorage.getItem('isAuthenticated');
         return storedAuth === 'true'; // Convertir el string a boolean
-    });
+    }); */
 
     // Efecto para ocultar el preloader inicial después de un tiempo
     useEffect(() => {
@@ -86,7 +87,6 @@ function App() {
         { id: 10, category: 'Heladería', name: 'Helados Tito', description: 'Variedad de sabores artesanales.', img: 'https://via.placeholder.com/100/ADD8E6/000000?text=HT', phone: '+58-212-0123456' },
     ];
 
-
     return (
         <BrowserRouter>
             <Routes>
@@ -99,13 +99,16 @@ function App() {
                     {/* El Layout ahora se aplicará solo a las rutas autenticadas */}
                     <Route element={<Layout />}>
                         <Route path="/" element={<Home />} />
+                        <Route path="/FAQPage" element={<FAQPage />} />
+                        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+                        <Route path="/TermsOfUse" element={<TermsOfUse />} />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/payment-detail/:id" element={<PaymentDetail />} />
                         <Route path="/perfil" element={<Perfil />} />
                         <Route path="/perfil/editar-perfil" element={<EditProfileScreen />} />
                         <Route path="/perfil/beneficiarios" element={<BeneficiariosLista />} />
-                        <Route path="/reservas" element={<Reservas />} />
-                        <Route path="/reservas/:id" element={<ReservaUnidad />} />
+                        <Route path="/reservas" element={<Reservas concesionarios={concesionarios} />} />
+                        <Route path="/reservas/:id" element={<ReservaDetalle concesionarios={concesionarios} />} />
                         <Route path="/comercios" element={<Comercios allBusinesses={allBusinessesData} />} />
                         {/* CORRECCIÓN: Añadir '/' antes de :id */}
                         <Route path="/comercio/:id" element={<ComercioDetalle allBusinesses={allBusinessesData} />} />

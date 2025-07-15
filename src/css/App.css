@@ -35,7 +35,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
+body.dark-theme {
+  /* Dark theme colors */
+  --color-text-primary: #F1F5F9;
+  --color-text-placeholder: #A6B7D2;
+  --color-bg-primary: #111827;
+  --color-bg-secondary: #3D4859;
+  --color-bg-sidebar: #1f2937;
+  --color-border-hr: #3B475C;
+  --color-hover-secondary: #48566a;
+  --color-shadow: rgba(0, 0, 0, 0.3);
 }
 
 .w-100 {
@@ -445,7 +456,7 @@ body {
   height: 290px;
 }
 
-.p-0{
+.p-0 {
   padding: 0 !important;
 }
 

@@ -1,0 +1,64 @@
+.calendar-section {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+    text-align: left;
+    font-weight: 500;
+}
+
+.calendar-header p{
+    font-size: 15px;
+}
+
+.calendar-header button{
+    background-color: #4070f4;
+    margin: 0;
+}
+
+.balance-body {
+    overflow-x: scroll;
+    height: 80px;
+}
+.balance-body::-webkit-scrollbar{
+    scrollbar-width: none
+}
+
+.calendar-balance {
+    display: flex;
+    gap: 5px;
+}
+
+.calendar-item {
+    padding: .7rem;
+    border-radius: 10px;
+    width: 60px;
+    font-weight: 500;
+}
+
+.active-month {
+    border: solid 2px #e9e9e9;
+}
+
+.balance-footer {
+    margin-top: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.recibos-balance {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.total-balance {
+    font-weight: 700;
+    font-size: 14px;
+}

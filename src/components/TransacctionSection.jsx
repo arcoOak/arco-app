@@ -1,5 +1,6 @@
 import "../css/DashboardHome.css";
-import Transacctions  from "./Transacctions";
+import Transacctions from "./Transacctions";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export default function TransacctionSection() {
 
@@ -12,6 +13,11 @@ export default function TransacctionSection() {
         { id: 3, account: 'zelle', amount: 43, date: '02/2025', concept: 'Mensualidad' },
         { id: 4, account: 'paypal', amount: 40, date: '01/2025', concept: 'Mensualidad' },
     ];
+
+    const navigate = useNavigate();
+    const handleHistoryItemClick = (id) => {
+        navigate(`/payment-detail/${id}`);
+    };
 
     return (
         <div className="dashboard-container">

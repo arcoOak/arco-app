@@ -55,7 +55,7 @@ export default function Reserva({ concesionarios }) {
 
     // Función para manejar el clic en "Ver más"
     const handleVerMasClick = (reservaId) => {
-        navigate(`/reserva/${reservaId}`);
+        navigate(`/reservas/${reservaId}`);
     };
 
     // Filtrar negocios basado en la categoría activa y el término de búsqueda

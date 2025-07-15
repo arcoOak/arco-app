@@ -3,7 +3,7 @@
 .dashboard-container {
     max-width: 400px;
     margin: 0 auto;
-    padding: 20px 20px 0;
+    padding: 10px 20px 0;
     border-radius: 20px;
 }
 
@@ -27,10 +27,7 @@
 
 .balance-section {
     background-color: transparent;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 20px 20px 0;
-    margin-bottom: 24px;
+    padding: 5px 0 !important;
 }
 
 .balance-header {
@@ -67,6 +64,7 @@
 
 .balance-label {
     display: flex;
+    align-items: center;
 }
 
 .balance-label label {
@@ -102,7 +100,7 @@
 }
 
 .investments-section {
-    padding: 0 1.4rem;
+    padding: 1.4rem;
 }
 
 .investments-header {

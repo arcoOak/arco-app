@@ -70,7 +70,7 @@
 /* Media Queries para Responsividad */
 @media (max-width: 480px) {
     .container {
-        height: 230px;
+        height: 200px;
         /* Ajusta la altura del contenedor en móviles */
     }
 

@@ -17,7 +17,7 @@
 
 .trainer-section__see-all {
     font-size: .9em;
-    color: #007bff;
+    color: white;
     /* Un azul para el enlace, como en iOS */
     text-decoration: none;
     font-weight: 500;
@@ -95,6 +95,7 @@
 .trainer-content {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     text-align: left;
     width: 70%;
     padding: 1rem 1rem 1rem 0;

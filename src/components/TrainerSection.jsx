@@ -6,34 +6,38 @@ const TrainerSection = () => {
     const trainersData = [
         {
             id: 1,
+            sport: 'Tenis',
             name: 'Andres Montilla',
             calification: 4.8,
             price: 30,
-            imageUrl: './src/img/news/news1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
+            imageUrl: './src/img/trainers/1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
             imageAlt: 'Andres Montilla'
         },
         {
             id: 2,
-            name: 'Andres Montilla',
+            sport: 'Futbol',
+            name: 'Raul Hernandez',
             calification: 4.8,
             price: 30,
-            imageUrl: './src/img/news/news1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
+            imageUrl: './src/img/trainers/2.jpg', // Ruta corregida si las imágenes están en public/src/img/news
             imageAlt: 'Andres Montilla'
         },
         {
             id: 3,
-            name: 'Andres Montilla',
+            sport: 'Natacion',
+            name: 'Maria Benitez',
             calification: 4.8,
             price: 30,
-            imageUrl: './src/img/news/news1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
+            imageUrl: './src/img/trainers/3.jpg', // Ruta corregida si las imágenes están en public/src/img/news
             imageAlt: 'Andres Montilla'
         },
         {
             id: 4,
-            name: 'Andres Montilla',
+            sport: 'Gimnasio',
+            name: 'Bernie Rivas',
             calification: 4.8,
             price: 30,
-            imageUrl: './src/img/news/news1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
+            imageUrl: './src/img/trainers/4.jpg', // Ruta corregida si las imágenes están en public/src/img/news
             imageAlt: 'Andres Montilla'
         }
     ];
@@ -138,12 +142,15 @@ const TrainerSection = () => {
         <div className="trainer-section-container">
             <div className="trainer-section__header">
                 <h3 className="trainer-section__title">Reserva una clase</h3>
-                <a href="#" className="trainer-section__see-all">Ver Todo</a>
+                <button className='button__see-all'>
+                    <a href="#" className="trainer-section__see-all">Ver Todo</a>
+                </button>
             </div>
             <div className="trainer-section__carousel" ref={carouselRef}>
                 {trainersData.map(data => (
                     <TrainerCard
                         key={data.id}
+                        sport={data.sport}
                         name={data.name}
                         calification={data.calification}
                         price={data.price}
@@ -152,7 +159,7 @@ const TrainerSection = () => {
                     />
                 ))}
             </div>
-        </div>
+        </div >
     );
 };
 

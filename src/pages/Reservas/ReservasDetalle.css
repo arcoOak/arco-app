@@ -1,0 +1,132 @@
+
+/* --- Botón Volver --- */
+.boton-volver {
+    position: absolute;
+    top: 20px; /* Ajusta según la altura de tu barra de navegación */
+    left: 1rem;
+    z-index: 10;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.boton-volver:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* --- Contenedor Principal --- */
+.reservas-detalle-container {
+    padding: 0.5rem;
+    padding-top: 5rem; /* Espacio para el botón de volver */
+    background-color: #f8f9fa; /* Fondo gris claro */
+    min-height: 100vh;
+}
+
+/* --- Cabecera del Detalle --- */
+.reservas-detalle-header h1 {
+    font-size: 2.5rem;
+    color: #343a40;
+    margin-bottom: 2rem;
+    font-weight: bold;
+}
+
+/* --- Tarjeta de Información Principal --- */
+.reserva-info {
+    display: flex;
+    /* Crea dos columnas en pantallas grandes y una en pequeñas */
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+/* --- Estilos para los Títulos de las secciones (h2) --- */
+.reserva-info-header h2,
+.reserva-info-details h2,
+.horas-reservadas h2,
+.invitados-reservados h2 {
+    font-size: 1.4rem;
+    color: #007bff; /* Color azul para resaltar */
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* --- Estilos para los párrafos de información --- */
+.reserva-info p {
+    font-size: 1rem;
+    color: #6c757d;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+}
+
+.reserva-info p strong {
+    color: #343a40;
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+/* --- Tarjetas para Horas e Invitados --- */
+.horas-reservadas,
+.invitados-reservados {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+/* --- Listas de Horas e Invitados --- */
+.horas-list,
+.invitados-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.horas-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.horas-list li {
+    background-color: #e0f7fa; /* Cian claro */
+    color: #00796b; /* Cian oscuro */
+    padding: 0.5rem 1rem;
+    border-radius: 20px; /* Estilo píldora */
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.invitados-list li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f1f3f5;
+    color: #495057;
+}
+
+.invitados-list li:last-child {
+    border-bottom: none;
+}
+
+/* --- Estados de Carga o Vacío --- */
+.loading-text,
+.horas-reservadas p,
+.invitados-reservados p {
+    color: #909090;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem 0;
+}
+

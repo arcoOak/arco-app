@@ -6,6 +6,7 @@ import {
     getReservaByUsuarioMesDB,
     getHorasReservadasPorUnidadFechaDB,
     getHorasReservadasPorReservaDB,
+    getInvitadosPorReservaDB,
     createReservaDB,
     createReservaHorasDB,
     createReservaInvitadosDB
@@ -120,6 +121,20 @@ const getHorasReservadasPorReserva = async (req, res) => {
     }
 }
 
+const getInvitadosPorReserva = async (req, res) => {
+    const { id_reserva } = req.params;
+    try {
+        if (!id_reserva) {
+            return res.status(400).json({ message: 'El ID de la reserva es requerido.' });
+        }
+        const invitados = await getInvitadosPorReservaDB(id_reserva);
+        res.json(invitados);
+    } catch (error) {
+        console.error('Error al obtener los invitados por reserva:', error);
+        res.status(500).json({ message: 'Error interno del servidor al obtener los invitados por reserva' });
+    }
+}
+
 const createReserva = async (req, res) => {
     // Es crucial obtener una conexión del pool para manejar la transacción
     const connection = await pool.getConnection(); 
@@ -172,5 +187,6 @@ export default {
     getReservaByUsuarioMes,
     getHorasReservadasPorUnidadFecha,
     getHorasReservadasPorReserva,
+    getInvitadosPorReserva,
     createReserva
 };

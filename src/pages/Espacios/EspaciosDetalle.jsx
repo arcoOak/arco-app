@@ -7,7 +7,7 @@ import './EspaciosDetalle.css'; // Crea un archivo CSS para este componente
 
 import LoadingModal from '../../components/modals/LoadingModal';
 import ExitosoModal from '../../components/modals/ExitosoModal';
-import ReservaModal from './ReservaModal'; // Asegúrate de que la ruta sea correcta
+import EspacioReservaModal from './EspacioReservaModal'; // Asegúrate de que la ruta sea correcta
 
 import espacioService from '../../services/espacio.service';
 import reservasService from '../../services/reservas.service';
@@ -46,7 +46,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
     const [listaHorariosYaReservados, setListaHorariosYasReservados] = useState([]); // Estado para manejar los horarios ya reservados
 
-    const [showReservaModal, setShowReservaModal] = useState(false); // Estado para manejar la visibilidad del modal de reserva
+    const [showEspacioReservaModal, setShowEspacioReservaModal] = useState(false); // Estado para manejar la visibilidad del modal de reserva
     const [notaReserva, setNotaReserva] = useState('');
     const [invitadosReserva, setInvitadosReserva] = useState([]);
 
@@ -374,7 +374,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
             
 
-            setShowReservaModal(false); // Cerrar el modal de reserva
+            setShowEspacioReservaModal(false); // Cerrar el modal de reserva
 
         }catch (error) {
             console.error('Error al confirmar la reserva:', error);
@@ -411,9 +411,9 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                 visible={showExitosoModal} 
                 mensaje='¡Reserva realizada con éxito!'
             ></ExitosoModal>
-            <ReservaModal 
-                visible={showReservaModal} 
-                onClose={() => setShowReservaModal(false)} 
+            <EspacioReservaModal 
+                visible={showEspacioReservaModal} 
+                onClose={() => setShowEspacioReservaModal(false)} 
                 onConfirm={() => handleConfirmarReserva()}
                 espacio={espacio}
                 unidadSeleccionada={unidadesEspacio.find(unidad => unidad.id_espacio_reservable_unidad === unidadSeleccionada)}
@@ -425,10 +425,10 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                 invitados={invitadosReserva}
                 setInvitados={setInvitadosReserva}
 
-                ></ReservaModal>
+                ></EspacioReservaModal>
             <LoadingModal visible={loading} />
             <div className="reserva-header">
-                <button className="back-button" onClick={() => navigate('/espacios')}>
+                <button className="back-button-espacios" onClick={() => navigate('/espacios')}>
                     <i className='bx bx-arrow-back'></i> Volver
                 </button>
                 {/* <img src={`../${espacio.img}`} alt={espacio.name} className="reserva-img" /> */}
@@ -561,7 +561,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                         
                         <button className={`proceed-button`} 
                             disabled={ isBotonReservarDisabled } 
-                            onClick={() => { setShowReservaModal(true) }}>
+                            onClick={() => { setShowEspacioReservaModal(true) }}>
                             {totalReserva > 0 ? `Reservar por $${totalReserva}` : 'Reservar'}
                         </button>
                     </footer>

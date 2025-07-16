@@ -81,6 +81,19 @@
     margin: 0;
 }
 
+.back-button-espacios {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
 .step-indicator {
     font-size: 14px;
     color: #777;
@@ -587,6 +600,7 @@
     font-weight: 500;
     color: #333;
 }
+
 
 
 /* Estilo para el horario seleccionado */

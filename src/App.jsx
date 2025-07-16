@@ -33,6 +33,9 @@ import Login from "./login"; // Importa tu componente de Login
 import Preloader from "./components/Preloader"; // Importa el componente Preloader
 ///////
 
+import Reservas from "./pages/Reservas/Reservas"; // Importa el componente de Reservas
+import ReservasDetalle from "./pages/Reservas/ReservasDetalle"; // Importa el componente de detalle de reservas
+
 import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
 
 import { CartProvider } from './context/CartContext'
@@ -110,11 +113,20 @@ function App() {
                         <Route path="/perfil/editar-perfil" element={<EditarPerfil user={user} />} />
                         <Route path="/perfil/beneficiarios" element={<BeneficiariosLista />} />
 
+                        {/* Rutas de Espacios */}
                         <Route path="/espacios" element={<Espacios />} />
                         <Route path="/espacios/:id" element={<EspaciosDetalle concesionarios={concesionarios} />} />
+
+                        {/* Rutas de Comercios */}
                         <Route path="/comercios" element={<Comercios  />} />
                         <Route path="/comercio/:id" element={<ComercioDetalle   />} />
+
+                        {/* Rutas de Lectura de QR */}
                         <Route path="/qr" element={<LecturaQr />} />
+
+                        {/* Rutas de Reservas */}
+                        <Route path="/reservas" element={<Reservas />} />
+                        <Route path="/reservas/:id" element={<ReservasDetalle />} />
                     </Route>
                 </Route>
 

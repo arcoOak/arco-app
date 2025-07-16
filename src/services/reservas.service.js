@@ -59,6 +59,15 @@ const getHorasReservadasPorReserva = async (id_reserva) => {
     return response.json();
 }
 
+const getInvitadosPorReserva = async (id_reserva) => {
+    const response = await fetch(`${API_HOST}/api/reservas/invitados/${id_reserva}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    });
+    if (!response.ok) throw new Error('Error al obtener los invitados por reserva');
+    return response.json();
+}
+
 const createReserva = async (datosCompletosReserva) => {
     const response = await fetch(`${API_HOST}/api/reservas`, {
         method: 'POST',
@@ -77,5 +86,6 @@ export default{
     getReservaByUsuarioMes,
     getHorasReservadasPorUnidadFecha,
     getHorasReservadasPorReserva,
+    getInvitadosPorReserva,
     createReserva
 }

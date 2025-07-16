@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './ReservaModal.css';
+import './EspacioReservaModal.css';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 

@@ -3,7 +3,11 @@ import pool from '../config/db.config.js';
 const getReservaByIdDB = async (id_reserva) => {
     try {
         const [rows] = await pool.execute(
-            `SELECT * FROM reservaciones WHERE id_reservacion = ?`, 
+            `SELECT a.*, b.nombre_espacio_reservable, c.nombre_unidad, c.descripcion, c.capacidad, c.costo_reserva, c.ubicacion
+            FROM reservaciones a
+            JOIN espacios_reservables b ON b.id_espacio_reservable = a.id_espacio_reservable 
+            JOIN espacios_reservables_unidad c ON c.id_espacio_reservable_unidad = a.id_espacio_reservable_unidad 
+            WHERE a.id_reservacion = ?`, 
             [id_reserva]
         );
         if (rows.length === 0) {
@@ -36,7 +40,12 @@ const getReservasByEspacioUnidadDB = async (id_espacio) => {
 const getReservasPorUsuarioDB = async (id_usuario) => {
     try{
         const [rows] = await pool.execute(
-            `SELECT * FROM reservaciones WHERE id_usuario = ?`, [id_usuario]);
+            `SELECT a.*, count(b.id_reservacion_hora) cant_horas, c.nombre_espacio_reservable, d.nombre_unidad 
+            FROM reservaciones a 
+            JOIN reservaciones_horas b ON a.id_reservacion = b.id_reservacion 
+            JOIN espacios_reservables c ON c.id_espacio_reservable = a.id_espacio_reservable 
+            JOIN espacios_reservables_unidad d ON d.id_espacio_reservable_unidad = a.id_espacio_reservable_unidad 
+            WHERE id_socio = ? group by id_reservacion`, [id_usuario]);
         
         if (rows.length === 0) {
             return []; // Retorna un array vacío si no hay reservas
@@ -64,7 +73,7 @@ const getReservasByEspacioUnidadMesDB = async (id_espacio, mes) => {
 const getReservaByUsuarioMesDB = async (id_usuario, mes) => {
     try {
         const [rows] = await pool.execute(
-            `SELECT * FROM reservaciones WHERE id_usuario = ? AND EXTRACT(MONTH FROM fecha_reserva) = ?`, 
+            `SELECT a.*, count(b.id_reservacion_hora) cant_horas, c.nombre_espacio_reservable, d.nombre_unidad FROM reservaciones a JOIN reservaciones_horas b ON a.id_reservacion = b.id_reservacion JOIN espacios_reservables c ON c.id_espacio_reservable = a.id_espacio_reservable JOIN espacios_reservables_unidad d ON d.id_espacio_reservable_unidad = a.id_espacio_reservable_unidad WHERE id_socio = ? AND MONTH(a.fecha_reservacion) = ? group by id_reservacion`, 
             [id_usuario, mes]
         );
         return rows;
@@ -96,6 +105,29 @@ const getHorasReservadasPorReservaDB = async (id_reserva) => {
         return rows;
     } catch (error) {
         console.error("Error al obtener horas reservadas por reserva:", error);
+        throw error; // Propaga el error para manejarlo en el lugar donde se llame a esta función
+    }
+}
+
+const getInvitadosPorReservaDB = async (id_reserva) => {
+    try {
+        const [rows] = await pool.execute(
+            `SELECT a.*, 
+            CASE 
+                WHEN a.id_rol = 3 THEN 'Familiar'
+                WHEN a.id_rol = 4 THEN 'Invitado'
+            END AS tipo_invitado,
+            CASE 
+                WHEN a.id_rol = 3 THEN (SELECT CONCAT(f.nombre, ' ', f.apellido) FROM familiares f WHERE f.id_familiar = a.id)
+                WHEN a.id_rol = 4 THEN (SELECT CONCAT(i.nombre, ' ', i.apellido) FROM invitados i WHERE i.id_invitado = a.id)
+            END AS nombre_invitado
+            FROM reservaciones_invitados a 
+            WHERE a.id_reservacion = ?`,
+            [id_reserva]
+        );
+        return rows;
+    } catch (error) {
+        console.error("Error al obtener los invitados por reserva:", error);
         throw error; // Propaga el error para manejarlo en el lugar donde se llame a esta función
     }
 }
@@ -154,6 +186,7 @@ export {
     getReservaByUsuarioMesDB,
     getHorasReservadasPorUnidadFechaDB,
     getHorasReservadasPorReservaDB,
+    getInvitadosPorReservaDB,
     createReservaDB,
     createReservaHorasDB,
     createReservaInvitadosDB

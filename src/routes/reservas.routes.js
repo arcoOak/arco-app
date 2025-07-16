@@ -11,6 +11,7 @@ router.get('/mensual/unidad/:id_espacio/:mes', reservasController.getReservasByE
 router.get('/mensual/usuario/:id_usuario/:mes', reservasController.getReservaByUsuarioMes);
 router.get('/horas/unidad/:id_unidad/:fecha', reservasController.getHorasReservadasPorUnidadFecha);
 router.get('/horas/reserva/:id_reserva', reservasController.getHorasReservadasPorReserva);
+router.get('/invitados/:id_reserva', reservasController.getInvitadosPorReserva);
 
 router.post('/', reservasController.createReserva);
 

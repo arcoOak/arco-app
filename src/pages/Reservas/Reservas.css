@@ -1,0 +1,170 @@
+/* Estilos para el contenedor principal de la página de reservas */
+.reservas-container {
+    padding: 1rem;
+    background-color: #f4f7f6; /* Un color de fondo suave y neutro */
+    min-height: 100vh; /* Asegura que ocupe al menos toda la altura de la pantalla */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 1rem;
+}
+
+.reservas-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50; /* Un color oscuro pero no negro puro */
+    margin-bottom: 0.5rem;
+}
+
+/* --- Estilos para la lista de Meses */
+
+.meses-list {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    /* Espacio para la sombra y la barra de scroll si es visible */
+    -webkit-overflow-scrolling: touch;
+    /* Scroll suave en dispositivos táctiles */
+    cursor: grab;
+    /* Indica que se puede arrastrar */
+}
+
+/* Ocultar la barra de scroll para un look más limpio, ya que se puede arrastrar */
+.meses-list::-webkit-scrollbar {
+    display: none;
+}
+
+.meses-list {
+    -ms-overflow-style: none;
+    /* Para IE y Edge */
+    scrollbar-width: none;
+    /* Para Firefox */
+}
+
+.meses-list-inner {
+    display: inline-flex;
+    /* Permite que los elementos se alineen horizontalmente */
+    gap: 0.5rem;
+    /* Espacio entre los meses */
+}
+
+.meses-item {
+    padding: 0.6rem 1.2rem;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 25px;
+    /* Píldoras redondeadas */
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.meses-item:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+/* Puedes añadir una clase 'active' con JS para resaltar el mes seleccionado */
+.meses-item.active {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.meses-item.active .meses-item-nombre {
+    color: #fff;
+    font-weight: 600;
+}
+
+.meses-item-nombre {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #495057;
+    white-space: nowrap;
+    /* Evita que el texto se rompa en dos líneas */
+    user-select: none;
+    /* Evita que el texto se seleccione al arrastrar */
+}
+
+/* Estilos para la lista con scroll horizontal que usa el hook useDragToScroll */
+.reservas-list{
+    display: flex;
+    flex-direction: column; /* Cambia la dirección del flujo a vertical */
+}
+
+/* Ocultar la barra de scroll para un look más limpio, ya que se puede arrastrar */
+.reservas-list::-webkit-scrollbar {
+    display: none;
+}
+
+.reservas-list {
+    -ms-overflow-style: none;  /* Para IE y Edge */
+    scrollbar-width: none;  /* Para Firefox */
+}
+
+.reservas-list-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Estilos para cada tarjeta de reserva individual */
+.reserva-item {
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) ;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye el contenido verticalmente */
+}
+
+.reserva-item:hover {
+    transform: translateY(-5px); /* Efecto de elevación al pasar el cursor */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.reserva-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #eee; /* Separador sutil */
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.reserva-item-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+}
+
+.reserva-item-date {
+    font-size: 0.9rem;
+    color: #7f8c8d; /* Un color más suave para información secundaria */
+    white-space: nowrap; /* Evita que la fecha se rompa en dos líneas */
+    margin-left: 1rem;
+}
+
+.reserva-item-details p {
+    margin: 0;
+    font-size: 1rem;
+    color: #34495e;
+}
+
+/* Estilo para el mensaje de "no hay reservas" */
+.no-reservas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 200px;
+}
+
+.no-reservas p {
+    font-size: 1.2rem;
+    color: #95a5a6;
+    font-weight: 500;
+}
+

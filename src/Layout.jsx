@@ -5,6 +5,8 @@ import { useCarrito } from "./context/CartContext";
 import VistaCarrito from "./components/cart/VistaCarrito";
 import ModalCarrito from "./components/cart/ModalCarrito";
 
+import Navbar from "./pages/Navbar";
+
 export default function Layout() {
 
     const location = useLocation();
@@ -34,6 +36,8 @@ export default function Layout() {
             {carritoVisible && 
             (<VistaCarrito onClose={() => setCarritoVisible(false)}></VistaCarrito>)
             }
+
+            <Navbar/>
 
             <div className="main-content">
                 <Outlet />

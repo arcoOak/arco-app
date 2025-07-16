@@ -34,15 +34,12 @@ import Preloader from "./components/Preloader"; // Importa el componente Preload
 import FAQPage from "./pages/Faqs"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import TermsOfUse from "./pages/TermsOfUse"
-///////
+import Progress from "./components/Progress"
 
 import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
-
 import { CartProvider } from './context/CartContext'
 
-
 function App() {
-
     const { user, login, logout, isAuthenticated} = useAuth(); // Usa el contexto de autenticación
     // Estado para controlar la visibilidad del preloader inicial
     const [showInitialPreloader, setShowInitialPreloader] = useState(true);
@@ -109,6 +106,7 @@ function App() {
                         <Route path="/FAQPage" element={<FAQPage />} />
                         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
                         <Route path="/TermsOfUse" element={<TermsOfUse />} />
+                        <Route path="/Progress" element={<Progress />} />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/payment-detail/:id" element={<PaymentDetail />} />
                         {/*Ruta de Perfiles*/}

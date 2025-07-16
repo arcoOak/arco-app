@@ -16,7 +16,7 @@ export default function Balance() {
             <section className="calendar-section">
                 <div className="calendar-header">
                     <div>
-                        <p>Adelanta y Obtén<br /> Recompensas <i className="fa fa-gift"></i></p>
+                        <p>Adelanta duplica <i className="fa fa-gift"></i></p>
                     </div>
                     <div>
                         <button>Pagar</button>

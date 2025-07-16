@@ -1,3 +1,6 @@
+.swiper{
+    position: 0;
+}
 .swiper-cube .swiper-cube-shadow:before {
     opacity: .4;
 }

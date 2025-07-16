@@ -16,6 +16,7 @@ import Balance from '../components/Balance';
 import BalanceSection from '../components/BalanceSection';
 import TransacctionSection from '../components/TransacctionSection';
 import Slider from '../components/Slider';
+import Progress from '../components/Progress';
 
 import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
 
@@ -86,7 +87,9 @@ export default function App() {
             <Balance />
             <ImageSlider />
             <BalanceSection />
-            <h6>Aqui irá el progress bar</h6>
+            <Progress
+                percentage={43}
+            />
             <TransacctionSection />
             <div className="app">
                 {/* Estado de Cuotas */}

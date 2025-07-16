@@ -35,7 +35,7 @@
 }
 
 .credit-card--blue {
-    background: linear-gradient(116deg, #4070f4, #00081e);
+    background: linear-gradient(116deg, #050608, #4070f4);
     /* Azul */
 }
 
@@ -52,8 +52,7 @@
 }
 
 .credit-card--brown {
-    /* background: linear-gradient(135deg, var(--card-brown-start), var(--card-brown-end)); */
-    background: linear-gradient(135deg, #4b0082 0%, #8A2BE2 100%)
+    background: linear-gradient(135deg, #9fb7e6 0%, #242a3b 100%);
 }
 
 .credit-card--brown::before {

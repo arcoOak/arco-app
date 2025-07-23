@@ -77,15 +77,6 @@ function App() {
     //     // Se usaría en un componente hijo que llame a handleLogout
     // };
 
-    // ESTA es la ÚNICA declaración de allBusinesses
-    const concesionarios = [
-        { id: 1, category: 'Deportes', name: 'Tenis', description: 'Cancha de Tenis', img: './src/img/reservas/tenis.jpg' },
-        { id: 2, category: 'Deportes', name: 'Padel', description: 'Cancha de Padel', img: './src/img/reservas/padel.jpg' },
-        { id: 3, category: 'Deportes', name: 'Fútbol Sala', description: 'Cancha de Fútbol Sala', img: './src/img/reservas/futbol-sala.jpg' },
-        { id: 4, category: 'Deportes', name: 'Fútbol Campo', description: 'Cancha de Fútbol Campo', img: './src/img/reservas/futbol-campo.jpg' },
-        { id: 5, category: 'Espacios', name: 'Salón de Fiestas', description: 'Salón de Eventos', img: './src/img/reservas/kfc.png' },
-        { id: 6, category: 'Parilleras', name: 'Parrillera', description: 'Parrillera de Carbón', img: 'src/img/reservas/parrillera.jpg' },
-    ];
 
     return (
         <BrowserRouter>
@@ -115,7 +106,7 @@ function App() {
                         <Route path="/perfil/beneficiarios" element={<BeneficiariosLista />} />
 
                         <Route path="/espacios" element={<Espacios />} />
-                        <Route path="/espacios/:id" element={<EspaciosDetalle concesionarios={concesionarios} />} />
+                        <Route path="/espacios/:id" element={<EspaciosDetalle />} />
                         <Route path="/comercios" element={<Comercios  />} />
                         <Route path="/comercio/:id" element={<ComercioDetalle   />} />
                         <Route path="/qr" element={<LecturaQr />} />

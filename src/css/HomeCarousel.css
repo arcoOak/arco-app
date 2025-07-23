@@ -76,7 +76,7 @@
     /* Snap to cards */
     padding-bottom: 10px;
     /* Space for scrollbar */
-    cursor: grab;
+    cursor: grab; 
     margin-bottom: 2rem;
     /* Indicate draggable */
 }

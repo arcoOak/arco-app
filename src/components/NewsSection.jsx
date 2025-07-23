@@ -148,7 +148,9 @@ const NewsSection = () => {
         <div className="news-section-container">
             <div className="news-section__header">
                 <h3 className="news-section__title">Noticias Recientes</h3>
-                <a href="#" className="news-section__see-all">Ver Todo</a>
+                <button className='button__see-all'>
+                    <a href="#" className="news-section__see-all">Ver Todo</a>
+                </button>
             </div>
             <div className="news-section__carousel" ref={carouselRef}>
                 {newsItems.map(news => (

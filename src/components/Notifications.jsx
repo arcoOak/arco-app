@@ -7,7 +7,7 @@ export default function Notifications() {
                 <div>
                     <div className="notification-header">
                         <h2>Enterate sobre asuntos importantes</h2>
-                        <h3>Te notificaremos Cuando</h3>
+                        <h3>Te notificaremos cuando</h3>
                     </div>
 
                     <div className="notification-contain">
@@ -15,6 +15,7 @@ export default function Notifications() {
                         <div className="notification-item"><i class="fa fa-credit-card"></i> Hagas una compra</div>
                         <div className="notification-item"><i class="fa fa-gift"></i> Tengas recompensas</div>
                         <div className="notification-item"><i class="fa fa-user"></i> Acceda cualquier miembro</div>
+                        <div className="notification-item"><i class="fa fa-bacon"></i> Una Orden de comida esté lista</div>
                     </div>
                 </div>
 

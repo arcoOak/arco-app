@@ -12,59 +12,70 @@ const PaymentDetail = () => {
     // de que algunos tengan 'debth' para probar el formulario.
     const paymentDetailsData = [
         {
-            id: 1,
-            category: 'Junio', // Cambiado a Junio para que sea el pendiente de la imagen
-            date: '05/06/2025',
+            id: 7,
+            category: 'Julio', // Cambiado a Junio para que sea el pendiente de la imagen
+            date: '05/07/2025',
             time: '', // No hay hora si está pendiente
             amount: 55,
             reference: '',
             capture: '',
-            concept: 'Pago de condominio mes Junio',
-            statPay: 'debth' // Este es el que estará pendiente
+            concept: 'Pago de condominio mes Julio',
+            statPay: 'venc' // Este es el que estará pendiente
         },
         {
-            id: 2,
-            category: 'Abril',
-            date: '05/04/2025',
-            time: '02:15 PM',
-            amount: 50,
-            reference: 'REF-002',
-            capture: '../src/img/recibos/recibo.jpg',
-            concept: 'Pago de condominio mes Abril',
-            statPay: 'paid'
+            id: 8,
+            category: 'Agosto', // Cambiado a Junio para que sea el pendiente de la imagen
+            date: '05/08/2025',
+            time: '', // No hay hora si está pendiente
+            amount: 55,
+            reference: '',
+            capture: '',
+            concept: 'Pago de condominio mes Agosto',
+            statPay: 'adel' // Este es el que estará pendiente
         },
         {
-            id: 3,
-            category: 'Marzo',
-            date: '05/03/2025',
-            time: '09:00 AM',
-            amount: 45,
-            reference: 'REF-003',
-            capture: '../src/img/recibos/recibo.jpg',
-            concept: 'Pago de condominio mes Marzo',
-            statPay: 'paid'
+            id: 9,
+            category: 'Septiembre', // Cambiado a Junio para que sea el pendiente de la imagen
+            date: '05/09/2025',
+            time: '', // No hay hora si está pendiente
+            amount: 55,
+            reference: '',
+            capture: '',
+            concept: 'Pago de condominio mes Septiembre',
+            statPay: 'adel' // Este es el que estará pendiente
         },
         {
-            id: 4,
-            category: 'Febrero',
-            date: '05/02/2025',
-            time: '04:45 PM',
-            amount: 43,
-            reference: 'REF-004',
-            capture: '../src/img/recibos/recibo.jpg',
-            concept: 'Pago de condominio mes Febrero',
-            statPay: 'paid'
+            id: 10,
+            category: 'Octubre', // Cambiado a Junio para que sea el pendiente de la imagen
+            date: '05/10/2025',
+            time: '', // No hay hora si está pendiente
+            amount: 55,
+            reference: '',
+            capture: '',
+            concept: 'Pago de condominio mes Octubre',
+            statPay: 'adel' // Este es el que estará pendiente
         },
         {
-            id: 5,
-            category: 'Enero',
-            date: '05/01/2025',
-            time: '11:00 AM',
-            amount: 40,
-            reference: 'REF-005',
-            capture: '../src/img/recibos/recibo.jpg',
-            concept: 'Pago de condominio mes Enero',
-            statPay: 'paid'
+            id: 11,
+            category: 'Noviembre', // Cambiado a Junio para que sea el pendiente de la imagen
+            date: '05/11/2025',
+            time: '', // No hay hora si está pendiente
+            amount: 55,
+            reference: '',
+            capture: '',
+            concept: 'Pago de condominio mes Noviembre',
+            statPay: 'adel' // Este es el que estará pendiente
+        },
+        {
+            id: 12,
+            category: 'Diciembre', // Cambiado a Junio para que sea el pendiente de la imagen
+            date: '05/12/2025',
+            time: '', // No hay hora si está pendiente
+            amount: 55,
+            reference: '',
+            capture: '',
+            concept: 'Pago de condominio mes Diciembre',
+            statPay: 'adel' // Este es el que estará pendiente
         },
     ];
 
@@ -127,6 +138,23 @@ const PaymentDetail = () => {
         navigate('/'); // Redirige a la página principal después de enviar
     };
 
+    let statusPago = '';
+
+    switch(payment.statPay){
+        case 'debth':
+            statusPago='Pendiente';
+        break;
+        case 'pay':
+            statusPago='Pagado';
+        break;
+        case 'venc':
+            statusPago='Vencido';
+        break;
+        case 'adel':
+            statusPago='Adelantar';
+        break;
+    }
+
     return (
         <div className="payment-detail-container">
             <button className="back-button" onClick={() => navigate('/')}>&larr; Volver</button>
@@ -152,7 +180,7 @@ const PaymentDetail = () => {
                     </div>
                 )}
                 <p className={`payment-status ${payment.statPay === 'paid' ? 'status-paid' : 'status-pending'}`}>
-                    Estado: {payment.statPay === 'paid' ? 'Pagado' : 'Pendiente'}
+                    Estado: {statusPago}
                 </p>
 
                 {/* Mostrar el botón "Reportar Pago" solo si el estado es 'pendiente' */}

@@ -56,7 +56,21 @@ const Navbar = () => {
     }, [isDarkTheme]);
 
     // Effect to handle sidebar collapse on window resize (optional, but good for responsiveness)
- 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 768) {
+                setIsSidebarCollapsed(false);
+            } else {
+                // You might want to re-collapse on small screens if it's currently expanded
+                // setIsSidebarCollapsed(true); // Uncomment if you want it to collapse automatically
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleNotification = () => {
         navigate(`notifications`)

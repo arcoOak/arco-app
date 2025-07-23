@@ -1,0 +1,104 @@
+.progress-section {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin: 1rem auto 0;
+}
+
+.progress-container {
+    /* Adjust width as needed */
+    width: 100%;
+    padding: 1rem;
+}
+
+.progress-header {
+    display: flex;
+    align-items: center;
+}
+
+.progress-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    /* Start the circle from the top */
+}
+
+.progress-ring-track {
+    stroke-linecap: round;
+}
+
+.progress-ring-bar {
+    transition: stroke-dashoffset 0.35s;
+    transform-origin: 50% 50%;
+    stroke-linecap: round;
+}
+
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #4070f4;
+    /* Match the progress bar color */
+}
+
+.progress-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.progress-title {
+    color: #4070f4;
+    margin-bottom: 5px;
+}
+
+.progress-description {
+    color: #555555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.progress-button {
+    background-color: #4070f4;
+    margin-top: 8px;
+    padding: 7px 15px;
+}
+
+.progress-navigation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #3f51b5;
+    /* Blue color for buttons */
+    cursor: pointer;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-button:hover {
+    opacity: 0.8;
+}
+
+.nav-button.prev-button {
+    margin-right: auto;
+    /* Push "Next" to the right */
+}
+
+.nav-button.next-button {
+    margin-left: auto;
+    /* Push "Previous" to the left */
+}

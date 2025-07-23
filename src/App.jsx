@@ -29,21 +29,21 @@ import EspaciosDetalle from "./pages/Espacios/EspaciosDetalle"; // Asegúrate de
 //import ComercioDetalle from './components/ComercioDetalle';
 //import Qr from "./pages/Lectura";
 import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
-import Login from "./login"; // Importa tu componente de Login
+import Login from "./Login"; // Importa tu componente de Login
 import Preloader from "./components/Preloader"; // Importa el componente Preloader
-///////
+import FAQPage from "./pages/Faqs"
+import PrivacyPolicy from "./pages/PrivacyPolicy"
+import TermsOfUse from "./pages/TermsOfUse"
+import Progress from "./components/Progress"
 
 import Reservas from "./pages/Reservas/Reservas"; // Importa el componente de Reservas
 import ReservasDetalle from "./pages/Reservas/ReservasDetalle"; // Importa el componente de detalle de reservas
 
 import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
-
 import { CartProvider } from './context/CartContext'
 
-
 function App() {
-
-    const { user, login, logout, isAuthenticated } = useAuth(); // Usa el contexto de autenticación
+    const { user, login, logout, isAuthenticated} = useAuth(); // Usa el contexto de autenticación
     // Estado para controlar la visibilidad del preloader inicial
     const [showInitialPreloader, setShowInitialPreloader] = useState(true);
 
@@ -80,15 +80,6 @@ function App() {
     //     // Se usaría en un componente hijo que llame a handleLogout
     // };
 
-    // ESTA es la ÚNICA declaración de allBusinesses
-    const concesionarios = [
-        { id: 1, category: 'Deportes', name: 'Tenis', description: 'Cancha de Tenis', img: './src/img/reservas/tenis.jpg' },
-        { id: 2, category: 'Deportes', name: 'Padel', description: 'Cancha de Padel', img: './src/img/reservas/padel.jpg' },
-        { id: 3, category: 'Deportes', name: 'Fútbol Sala', description: 'Cancha de Fútbol Sala', img: './src/img/reservas/futbol-sala.jpg' },
-        { id: 4, category: 'Deportes', name: 'Fútbol Campo', description: 'Cancha de Fútbol Campo', img: './src/img/reservas/futbol-campo.jpg' },
-        { id: 5, category: 'Espacios', name: 'Salón de Fiestas', description: 'Salón de Eventos', img: './src/img/reservas/kfc.png' },
-        { id: 6, category: 'Parilleras', name: 'Parrillera', description: 'Parrillera de Carbón', img: 'src/img/reservas/parrillera.jpg' },
-    ];
 
     return (
         <BrowserRouter>
@@ -106,6 +97,10 @@ function App() {
                         </CartProvider>
                         }>
                         <Route path="/" element={<Home />} />
+                        <Route path="/FAQPage" element={<FAQPage />} />
+                        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+                        <Route path="/TermsOfUse" element={<TermsOfUse />} />
+                        <Route path="/Progress" element={<Progress />} />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/payment-detail/:id" element={<PaymentDetail />} />
                         {/*Ruta de Perfiles*/}
@@ -115,7 +110,7 @@ function App() {
 
                         {/* Rutas de Espacios */}
                         <Route path="/espacios" element={<Espacios />} />
-                        <Route path="/espacios/:id" element={<EspaciosDetalle concesionarios={concesionarios} />} />
+                        <Route path="/espacios/:id" element={<EspaciosDetalle />} />
 
                         {/* Rutas de Comercios */}
                         <Route path="/comercios" element={<Comercios  />} />

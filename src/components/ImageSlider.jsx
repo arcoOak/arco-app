@@ -9,7 +9,7 @@ const ImageSlider = () => {
         {
             id: 'card_1',
             cardNumber: '4561',
-            saldo: '4860.5',
+            saldo: '4.860,50',
             color: 'credit-card--blue',
             iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
             iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png', // URL para el logo de Visa
@@ -17,7 +17,7 @@ const ImageSlider = () => {
         {
             id: 'card_2',
             cardNumber: '1234',
-            saldo: '600',
+            saldo: '600,00',
             color: 'credit-card--brown',
             iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
             iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png',

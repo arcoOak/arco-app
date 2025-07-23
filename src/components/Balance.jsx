@@ -32,7 +32,7 @@ export default function Balance() {
                         <div className="calendar-item">JUN <i className="fa fa-circle" style={{color: '#d74545', fontSize: '11px'}}></i></div> */}
                         <div
                             className="calendar-item active-month"
-                            onClick={() => handleHistoryItemClick(7)}
+                            onClick={() => handleHistoryItemClick(7)} 
                         >
                             JUL <i className="fa fa-circle" style={{ color: '#d74545', fontSize: '11px' }}></i>
                         </div>

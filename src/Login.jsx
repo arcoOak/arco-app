@@ -42,6 +42,8 @@ export default function Login() {
         }
     }, [])
 
+    const [inputType, setInputType] = useState('password');
+
     return (
         <>
             {showPostLoginPreloader && <Preloader />} {/* Muestra el preloader si showPostLoginPreloader es true */}
@@ -87,7 +89,7 @@ export default function Login() {
                                     <i className='fa fa-lock'></i>
                                 </button>
                                 <input
-                                    type="password"
+                                    type={inputType}
                                     id="password"
                                     value={password}
                                     placeholder="Contraseña"
@@ -97,7 +99,10 @@ export default function Login() {
                                     tabIndex={2}
                                     autoComplete="on"
                                 />
-                                <button className='button-input-eye'>
+                                <button 
+                                    className='button-input-eye'
+                                    type='button'
+                                    onClick={() => setInputType(inputType === 'password' ? 'text' : 'password')}>
                                     <i className='fa fa-eye'></i>
                                 </button>
                             </div>

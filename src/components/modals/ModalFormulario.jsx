@@ -74,7 +74,7 @@ const ModalFormulario = ({ onClose, onSubmit, titulo, visible, children, data })
 
 
     return (
-        <div className={`modal-overlay`} style={{ display: visible ? 'block' : 'none' }}>
+        <div className={`modal-overlay-form`} style={{ display: visible ? 'block' : 'none' }}>
             <div className="modal-content">
                 <div className="modal-header">
                     <h2 className="modal-title">{titulo}

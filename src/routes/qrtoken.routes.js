@@ -15,5 +15,6 @@ router.put('/familiar/:id_usuario/', qrtokenController.updateQrTokenFamiliar); /
 
 router.post('/generate', qrtokenController.generateOrUpdateQrToken); // Genera o actualiza el token QR de un usuario
 router.post('/familiar/generate', qrtokenController.generateOrUpdateQrTokenFamiliar); // Genera o actualiza el token QR de un usuario y su familiar
+router.post('/invitado/generate', qrtokenController.generateQrTokenInvitado); // Genera o actualiza el token QR de un usuario y su invitado
 
 export default router; // Exporta el router para usarlo en app.js

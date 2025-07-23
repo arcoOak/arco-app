@@ -1,12 +1,6 @@
 import React from "react";
 import "../css/Home.css";
-<<<<<<< Updated upstream
 import NewsSection from '../components/NewsSection'; // Importa tu componente Carousel
-=======
-
-import NewsSection from '../components/NewsSection';
-//import Points from '../components/Points'; // Importa tu componente Carousel
->>>>>>> Stashed changes
 import TrainerSection from "../components/TrainerSection";
 import MonthlyOverview from '../components/MonthlyOverview';
 import ImageSlider from '../components/ImageSlider'; // Importa tu componente ImageSlider
@@ -78,7 +72,6 @@ export default function App() {
 
     return (
         <>
-<<<<<<< Updated upstream
             <div className="titleHome">
                 <div className="titleHomeSide">
                     <img src="../src/img/perfil.jpg" alt="Logo" className="logo" />
@@ -87,20 +80,13 @@ export default function App() {
                         <h3>{user.nombre + ' ' + user.apellido}</h3>
                     </div>
                 </div>
-                <div
+                {/* <div
                     className="titleNotification" 
                     onClick={() => navigate('notifications')}
                 >
                     <div className="notification"></div>
                     <i className='bx bx-bell'></i>
-=======
-            <div className="addCard">
-
-                <div style={{ textAlign: 'left' }}>
-                    <p>Bienvenido,</p>
-                    <h3>Pedro Aguilar</h3>
->>>>>>> Stashed changes
-                </div>
+                </div> */}
             </div>
 
             <BalanceSection />

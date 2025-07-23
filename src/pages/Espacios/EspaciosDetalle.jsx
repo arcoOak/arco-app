@@ -11,6 +11,7 @@ import EspacioReservaModal from './EspacioReservaModal'; // Asegúrate de que la
 
 import espacioService from '../../services/espacio.service';
 import reservasService from '../../services/reservas.service';
+import qrTokenService from '../../services/qrtoken.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
@@ -48,6 +49,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
     const [showEspacioReservaModal, setShowEspacioReservaModal] = useState(false); // Estado para manejar la visibilidad del modal de reserva
     const [notaReserva, setNotaReserva] = useState('');
+    const [invitadosFamiliares, setInvitadosFamiliares] = useState([]);
     const [invitadosReserva, setInvitadosReserva] = useState([]);
 
     // Buscar el espacio por ID
@@ -85,8 +87,9 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                         const fechaActualFormateada = new Date().toISOString().slice(0, 10)
 
                         // Cargar las reservas ya realizadas para el espacio
+                        //console.log(unidadesData[0].id_espacio_reservable_unidad)
                         const reservasDelEspacio = await reservasService.getHorasReservadasPorUnidadFecha(unidadesData[0].id_espacio_reservable_unidad, fechaActualFormateada );
-                        console.log('Reservas del espacio:', reservasDelEspacio);
+                        //console.log('Reservas del espacio:', reservasDelEspacio);
                         
                         setListaHorariosYasReservados((reservasDelEspacio || []).map(reserva => {
                             return {
@@ -325,6 +328,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
         const actualizarHorarios = async () => {
 
             const reservacionesParaLaFecha = await reservasService.getHorasReservadasPorUnidadFecha(unidadSeleccionada, new Date(selectedYear, selectedMonth, selectedDate).toISOString().slice(0, 10));
+
             setListaHorarios(currentHorarios =>
                 currentHorarios.map(horario => {
                     const isReserved = reservacionesParaLaFecha.some(
@@ -362,12 +366,23 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                     id_socio: user?.id_socio || null, // Asegúrate de que el usuario esté autenticado
                 },
                 listaInvitados: invitadosReserva,
-                listaHoras: horariosReserva
+                listaFamiliares: invitadosFamiliares,
+                listaHoras: horariosReserva,
+                id_usuario: user?.id_usuario || null // Asegúrate de que el usuario esté autenticado
             }
 
             console.log('Datos completos reserva:', datosCompletosReserva);
+            
 
             await reservasService.createReserva(datosCompletosReserva);
+
+            if(invitadosFamiliares.length > 0){
+                await qrTokenService.createTokenQrAFamiliares(user.id_usuario, invitadosFamiliares);
+            }
+
+            if(invitadosReserva.length > 0){
+                await qrTokenService.createTokenQrAInvitados(user.id_usuario, invitadosReserva);
+            }
 
             setShowExitosoModal(true); // Mostrar modal de éxito
 
@@ -397,11 +412,21 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
             }
             ));
 
+            setInvitadosFamiliares([]); // Limpiar la lista de familiares
+            setInvitadosReserva([]); // Limpiar la lista de invitados
+
             setTimeout(() => {
                 setShowExitosoModal(false); // Cerrar modal de éxito después de 2
             }, 2000);
 
         }
+    }
+
+    const handleCloseModal = () => {
+
+        setInvitadosFamiliares([]);
+        setInvitadosReserva([]);
+        setShowEspacioReservaModal(false); // Cerrar el modal de reserva
     }
 
 
@@ -413,7 +438,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
             ></ExitosoModal>
             <EspacioReservaModal 
                 visible={showEspacioReservaModal} 
-                onClose={() => setShowEspacioReservaModal(false)} 
+                onClose={() => handleCloseModal()} 
                 onConfirm={() => handleConfirmarReserva()}
                 espacio={espacio}
                 unidadSeleccionada={unidadesEspacio.find(unidad => unidad.id_espacio_reservable_unidad === unidadSeleccionada)}
@@ -422,6 +447,8 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                 costeTotal={totalReserva}
                 nota={notaReserva}
                 setNota={setNotaReserva}
+                familiares={invitadosFamiliares}
+                setFamiliares ={setInvitadosFamiliares}
                 invitados={invitadosReserva}
                 setInvitados={setInvitadosReserva}
 

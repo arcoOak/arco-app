@@ -86,7 +86,7 @@ const getReservaByUsuarioMesDB = async (id_usuario, mes) => {
 const getHorasReservadasPorUnidadFechaDB = async (id_unidad, fecha) => {
     try {
         const [rows] = await pool.execute(
-            `SELECT b.hora_reserva FROM reservaciones_horas b JOIN reservaciones a ON a.id_reservacion = b.id_reservacion WHERE a.id_espacio_reservable = ? AND a.fecha_reservacion = ?`, 
+            `SELECT b.hora_reserva FROM reservaciones_horas b JOIN reservaciones a ON a.id_reservacion = b.id_reservacion WHERE a.id_espacio_reservable_unidad = ? AND a.fecha_reservacion = ?`, 
             [id_unidad, fecha]
         );
         return rows;
@@ -163,10 +163,45 @@ const createReservaHorasDB = async (id_reserva, horariosReserva, db_connection) 
     }
 }
 
-const createReservaInvitadosDB = async (id_reserva, invitadosReserva, db_connection) => {
+const createInvitadoDB = async (id_usuario, invitado, db_connection) => {
     const executor = db_connection || pool;
     try {
-        const values = invitadosReserva.map(invitado => [id_reserva, invitado.id_rol ,invitado.id_familiar]);
+        const [result] = await executor.query(
+            `INSERT INTO invitados (id_usuario, nombre, apellido, documento_identidad, correo) VALUES (?, ?, ?, ? , ?)`,
+            [
+                id_usuario, 
+                invitado.nombre, 
+                invitado.apellido, 
+                invitado.documento_identidad, 
+                invitado.correo
+            ]
+        );
+        return result.insertId; // Retorna el ID del nuevo invitado
+    } catch (error) {
+        console.error("Error al crear un nuevo invitado:", error);
+        throw error; // Propaga el error para manejarlo en el lugar donde se llame a esta función
+    }
+}
+
+const createInvitadosEnReservaDB = async (id_reserva, listaInvitados, db_connection) => {
+    const executor = db_connection || pool; // Usa la conexión proporcionada o el pool por defecto
+    try {
+        const values = listaInvitados.map(invitado => [id_reserva, invitado.id_rol , invitado.id_invitado]); // 4 es el id_rol para invitados
+        const [result] = await executor.query(
+            `INSERT INTO reservaciones_invitados (id_reservacion, id_rol, id) VALUES ?`,
+            [values]
+        );
+        return result.affectedRows; // Retorna el número de filas afectadas
+    } catch (error) {
+        console.error("Error al crear los invitados de la reserva:", error);
+        throw error; // Propaga el error para manejarlo en el lugar donde se llame a esta función
+    }
+}
+
+const createReservaFamiliaresDB = async (id_reserva, familiaresReserva, db_connection) => {
+    const executor = db_connection || pool;
+    try {
+        const values = familiaresReserva.map(familiar => [id_reserva, familiar.id_rol ,familiar.id_familiar]);
         const [result] = await executor.query(
             `INSERT INTO reservaciones_invitados (id_reservacion, id_rol, id) VALUES ?`,
             [values]
@@ -189,5 +224,7 @@ export {
     getInvitadosPorReservaDB,
     createReservaDB,
     createReservaHorasDB,
-    createReservaInvitadosDB
+    createInvitadoDB,
+    createInvitadosEnReservaDB,
+    createReservaFamiliaresDB
 };

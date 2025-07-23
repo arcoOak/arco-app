@@ -4,7 +4,6 @@
 .app-container {
     background-color: #f4f7fc;
     width: 100%;
-    max-width: 400px;
     /* Max width for mobile-like appearance */
     overflow: hidden;
     padding-bottom: 20px;

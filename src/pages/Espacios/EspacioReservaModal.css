@@ -73,14 +73,14 @@
 }
 
 .reserva-modal__invitado{
-    padding: 15px 5px;
+    padding: 5px 5px;
     border: 1px solid #ddd;
     border-radius: 18px;
     background-color: #f7f7f7;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     text-align: center;
-    width: 45%;
+    width: 100%;
     color: #333;
 }
 
@@ -167,4 +167,17 @@
 .button-secondary:disabled {
     background-color: #b5b9bd;
     cursor: not-allowed;
+}
+
+.reserva-modal__button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background-color: #28a745; /* Color verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
 }

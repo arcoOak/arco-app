@@ -93,7 +93,51 @@ const generarTokenQrFamiliar = async (id_usuario, id_rol, id_familiar) => {
     return response.json();
 }
 
+const generarTokenQrInvitado = async (id_usuario, id_rol, dataInvitado) =>{
+    const response = await fetch(`${API_HOST}/api/qrtoken/invitado/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_usuario, id_rol, dataInvitado })
+    });
+    if (!response.ok) throw new Error('Error al generar el token QR para invitado');
+    return response.json();
+}
+
+const createTokenQrAFamiliares = async (id_usuario, listaFamiliares) =>{
+    const promises = listaFamiliares.map(familiar => {
+        return generarTokenQrFamiliar(id_usuario, 3, familiar.id_familiar);
+    });
+
+    try {
+        const results = await Promise.all(promises);
+        return results;
+    } catch (error) {
+        console.error('Error al crear tokens QR para familiares:', error);
+        throw error;
+    }
+}
+
+const createTokenQrAInvitados = async (id_usuario, listaInvitados) =>{
+    const promises = listaInvitados.map(invitado => {
+        return generarTokenQrInvitado(id_usuario, 4, invitado.data);
+    });
+
+    try {
+        const results = await Promise.all(promises);
+        return results;
+    } catch (error) {
+        console.error('Error al crear tokens QR para invitados:', error);
+        throw error;
+    }
+}
+
+
+
+
+
 export default {
+    createTokenQrAFamiliares,
+    createTokenQrAInvitados,
     obtenerTokenQrPorUsuario,
     obtenerTokenQrPorUsuarioFamiliar,
     crearTokenQr,
@@ -102,5 +146,6 @@ export default {
     actualizarTokenQrFamiliar,
     validarTokenQr,
     generarTokenQr,
-    generarTokenQrFamiliar
+    generarTokenQrFamiliar,
+    generarTokenQrInvitado
 };

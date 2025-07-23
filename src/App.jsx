@@ -16,7 +16,7 @@ import Espacios from "./pages/Espacios/Espacios";
 //import ReservaUnidad from "./pages/ReservaUnidad";
 import Comercios from "./pages/Comercio/Comercio"; // Asumo que este es tu componente principal de lista de comercios
 import ComercioDetalle from './pages/Comercio/ComercioDetalle';
-import LecturaQr from "./pages/LecturaQr";
+import LecturaQr from "./pages/LecturaQR/LecturaQr";
 //import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
 
 //import Login from "./Login"; // Importa el componente de Login

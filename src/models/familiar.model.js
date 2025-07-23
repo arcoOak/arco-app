@@ -8,7 +8,7 @@ async function getAllFamiliaresDB() {
   try {
     connection = await connectToDatabase();
     const [rows] = await pool.execute(
-      `SELECT a.id_familiar, a.id_usuario, a.nombre, a.apellido, a.documento_identidad, a.fecha_nacimiento, a.telefono, a.direccion, a.fecha_ingreso_club, a.id_genero, a.id_parentesco, b.nombre_genero, c.nombre_parentesco
+      `SELECT a.*, b.nombre_genero, c.nombre_parentesco
        FROM familiares a
        LEFT JOIN data_genero b ON a.id_genero = b.id_genero
        LEFT JOIN data_parentesco c ON a.id_parentesco = c.id_parentesco AND a.id_genero = c.id_genero`
@@ -25,7 +25,7 @@ async function getFamiliarByIdDB(familiarId) {
   try {
     connection = await connectToDatabase();
     const [rows] = await pool.execute(
-      `SELECT a.id_familiar, a.id_usuario, a.nombre, a.apellido, a.documento_identidad, a.fecha_nacimiento, a.telefono, a.direccion, a.fecha_ingreso_club, a.id_genero, a.id_parentesco, b.nombre_genero, c.nombre_parentesco
+      `SELECT a.*, b.nombre_genero, c.nombre_parentesco
        FROM familiares a
        LEFT JOIN data_genero b ON a.id_genero = b.id_genero
        LEFT JOIN data_parentesco c ON a.id_parentesco = c.id_parentesco AND a.id_genero = c.id_genero
@@ -107,7 +107,7 @@ async function getFamiliaresByUsuarioDB(usuarioId) {
   //let connection;
   try {
     const [rows] = await pool.execute(
-      `SELECT a.id_familiar, a.nombre, a.apellido, a.documento_identidad, a.fecha_nacimiento, a.telefono, a.direccion, a.fecha_ingreso_club, a.id_genero, a.id_parentesco, b.nombre_genero, c.nombre_parentesco
+      `SELECT a.*, b.nombre_genero, c.nombre_parentesco
        FROM familiares a
        LEFT JOIN data_genero b ON a.id_genero = b.id_genero
        LEFT JOIN data_parentesco c ON a.id_parentesco = c.id_parentesco AND a.id_genero = c.id_genero

@@ -3,8 +3,10 @@ import './EspacioReservaModal.css';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
+import ModalFormulario from '../../components/modals/ModalFormulario';
 
 import familiaresService from '../../services/familiares.service'; // Importa el servicio de familiares
+
 
 export default function ConfirmacionReservaModal({
     visible,
@@ -17,6 +19,8 @@ export default function ConfirmacionReservaModal({
     costeTotal,
     nota,
     setNota,
+    familiares,
+    setFamiliares,
     invitados,
     setInvitados,
 }) {
@@ -28,6 +32,17 @@ export default function ConfirmacionReservaModal({
     const [loading, setLoading] = useState(false);
     const [listaFamiliares, setListaFamiliares] = useState([]);
 
+    const [showModalFormulario, setShowModalFormulario] = useState(false);
+
+    const [dataInvitadoNuevo, setDataInvitadoNuevo] = useState({
+        nombre: '',
+        apellido: '',
+        correo: '',
+        documento_identidad: ''
+    });
+
+    
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -35,7 +50,7 @@ export default function ConfirmacionReservaModal({
             try {
                 
                 const familiaresList = await familiaresService.getBeneficiariosBySocioId(user.id_usuario);
-                console.log('Beneficiarios:', familiaresList);
+                //console.log('Beneficiarios:', familiaresList);
                 setListaFamiliares(familiaresList);
 
             } catch (error) {
@@ -48,6 +63,7 @@ export default function ConfirmacionReservaModal({
         fetchData();
 
     }, []);
+
 
     const formatearFecha = (fecha) => {
         return new Date(fecha).toLocaleDateString('es-ES', {
@@ -101,21 +117,95 @@ export default function ConfirmacionReservaModal({
     
     //console.log( 'formatearHorarios', formatearHorarios(horarios) );
 
-    const handleAnadirInvitado = (invitadoReservacion, id_rol) => {
-        const invitado = { id_familiar: invitadoReservacion.id_familiar, id_rol: id_rol };
-        if (!invitados.some(inv => inv.id_familiar === invitado.id_familiar)) {
-            setInvitados([...invitados, invitado]);
-        }else{
+    const handleToggleFamiliar = (familiarReservacion, id_rol) => {
+        const familiar = { id_familiar: familiarReservacion.id_familiar, id_rol: id_rol, nombre: familiarReservacion.nombre, apellido: familiarReservacion.apellido, tipo: 'familiar' };  //  Asegúrate de unificar la estructura con invitados (si es necesario, añade más campos)
+        if (!familiares.some(f => f.id_familiar === familiar.id_familiar)) {  //  Comprobación con el nuevo id
+            console.log('Añadiendo familiar:', familiar);
+            setFamiliares([...familiares, familiar]); // Actualiza la lista de familiares seleccionados
+        } else {
+            console.log('Familiar ya agregado:', familiar);
             // Si el familiar ya está en la lista, lo eliminamos
-            setInvitados(invitados.filter(inv => inv.id_familiar !== invitadoReservacion.id_familiar));
+            setFamiliares(familiares.filter(f => f.id_familiar !== familiar.id_familiar)); //  Filtra por el nuevo id
         }
     };
 
-    const familiarYaAgregado = (invitadoReservacion) => {
-        return invitados.some(inv => inv.id_familiar === invitadoReservacion.id_familiar);
+    const handleAnadirInvitado = (invitado) => {
+        const invitadoUnidad = { 
+            key: invitados.length + 1,
+            nombre: invitado.nombre,
+            apellido: invitado.apellido,
+            correo: invitado.correo,
+            documento_identidad: invitado.documento_identidad,
+         };
+
+        setInvitados([...invitados, invitadoUnidad]);
+        console.log('lista de invitados actualizada:', [...invitados, invitadoUnidad]);
+
+    };
+
+    const familiarYaAgregado = (familiar) => {
+        //console.log("familiar.id:", familiar);
+        //console.log("familiares:", familiares);
+        return familiares.some(f => f.id_familiar === familiar.id_familiar  );
     }
 
+    const invitadoYaAgregado = (documento_identidad) => {
+        return invitados.some(inv => inv.documento_identidad === documento_identidad);
+    }
+
+    const handleToggleModalFormulario = () => {
+        setShowModalFormulario(!showModalFormulario);
+        setDataInvitadoNuevo({
+            nombre: '',
+            apellido: '',
+            correo: '',
+            documento_identidad: ''
+        });
+    }
+
+
+    const handleCrearInvitado = async (formData) => {
+
+        handleAnadirInvitado(formData);
+        
+        handleToggleModalFormulario();
+    }
+
+    const removeInvitado = (documento_identidad) => {
+        setInvitados(invitados.filter(inv => inv.documento_identidad !== documento_identidad));
+    }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setDataInvitadoNuevo(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
     return (
+        <React.Fragment>
+        <ModalFormulario
+            visible={showModalFormulario}
+            onClose={() => handleToggleModalFormulario()}
+            onSubmit={() => handleCrearInvitado(dataInvitadoNuevo)}
+            titulo={"Crear Invitado"}
+            data = {dataInvitadoNuevo}
+        >
+            
+            <label className='box-form-container-label' htmlFor="nombre">Nombre</label>
+            <input className='box-form-container-input' value={dataInvitadoNuevo.nombre} onChange={handleChange} type="text" name="nombre" placeholder="Nombre" required />
+                    
+            <label className='box-form-container-label' htmlFor="apellido">Apellido</label>
+            <input className='box-form-container-input' value={dataInvitadoNuevo.apellido} onChange={handleChange} type="text" name="apellido" placeholder="Apellido" required />
+                    
+            <label className='box-form-container-label' htmlFor="documento_identidad">Cédula de Identidad</label>
+            <input className='box-form-container-input' value={dataInvitadoNuevo.documento_identidad} onChange={handleChange} type="number" name="documento_identidad" placeholder="Cédula de Identidad" required />
+                    
+            <label className='box-form-container-label' htmlFor="correo">Correo</label>
+            <input className='box-form-container-input' value={dataInvitadoNuevo.correo} onChange={handleChange} type="text" name="correo" placeholder="Correo" required />
+
+        </ModalFormulario>
         <div className="modal-overlay">
             <div className="modal-content">
 
@@ -155,7 +245,7 @@ export default function ConfirmacionReservaModal({
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="invitados">Seleccione Invitados (opcional)</label>
+                    <label htmlFor="invitados">Invitar Beneficiarios (opcional)</label>
                     <div className="reserva-modal__invitados">
                         {
                             listaFamiliares.length > 0 && (
@@ -163,16 +253,46 @@ export default function ConfirmacionReservaModal({
                                     <div 
                                         key={familiar.id_familiar} 
                                         className={`reserva-modal__invitado ${familiarYaAgregado(familiar) ? 'seleccionado' : ''}`}
-                                        onClick={() => handleAnadirInvitado(familiar, 3)}
+                                        onClick={() => handleToggleFamiliar(familiar, 3)}
                                     >
                                         <p>
-                                            {familiar.nombre} <br/> {familiar.apellido}
+                                            {familiar.nombre} {familiar.apellido}
                                         </p>
                                     </div>
                                 ))
                             )
                         }
                     </div>
+                    
+                </div>
+
+                <div className="form-group">
+                        {
+                            invitados.length > 0 && (
+                                <label htmlFor="invitados">Invitados (opcional)</label>
+                            )
+                        }
+                    <div className="reserva-modal__invitados">
+                        
+                        
+                        {
+                            invitados.length > 0 && (
+                                invitados.map((invitadoUnico, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`reserva-modal__invitado ${invitadoYaAgregado(invitadoUnico.documento_identidad) ? 'seleccionado' : ''}`}
+                                        onClick={() => removeInvitado(invitadoUnico.documento_identidad)}
+                                    >
+                                        <p>
+                                            {invitadoUnico.nombre} {invitadoUnico.apellido}
+                                        </p>
+                                    </div>
+                                ))
+                            )
+                            
+                        }
+                    </div>
+                    <button className='button-primary reserva-modal__button' onClick={() => handleToggleModalFormulario()}>Añadir Invitado</button>
                 </div>
 
                 <div className="modal-actions">
@@ -186,6 +306,7 @@ export default function ConfirmacionReservaModal({
                 </div>
             </div>
         </div>
+        </React.Fragment>
     );
 }
 

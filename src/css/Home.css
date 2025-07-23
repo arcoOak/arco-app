@@ -6,7 +6,7 @@
 
 button:hover {
   /* background-color: #4070f4 !important; */
-  color: white !important;
+  /* color: white !important; */
 }
 
 button:focus {
@@ -128,9 +128,9 @@ button {
   font-size: 14px;
 }
 
-button:hover {
+/* button:hover {
   background-color: #019875;
-}
+} */
 
 .status {
   font-weight: bold;

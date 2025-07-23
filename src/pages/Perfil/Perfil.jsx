@@ -22,20 +22,7 @@ export default function Perfil() {
     
     const API_HOST = import.meta.env.VITE_API_HOST;
 
-    useEffect(() => {
-        // Cambia el ID por el que corresponda según tu lógica de autenticación
-        // fetch(`${API_HOST}/api/socios/${user.id_socio}`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setSocio(data);
-        //         setLoading(false);
-        //     })
-        //     .catch(() => setLoading(false));
-
-        //setSocio(user); // Asigna los datos del usuario autenticado al estado socio
-        //setLoading(false);
-
-    }, []);
+    
 
     const handleDivClick = (index) => {
         if (index >= 1 && index <= 5) {

@@ -80,7 +80,7 @@ export default function App() {
 
                 <div style={{ textAlign: 'left' }}>
                     <p>Bienvenido,</p>
-                    <h3>Pedro Aguilar</h3>
+                    <h3>{user.nombre + ' ' + user.apellido}</h3>
                 </div>
             </div>
             <Balance />

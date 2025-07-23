@@ -1,12 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect  } from "react";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import "../css/Balance.css";
 
 export default function Balance() {
 
+    const [mesSeleccionado, setMesSeleccionado] = useState(new Date().getMonth() + 1); 
+
     const statusColorPayment = '#22ad82';
 
     const navigate = useNavigate();
+
+    const monthsRef = useRef({});
+
+    const listaMeses = useMemo(() => {
+            return [
+                {
+                    nombre: 'Enero',
+                    numero: 1
+                },
+                {
+                    nombre: 'Febrero',
+                    numero: 2
+                },
+                {
+                    nombre: 'Marzo',
+                    numero: 3
+                },
+                {
+                    nombre: 'Abril',
+                    numero: 4
+                },
+                {
+                    nombre: 'Mayo',
+                    numero: 5
+                },
+                {
+                    nombre: 'Junio',
+                    numero: 6
+                },
+                {
+                    nombre: 'Julio',
+                    numero: 7
+                },
+                {
+                    nombre: 'Agosto',
+                    numero: 8
+                },
+                {
+                    nombre: 'Septiembre',
+                    numero: 9
+                },
+                {
+                    nombre: 'Octubre',
+                    numero: 10
+                },
+                {
+                    nombre: 'Noviembre',
+                    numero: 11
+                },
+                {
+                    nombre: 'Diciembre',
+                    numero: 12
+                }
+            ];
+        }, []);
+
+        useEffect(() => {
+                const selectedMonthElement = monthsRef.current[mesSeleccionado];
+        
+                if (selectedMonthElement) {
+                    selectedMonthElement.scrollIntoView({
+                        behavior: 'smooth', // Para una animación suave
+                        inline: 'center',  // Centra el elemento horizontalmente
+                        block: 'nearest'   // Evita el scroll vertical innecesario
+                    });
+                }
+            }, [mesSeleccionado]);
+
     const handleHistoryItemClick = (id) => {
         navigate(`/payment-detail/${id}`);
     };
@@ -24,48 +94,20 @@ export default function Balance() {
                 </div>
                 <div className="balance-body">
                     <div className="calendar-balance">
-                        {/* <div className="calendar-item">ENE <i className="fa fa-circle" style={{color: statusColorPayment, fontSize: '11px'}}></i></div>
-                        <div className="calendar-item">FEB <i className="fa fa-circle" style={{color: statusColorPayment, fontSize: '11px'}}></i></div>
-                        <div className="calendar-item">MAR <i className="fa fa-circle" style={{color: statusColorPayment, fontSize: '11px'}}></i></div>
-                        <div className="calendar-item">ABR <i className="fa fa-circle" style={{color: statusColorPayment, fontSize: '11px'}}></i></div>
-                        <div className="calendar-item">MAY <i className="fa fa-circle" style={{color: statusColorPayment, fontSize: '11px'}}></i></div>
-                        <div className="calendar-item">JUN <i className="fa fa-circle" style={{color: '#d74545', fontSize: '11px'}}></i></div> */}
-                        <div
-                            className="calendar-item active-month"
-                            onClick={() => handleHistoryItemClick(7)} 
-                        >
-                            JUL <i className="fa fa-circle" style={{ color: '#d74545', fontSize: '11px' }}></i>
-                        </div>
-                        <div
-                            className="calendar-item"
-                            onClick={() => handleHistoryItemClick(8)}
-                        >
-                            AGO <i className="fa fa-circle" style={{ color: '#bbbbbb', fontSize: '11px' }}></i>
-                        </div>
-                        <div
-                            className="calendar-item"
-                            onClick={() => handleHistoryItemClick(9)}
-                        >
-                            SEP <i className="fa fa-circle" style={{ color: '#bbbbbb', fontSize: '11px' }}></i>
-                        </div>
-                        <div
-                            className="calendar-item"
-                            onClick={() => handleHistoryItemClick(10)}
-                        >
-                            OCT <i className="fa fa-circle" style={{ color: '#bbbbbb', fontSize: '11px' }}></i>
-                        </div>
-                        <div
-                            className="calendar-item"
-                            onClick={() => handleHistoryItemClick(11)}
-                        >
-                            NOV <i className="fa fa-circle" style={{ color: '#bbbbbb', fontSize: '11px' }}></i>
-                        </div>
-                        <div
-                            className="calendar-item"
-                            onClick={() => handleHistoryItemClick(12)}
-                        >
-                            DIC <i className="fa fa-circle" style={{ color: '#bbbbbb', fontSize: '11px' }}></i>
-                        </div>
+
+                        {
+                            listaMeses.map((mes, index) => (
+                                <div
+                                    key={index}
+                                    className={`calendar-item ${mes.numero === 7 ? 'active-month' : ''}`}
+                                    onClick={() => handleHistoryItemClick(mes.numero)}
+                                    ref={el => monthsRef.current[mes.numero] = el}
+                                >
+                                    {mes.nombre.slice(0, 3).toUpperCase()} <i className="fa fa-circle" style={{ color: statusColorPayment, fontSize: '11px' }}></i>
+                                </div>
+                            ))
+                        }
+
                     </div>
                 </div>
                 <div className="balance-footer">

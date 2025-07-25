@@ -2,11 +2,15 @@ import React, { useState, useMemo, useRef, useEffect  } from "react";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import "../css/Balance.css";
 
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+
 export default function Balance() {
 
     const [mesSeleccionado, setMesSeleccionado] = useState(new Date().getMonth() + 1); 
 
     const statusColorPayment = '#22ad82';
+
+    const { saldoBilletera } = useAuth(); // Obtiene el usuario del contexto de autenticación
 
     const navigate = useNavigate();
 
@@ -115,7 +119,7 @@ export default function Balance() {
                         <p className="recibos-balance">2 Recibos pendientes</p>
                     </div>
                     <div>
-                        <p className="total-balance">102.06$</p>
+                        <p className="total-balance">{saldoBilletera}$</p>
                     </div>
                 </div>
             </section>

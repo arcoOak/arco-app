@@ -1,11 +1,90 @@
 // src/components/PaymentDetail.jsx
-import React, { useState } from 'react'; // Importa useState
+import React, { useState, useEffect } from 'react'; // Importa useState
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/PaymentDetail.css';
+
+import billeteraService from '../services/billetera.service'; // Importa el servicio de billetera
+
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
 
 const PaymentDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+
+    const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
+
+    const [registroTransacciones, setRegistroTransacciones] = useState([]); // 
+
+    const nombreMes = useMemo(() => {
+                return [
+                    {
+                        nombre: 'Enero',
+                        numero: 1
+                    },
+                    {
+                        nombre: 'Febrero',
+                        numero: 2
+                    },
+                    {
+                        nombre: 'Marzo',
+                        numero: 3
+                    },
+                    {
+                        nombre: 'Abril',
+                        numero: 4
+                    },
+                    {
+                        nombre: 'Mayo',
+                        numero: 5
+                    },
+                    {
+                        nombre: 'Junio',
+                        numero: 6
+                    },
+                    {
+                        nombre: 'Julio',
+                        numero: 7
+                    },
+                    {
+                        nombre: 'Agosto',
+                        numero: 8
+                    },
+                    {
+                        nombre: 'Septiembre',
+                        numero: 9
+                    },
+                    {
+                        nombre: 'Octubre',
+                        numero: 10
+                    },
+                    {
+                        nombre: 'Noviembre',
+                        numero: 11
+                    },
+                    {
+                        nombre: 'Diciembre',
+                        numero: 12
+                    }
+                ].filter(mes => mes.numero === parseInt(id))[0]?.nombre || 'Mes no encontrado';
+            }, []);
+
+    useEffect(() => {
+
+        const obtenerRegistroTransacciones = async () => {
+            try {
+                const response = await billeteraService.getTransaccionesBilleteraCompletaPorMes(user.id_socio, id);
+                setRegistroTransacciones(response);
+            } catch (error) {
+                console.error('Error al obtener el registro de transacciones:', error);
+            }
+        };
+
+        if(user) {
+            obtenerRegistroTransacciones();
+        }
+
+    },[user] );
+
 
     // En una aplicación real, obtendrías estos datos de una API.
     // Para este ejemplo, usamos los mismos datos dummy, asegurándonos

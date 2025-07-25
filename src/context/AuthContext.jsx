@@ -6,6 +6,8 @@ import modificarSocio from '../services/modificar.service';
 
 import LoadingModal from '../components/modals/LoadingModal';
 
+import billeteraService from '../services/billetera.service'; // Importa el servicio de billetera
+
 
 // Contexto
 export const AuthContext = createContext(null);
@@ -16,6 +18,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Almacena los datos del usuario o null si no está autenticado
   //const [isAuthenticated, setIsAuthenticated] = useState(!!user); // Para saber si el usuario está autenticado
   const [loading, setLoading] = useState(true); // Para saber si estamos cargando los datos iniciales
+
+  const [saldoBilletera, setSaldoBilletera] = useState(0); // Almacena el saldo de la billetera
 
   useEffect(() => {
     // Aquí puedes intentar cargar los datos del usuario desde localStorage o una cookie
@@ -33,6 +37,25 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+
+    const obtenerSaldoBilletera = async () => {
+      try {
+        const response = await billeteraService.getBilletera(user.id_socio);
+        const saldo = response.saldo_actual || 0; // Asegurarse de que el saldo sea un número
+        setSaldoBilletera(saldo);
+      } catch (error) {
+        console.error('Error al obtener el saldo de la billetera:', error);
+        setSaldoBilletera(0); // Establecer saldo a 0 en caso de error
+      }
+    };
+
+    if (user) {
+      obtenerSaldoBilletera();
+    }
+  }, [user]);
+
 
   // useEffect(() => {
   //   // Actualizar el estado de autenticación cuando el usuario cambia
@@ -116,6 +139,7 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = !!user;
   const value = {
     user,
+    saldoBilletera,
     loading,
     login,
     logout,

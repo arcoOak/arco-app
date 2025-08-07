@@ -1,44 +1,68 @@
+import React, { useState, useEffect } from 'react';
 import "../css/DashboardHome.css";
 import Transacctions from "./Transacctions";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+
+import billeteraService from "../services/billetera.service";
+
 export default function TransacctionSection() {
+
+    const [ultimasTransacciones, setUltimasTransacciones] = useState([]);
+
+    const { user } = useAuth();
 
     const statPay = 'pay';
     const amount = 500;
 
-    const transacctionsHistory = [
-        { id: 1, account: 'binance', amount: 50, date: '04/2025', concept: 'Mensualidad' },
-        { id: 2, account: 'credito', amount: 45, date: '03/2025', concept: 'Mensualidad' },
-        { id: 3, account: 'zelle', amount: 43, date: '02/2025', concept: 'Mensualidad' },
-        { id: 4, account: 'paypal', amount: 40, date: '01/2025', concept: 'Mensualidad' },
-    ];
+    useEffect( () =>{
+        const cargarUltimasTransacciones = async () =>{
+            try {
+
+                const transacciones = await billeteraService.getUltimasTransaccionesBilletera(user.id_socio);
+                setUltimasTransacciones(transacciones);
+
+            } catch (error){
+                console.error('Error al cargar últimas transacciones: ', error)
+            }
+        }
+
+        if(user){
+            cargarUltimasTransacciones();
+        }
+    }, [user])
 
     const navigate = useNavigate();
-    const handleHistoryItemClick = (id) => {
-        navigate(`/payment-detail/${id}`);
+
+    const handleHistoryItemClick = (id_billetera_transaccion) => {
+        if(id_billetera_transaccion && id_billetera_transaccion !== null) {
+            navigate(`/transaccion/${id_billetera_transaccion}`);
+        }
+        
     };
 
     return (
         <div className="dashboard-container">
             <section className="investments-section">
                 <div className="investments-header">
-                    <h3>Transacciones</h3>
-                    <button className="view-all">View all</button>
+                    <h3>Últimas Transacciones</h3>
+                    <button className="view-all" onClick={() => navigate('/transaccion')}>Ver más</button>
                 </div>
                 <div className="statistics-placeholder">
-                    {transacctionsHistory.map(item => (
+                    {ultimasTransacciones.map(item => (
                         <div
-                            key={item.id}
-                            onClick={() => handleHistoryItemClick(item.id)}
-                            className="history-item-clickable"
+                            key={item.id_billetera_transaccion}
+                            onClick={() => handleHistoryItemClick(item.id_billetera_transaccion)}
+                            className={`history-item-clickable`}
                         >
                             <Transacctions
-                                id={item.id}
-                                account={item.account}
-                                amount={item.amount}
-                                date={item.date}
-                                concept={item.concept}
+                                id={item.id_billetera_transaccion}
+                                descripcion_transaccion={item.descripcion_transaccion}
+                                monto={item.monto}
+                                fecha_transaccion={item.fecha_transaccion}
+                                nombre_transaccion={item.nombre_transaccion}
+                                classAmount={`${item.monto < 0 ? 'negative' : 'positive'}`}
                             />
                         </div>
                     ))}

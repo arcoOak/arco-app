@@ -2,50 +2,41 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'; // Importa useCallback
 import TrainerCard from './TrainerCard';
 
+import { useNavigate } from "react-router-dom";
+
+import {useAuth} from '../context/AuthContext';
+
+import serviciosService from '../services/servicios.service';
+
+import servicioImagePlaceholder from '../assets/comercio_placeholder.webp';
+
+
 const TrainerSection = () => {
-    const trainersData = [
-        {
-            id: 1,
-            sport: 'Tenis',
-            name: 'Andres Montilla',
-            calification: 4.8,
-            price: 30,
-            imageUrl: './src/img/trainers/1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
-            imageAlt: 'Andres Montilla'
-        },
-        {
-            id: 2,
-            sport: 'Futbol',
-            name: 'Raul Hernandez',
-            calification: 4.8,
-            price: 30,
-            imageUrl: './src/img/trainers/2.jpg', // Ruta corregida si las imágenes están en public/src/img/news
-            imageAlt: 'Andres Montilla'
-        },
-        {
-            id: 3,
-            sport: 'Natacion',
-            name: 'Maria Benitez',
-            calification: 4.8,
-            price: 30,
-            imageUrl: './src/img/trainers/3.jpg', // Ruta corregida si las imágenes están en public/src/img/news
-            imageAlt: 'Andres Montilla'
-        },
-        {
-            id: 4,
-            sport: 'Gimnasio',
-            name: 'Bernie Rivas',
-            calification: 4.8,
-            price: 30,
-            imageUrl: './src/img/trainers/4.jpg', // Ruta corregida si las imágenes están en public/src/img/news
-            imageAlt: 'Andres Montilla'
-        }
-    ];
+
+    const [servicios, setServicios] = useState([]);
+    const {user} = useAuth(); // Obtiene el usuario del contexto de autenticación
+
+    const navigate = useNavigate(); // Hook para navegar programáticamente
+
+
+    useEffect(() => {
+        const fetchServicios = async () => {
+            try {
+                const response = await serviciosService.getHomeServicios(user.id_club);
+                setServicios(response || []);
+            } catch (error) {
+                console.error("Error fetching servicios:", error);
+            }
+        };
+
+        fetchServicios();
+    }, []);
 
     const carouselRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
+
 
     // Usa useCallback para memorizar las funciones de los handlers
     // Esto evita que se creen nuevas funciones en cada render si las dependencias no cambian
@@ -141,21 +132,22 @@ const TrainerSection = () => {
     return (
         <div className="trainer-section-container">
             <div className="trainer-section__header">
-                <h3 className="trainer-section__title">Reserva una clase</h3>
+                <h3 className="trainer-section__title">Servicios Disponibles</h3>
                 <button className='button__see-all'>
-                    <a href="#" className="trainer-section__see-all">Ver Todo</a>
+                    <a href="#" onClick={ () => navigate('/servicios')} className="trainer-section__see-all">Ver Todo</a>
                 </button>
             </div>
             <div className="trainer-section__carousel" ref={carouselRef}>
-                {trainersData.map(data => (
+                {servicios.map(data => (
                     <TrainerCard
-                        key={data.id}
-                        sport={data.sport}
-                        name={data.name}
-                        calification={data.calification}
-                        price={data.price}
-                        imageUrl={data.imageUrl}
-                        imageAlt={data.imageAlt}
+                        key={data.id_servicio_reservable}
+                        sport={data.nombre_categoria_servicio}
+                        name={data.nombre_servicio_reservable}
+                        description={data.descripcion}
+                        imageUrl={data.imageUrl || servicioImagePlaceholder} // Usa la imagen del servicio o una imagen por defecto
+                        imageAlt={data.nombre_categoria_servicio}
+                        onClick={() => navigate(`/servicios/${data.id_servicio_reservable}`)} // Navega al detalle del servicio
+
                     />
                 ))}
             </div>

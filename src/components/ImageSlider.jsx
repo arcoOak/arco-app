@@ -3,21 +3,22 @@ import React, { useState } from 'react';
 import CreditCard from './CreditCard'; // Importa el nuevo componente CreditCard
 import '../css/ImageSlider.css'; // Asegúrate de mantener este archivo CSS para el contenedor y las propiedades 3D
 
+import { useAuth } from '../context/AuthContext';
+
 const ImageSlider = () => {
+
+    const { user, saldoBilletera } = useAuth(); // Obtén el saldo de la billetera del contexto de autenticación
+
     // Datos para las tarjetas de crédito
     const cardData = [
         {
             id: 'card_1',
-            cardNumber: '4561',
-            saldo: '4.860,50',
             color: 'credit-card--blue',
             iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
             iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png', // URL para el logo de Visa
         },
         {
             id: 'card_2',
-            cardNumber: '1234',
-            saldo: '600,00',
             color: 'credit-card--brown',
             iconChip: '../src/img/cards/chip.png', // URL de placeholder para el chip
             iconVisa: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/640px-Visa_Inc._logo.svg.png',
@@ -110,8 +111,8 @@ const ImageSlider = () => {
                 >
                     {/* Aquí renderizamos el componente CreditCard en lugar de la imagen de fondo */}
                     <CreditCard
-                        cardNumber={slide.cardNumber}
-                        saldo={slide.saldo}
+                        user={user}
+                        saldo={saldoBilletera}
                         cardColorClass={slide.color}
                         iconChip={slide.iconChip}
                         iconVisa={slide.iconVisa}

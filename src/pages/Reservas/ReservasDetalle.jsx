@@ -7,6 +7,8 @@ import { useAuth } from '../../context/AuthContext';
 import LoadingModal from '../../components/modals/LoadingModal';
 import reservasService from '../../services/reservas.service';
 
+import BotonVolver from '../../components/buttons/ButtonVolver';
+
 export default function ReservasDetalle() {
     const navigate = useNavigate();
 
@@ -31,10 +33,6 @@ export default function ReservasDetalle() {
                     reservasService.getInvitadosPorReserva(id),
                     reservasService.getHorasReservadasPorReserva(id)
                 ]);
-                
-                console.log('Reserva obtenida:', reserva);
-                console.log('Invitados obtenidos:', invitados);
-                console.log('Horas reservadas obtenidas:', horas);
 
                 setReservaDetalle(reserva);
                 setListaInvitados(invitados);
@@ -96,7 +94,9 @@ export default function ReservasDetalle() {
     return (
         <React.Fragment>
         <LoadingModal visible={loading} />
-        <button className="btn btn-primary boton-volver" onClick={() => navigate('/reservas')}>Volver a Reservas</button>
+
+        <ButtonVolver to="/reservas" className="boton-volver" />
+
         <div className="reservas-detalle-container">
             <div className="reservas-detalle-header">
             <h1>Detalle de Reserva</h1>

@@ -12,7 +12,13 @@ const getLoginDB = async (username, password) => {
     try {
     //connection = await connectToDatabase();
     const [rows] = await pool.execute(
-      `SELECT a.*, b.*, c.nombre_genero FROM usuarios a LEFT JOIN socios b ON a.id_usuario = b.id_socio LEFT JOIN data_genero c ON b.id_genero = c.id_genero WHERE a.email = ? AND a.activo = 1`, [username]
+      `SELECT a.*, b.*, c.nombre_genero, d.id_tipo_socio, d.nombre_tipo_socio
+      FROM usuarios a 
+      LEFT JOIN socios b ON a.id_usuario = b.id_socio 
+      LEFT JOIN data_genero c ON b.id_genero = c.id_genero 
+      LEFT JOIN data_tipo_socio d ON b.id_tipo_socio = d.id_tipo_socio
+      WHERE a.email = ? AND a.activo = 1`, 
+      [username]
     );
 
     const user = rows[0];
@@ -33,6 +39,7 @@ const getLoginDB = async (username, password) => {
         fecha_creacion: user.fecha_creacion,
         id_rol: user.id_rol,
         id_socio: user.id_socio,
+        id_club: user.id_club,
         nombre: user.nombre,
         apellido: user.apellido,
         documento_identidad: user.documento_identidad,
@@ -42,6 +49,8 @@ const getLoginDB = async (username, password) => {
         id_genero: user.id_genero,
         nombre_genero: user.nombre_genero,
         response: true,
+        id_tipo_socio: user.id_tipo_socio,
+        nombre_tipo_socio: user.nombre_tipo_socio,
       };
     }else{
       return {response: false}; // usuario no encontrado o contraseña incorrecta

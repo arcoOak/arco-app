@@ -136,7 +136,7 @@ const createReservaDB = async (reservaData, db_connection) => {
     const executor = db_connection || pool; // Usa la conexión proporcionada o el pool por defecto
     try {
         const { id_espacio_reservable, id_espacio_reservable_unidad, fecha_reservacion, nota, coste_total, id_socio } = reservaData;
-        const [result] = await executor.query(
+        const [result] = await executor.execute(
             `INSERT INTO reservaciones (id_espacio_reservable, id_espacio_reservable_unidad, fecha_reservacion, nota, costo_reserva, id_socio, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
             [id_espacio_reservable, id_espacio_reservable_unidad, fecha_reservacion, nota, coste_total, id_socio]
         );
@@ -152,9 +152,11 @@ const createReservaHorasDB = async (id_reserva, horariosReserva, db_connection) 
     const executor = db_connection || pool; // Usa la conexión proporcionada o el pool por defecto
     try {
         const values = horariosReserva.map(hora => [id_reserva, hora]);
-        const [result] = await executor.query(
-            `INSERT INTO reservaciones_horas (id_reservacion, hora_reserva) VALUES ?`,
-            [values]
+        const placeholders = values.map(() => '(?, ?)').join(', ');
+        const flatValues = values.flat();
+        const [result] = await executor.execute(
+            `INSERT INTO reservaciones_horas (id_reservacion, hora_reserva) VALUES ${placeholders}`,
+            flatValues
         );
         return result.affectedRows; // Retorna el número de filas afectadas
     } catch (error) {
@@ -166,7 +168,7 @@ const createReservaHorasDB = async (id_reserva, horariosReserva, db_connection) 
 const createInvitadoDB = async (id_usuario, invitado, db_connection) => {
     const executor = db_connection || pool;
     try {
-        const [result] = await executor.query(
+        const [result] = await executor.execute(
             `INSERT INTO invitados (id_usuario, nombre, apellido, documento_identidad, correo) VALUES (?, ?, ?, ? , ?)`,
             [
                 id_usuario, 
@@ -187,9 +189,11 @@ const createInvitadosEnReservaDB = async (id_reserva, listaInvitados, db_connect
     const executor = db_connection || pool; // Usa la conexión proporcionada o el pool por defecto
     try {
         const values = listaInvitados.map(invitado => [id_reserva, invitado.id_rol , invitado.id_invitado]); // 4 es el id_rol para invitados
-        const [result] = await executor.query(
-            `INSERT INTO reservaciones_invitados (id_reservacion, id_rol, id) VALUES ?`,
-            [values]
+        const placeholders = values.map(() => '(?, ?, ?)').join(', ');
+        const flatValues = values.flat();
+        const [result] = await executor.execute(
+            `INSERT INTO reservaciones_invitados (id_reservacion, id_rol, id) VALUES ${placeholders}`,
+            flatValues
         );
         return result.affectedRows; // Retorna el número de filas afectadas
     } catch (error) {
@@ -202,9 +206,11 @@ const createReservaFamiliaresDB = async (id_reserva, familiaresReserva, db_conne
     const executor = db_connection || pool;
     try {
         const values = familiaresReserva.map(familiar => [id_reserva, familiar.id_rol ,familiar.id_familiar]);
-        const [result] = await executor.query(
-            `INSERT INTO reservaciones_invitados (id_reservacion, id_rol, id) VALUES ?`,
-            [values]
+        const placeholders = values.map(() => '(?, ?, ?)').join(', ');
+        const flatValues = values.flat();
+        const [result] = await executor.execute(
+            `INSERT INTO reservaciones_invitados (id_reservacion, id_rol, id) VALUES ${placeholders}`,
+            flatValues
         );
         return result.affectedRows; // Retorna el número de filas afectadas
     } catch (error) {

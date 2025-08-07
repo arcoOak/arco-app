@@ -3,6 +3,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import authService from '../services/auth.service';
 
 import modificarSocio from '../services/modificar.service'; 
+import clubService from '../services/club.service'; // Importa el servicio de club
 
 import LoadingModal from '../components/modals/LoadingModal';
 
@@ -16,6 +17,7 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   //const [user, setUser] = useState(); // Almacena los datos del usuario o null si no está autenticado
   const [user, setUser] = useState(null); // Almacena los datos del usuario o null si no está autenticado
+  const [clubInfo, setClubInfo] = useState(null); // Almacena la información del club
   //const [isAuthenticated, setIsAuthenticated] = useState(!!user); // Para saber si el usuario está autenticado
   const [loading, setLoading] = useState(true); // Para saber si estamos cargando los datos iniciales
 
@@ -28,6 +30,7 @@ export const AuthProvider = ({ children }) => {
       const storedUser = localStorage.getItem('currentUser');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
+
       //setIsAuthenticated(true); // Si hay un usuario almacenado, consideramos que está autenticado
     }} catch (error) {
       console.error('Error al cargar el usuario desde localStorage:', error);
@@ -51,8 +54,15 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
+    const obtenerDatosClub = async () =>{
+      const clubData = await clubService.getDatosClub(user.id_club);
+        setClubInfo(clubData);
+    }
+
     if (user) {
       obtenerSaldoBilletera();
+      obtenerDatosClub();
+      
     }
   }, [user]);
 
@@ -139,6 +149,7 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = !!user;
   const value = {
     user,
+    clubInfo, // Información del club
     saldoBilletera,
     loading,
     login,

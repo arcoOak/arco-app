@@ -102,10 +102,7 @@ export default function Espacios() {
                         <div
                             className="categorias"
                             ref={scrollContainerRef}
-                            onMouseDown={dragHandlers.onMouseDown}
-                            onMouseLeave={dragHandlers.onMouseLeave}
-                            onMouseUp={dragHandlers.onMouseUp}
-                            onMouseMove={dragHandlers.onMouseMove}
+                            {...dragHandlers}
                         >
                             {displayCategorias.map((cat) => (
                                 <button

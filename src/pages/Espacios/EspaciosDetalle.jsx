@@ -460,7 +460,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                 </button>
                 {/* <img src={`../${espacio.img}`} alt={espacio.name} className="reserva-img" /> */}
                 <h1>{espacio?.nombre_espacio_reservable}</h1>
-                <p className="detalle-description">{espacio?.descripcion_espacio_reservable}</p>
+                <p className="espacio-detalle-description">{espacio?.descripcion_espacio_reservable}</p>
                 {
                     costeReserva > 0 && (<p className='detalle-costo-hora'>{costeReserva}$/hora</p>)
                 }
@@ -577,14 +577,6 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                     </main>
 
                     <footer className="booking-footer">
-                        {/* {
-                            costeReserva > 0 && (
-                                <div className="total-reservation">
-                                    <p>Coste Total</p>
-                                    <span>{totalReserva}$</span>
-                                </div>
-                            )
-                        } */}
                         
                         <button className={`proceed-button`} 
                             disabled={ isBotonReservarDisabled } 
@@ -593,20 +585,6 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                         </button>
                     </footer>
 
-                    {espacio?.id_categoria_espacio == 1 /* Deportes */ && (
-                        <div className='reserve-lessons-container'>
-                            <div className="reserve-lessons">
-                                <div className="img_reserve">
-                                    <img src="../src/img/reservas/coach-1.jpg" alt="Reserva" />
-                                </div>
-                                <div className="info_reserve">
-                                    <h4>Reserva una lección con un entrenador</h4>
-                                    <p>Trabaja con los mejores entrenadores!</p>
-                                    <button className="btn btn-primary">Reservar</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </React.Fragment>

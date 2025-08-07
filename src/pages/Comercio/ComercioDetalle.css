@@ -233,3 +233,38 @@
         opacity: 1;
     }
 }
+
+.categorias-productos {
+    display: flex; /* Usa flexbox para alinear los botones en una fila. */
+    overflow-x: auto; /* Permite el scroll horizontal cuando el contenido excede el ancho. */
+    white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea. */
+    padding-block: 10px; /* Añade un poco de espacio vertical. */
+    cursor: grab; /* Cambia el cursor para indicar que se puede arrastrar. */
+    user-select: none; /* Evita la selección de texto al arrastrar. */
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS. */
+    scrollbar-width: none; /* Oculta la barra de scroll en Firefox. */
+    gap: 10px; /* Espacio entre los botones. */
+}
+
+.categorias-productos:active {
+    cursor: grabbing; /* Cambia el cursor mientras se arrastra. */
+}
+
+/* Oculta la barra de scroll en Webkit (Chrome, Safari, etc.) */
+.categorias-productos::-webkit-scrollbar {
+    display: none;
+}
+
+.span-categoria-productos {
+    flex-shrink: 0; /* Evita que los botones se encojan y mantiene su tamaño original. */
+    background-color: #fff; /* Color de fondo claro para los botones. */
+    color: #000;
+    border-radius: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    border: 1px solid #ddd;
+}
+
+.span-categoria-productos.active{
+    background-color: #007bff; /* Color de fondo más oscuro al hacer clic. */
+    color: #fff;
+}

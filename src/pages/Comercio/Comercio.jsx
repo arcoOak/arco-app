@@ -12,6 +12,8 @@ import comercioService from '../../services/comercio.service'; // Importa el ser
 
 import comercioImagePlaceholder from '../../assets/comercio_placeholder.webp';
 
+import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+
 // Si usas este componente Comercio, la lista 'allBusinesses' DEBE ser pasada como una prop
 export default function Comercio() {
     const navigate = useNavigate();
@@ -23,13 +25,16 @@ export default function Comercio() {
 
     const { scrollContainerRef, dragHandlers } = useDragToScroll();
 
+    const { user } = useAuth(); // Obtén el usuario del contexto de autenticación
+
     useEffect(() => {
         const fetchInitialData = async () => {
             setLoading(true);
             try {
                 // Obtener categorías activas
                 const [categorias, comerciosData] = await Promise.all([
-                    comercioService.getCategoriasComercioActivos(), comercioService.getComerciosActivos()]
+                    comercioService.getCategoriasComercioActivos(user.id_club, 1), 
+                    comercioService.getComerciosActivos(user.id_club, 1)]
                 );
                 
                 setCategoriasActivas(categorias);
@@ -110,10 +115,7 @@ export default function Comercio() {
                         <div
                             className="categorias"
                             ref={scrollContainerRef}
-                            onMouseDown={dragHandlers.onMouseDown}
-                            onMouseLeave={dragHandlers.onMouseLeave}
-                            onMouseUp={dragHandlers.onMouseUp}
-                            onMouseMove={dragHandlers.onMouseMove}
+                            {...dragHandlers}
                         >
 
                         {displayCategorias.map((cat) => (

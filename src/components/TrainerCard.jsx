@@ -2,9 +2,13 @@
 import React from 'react';
 import '../css/TrainerCard.css'; // Asegúrate de crear este archivo CSS para los estilos de la tarjeta
 
-const TrainerCard = ({ sport, name, calification, price, imageUrl, imageAlt }) => {
+const TrainerCard = ({ sport, name, description, imageUrl, imageAlt, onClick }) => {
+
+    // Se le coloca un limite de 50 caracteres a la descripción
+    const descriptionText = description.length > 75 ? description.substring(0, 50) + '...' : description;
+
     return (
-        <div className="trainer-card">
+        <div className="trainer-card" onClick={onClick}>
             <div className="trainer-card__image-container">
                 <img src={imageUrl} alt={imageAlt} className="trainer-card__image" />
             </div>
@@ -14,10 +18,7 @@ const TrainerCard = ({ sport, name, calification, price, imageUrl, imageAlt }) =
                     <label><i className="fa fa-heart"></i></label>
                 </div>
                 <p className="trainer-card__category">{sport}</p>
-                <div className="trainer-price">
-                    <p className="trainer-card__category">{calification} <i className="fa fa-star"></i></p>
-                    <p className="trainer-card__category">{price}$/hr</p>
-                </div>
+                <p className="trainer-card__description">{descriptionText}</p>
             </div>
         </div>
     );

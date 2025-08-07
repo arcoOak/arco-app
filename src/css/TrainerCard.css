@@ -81,12 +81,14 @@
     border-radius: 12px;
     width: 40%;
     padding: .7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     /* Mismos bordes redondeados que la tarjeta */
 }
 
 .trainer-card__image {
-    width: 100px;
-    height: 109px;
+    width: 100%;
     object-fit: cover;
     display: block;
     border-radius: 12px;
@@ -114,13 +116,12 @@
     justify-content: space-between;
 }
 
-.trainer-card__title h1 {
+.trainer-card__title h5 {
     font-size: 1em;
     font-weight: 600;
     /* Ligeramente en negrita */
     color: #333;
     /* Color oscuro para el título */
-    margin: 0 20px;
     /* Margen interno para el título */
     line-height: 1.3;
     text-align: left;
@@ -129,4 +130,13 @@
 .trainer-price {
     display: flex;
     justify-content: space-between;
+}
+
+.trainer-card__description{
+    font-size: 0.875em;
+    color: #333;
+    margin-top: 5px;
+    /* Espacio entre la categoría y la descripción */
+    line-height: 1.4;
+    /* Mejora la legibilidad */
 }

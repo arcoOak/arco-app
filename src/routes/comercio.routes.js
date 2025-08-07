@@ -3,10 +3,10 @@ import comercioController from '../controllers/comercio.controller.js'; // Impor
 
 const router = express.Router();
 
-router.get('/', comercioController.getAllComercios); // Trae todos los comercios
-router.get('/activos', comercioController.getAllComerciosActivos); // Trae todos los comercios activos
-router.get('/categorias-activos', comercioController.getCategoriasComercioDisponible); //Traerá las categorías de comercio de comercios activos
-router.get('/:id', comercioController.getComercioById); // Trae un comercio por ID  
+router.get('/:id_club', comercioController.getAllComercios); // Trae todos los comercios
+router.get('/:id_club/activos/:id_tipo_comercio', comercioController.getAllComerciosActivos); // Trae todos los comercios activos
+router.get('/:id_club/categorias-activos/:id_tipo_comercio', comercioController.getCategoriasComercioDisponible); //Traerá las categorías de comercio de comercios activos
+router.get('/individual/:id', comercioController.getComercioById); // Trae un comercio por ID  
 
 
 

@@ -222,73 +222,7 @@ ul li {
 
 }
 
-.news-card {
-  background-color: white;
-  border-radius: 12px;
-  /* ¡Crucial! Evita que las tarjetas se encojan */
-  /* Bordes redondeados de la tarjeta */
-  overflow: hidden;
-  /* Para que la imagen se recorte si es más grande que el contenedor con el border-radius */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  /* Sombra sutil como en el ejemplo */
-  margin-right: 15px;
-  /* Espacio entre las tarjetas en el scroll horizontal */
-  flex-shrink: 0;
-  /* Evita que las tarjetas se encojan en un contenedor flex */
-  width: 325px;
-  /* Ancho fijo para cada tarjeta, ajusta según necesites */
-  height: auto;
-  /* La altura se ajustará al contenido */
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 20px;
-  scroll-snap-align: start;
-  /* Espacio debajo del texto */
-}
 
-.news-card__image-container {
-  width: 100%;
-  height: 180px;
-  /* Altura de la imagen */
-  overflow: hidden;
-  border-radius: 12px 12px 0 0;
-  /* Mismos bordes redondeados que la tarjeta */
-}
-
-.news-card__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* Asegura que la imagen cubra el contenedor sin distorsionarse */
-  display: block;
-  /* Elimina espacio extra debajo de la imagen */
-  border-radius: 12px 12px 0 0;
-  /* Asegura que la imagen también tenga bordes redondeados */
-}
-
-.news-card__category {
-  font-size: 0.7em;
-  color: #007bff;
-  /* Un verde claro para la categoría */
-  text-transform: uppercase;
-  font-weight: bold;
-  margin: 15px 20px 5px 20px;
-  /* Margen interno para el texto */
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.news-card__title {
-  font-size: 1em;
-  font-weight: 600;
-  /* Ligeramente en negrita */
-  color: #333;
-  /* Color oscuro para el título */
-  margin: 0 20px;
-  /* Margen interno para el título */
-  line-height: 1.3;
-  text-align: left;
-}
 
 /* src/components/NewsSection.css */
 

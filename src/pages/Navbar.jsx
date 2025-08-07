@@ -87,15 +87,21 @@ const Navbar = () => {
             case 'Mis Reservas':
                 navigate(`/reservas`);
                 break;
-            case 'Favoritos':
-                navigate(`/favorites`);
+            case 'Mis Servicios':
+                navigate(`/mis-servicios`);
+                break;
+            case 'Noticias':
+                navigate(`/noticias`);
                 break;
             case 'Comercios':
                 navigate(`/comercios`);
                 break;
+            case 'Servicios':
+                navigate(`/servicios`);
+                break;
             case 'Beneficiarios':
                 navigate(`/perfil/beneficiarios`);
-                break;break;
+                break;
             case 'Ajustes':
                 navigate(`/perfil`);
                 break;
@@ -159,8 +165,10 @@ const Navbar = () => {
                         {[
                             { name: 'Inicio', icon: 'home' },
                             { name: 'Mis Reservas', icon: 'calendar_month' },
-                            { name: 'Favoritos', icon: 'star' },
+                            { name: 'Mis Servicios', icon: 'work' },
+                            { name: 'Noticias', icon: 'article' },
                             { name: 'Comercios', icon: 'storefront' },
+                            { name: 'Servicios', icon: 'build' },
                             { name: 'Beneficiarios', icon: 'group' },
                             { name: 'Ajustes', icon: 'settings' },
                         ].map((item) => (

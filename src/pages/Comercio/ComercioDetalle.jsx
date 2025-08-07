@@ -1,5 +1,5 @@
 // src/components/ComercioDetalle.jsx (o ComercioDetalle.js)
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './ComercioDetalle.css'; // Crea un archivo CSS para este componente
 
@@ -13,6 +13,8 @@ import comercioImagePlaceholder from '../../assets/comercio_placeholder.webp';
 import productoImagePlaceholder from '../../assets/producto_placeholder.webp';
 import hamburguesaPlaceholder from '../../assets/hamburguesa.png';
 import aguaPlaceholder from '../../assets/agua.jpg';
+
+import { useDragToScroll } from '../../hooks/useDragToScroll';
 
 import { useCarrito } from '../../context/CartContext';
 
@@ -50,10 +52,15 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
     const [loading, setLoading] = useState(false); // Estado para manejar la carga de datos
     const [comercio, setComercio] = useState({});
     const [productos, setProductos] = useState([]); // Estado para manejar los productos del comercio
+    const [categorias, setCategorias] = useState([]); // Estado para manejar las categorías de productos
+
+    const [activeCategory, setActiveCategory] = useState(0);
 
     const [showExitosoModal, setShowExitosoModal] = useState(false); // Estado para manejar el modal de éxito
 
     const { addToCarrito, isProductoEnCarrito } = useCarrito(); // Hook para manejar el carrito de compras
+
+    const { scrollContainerRef, dragHandlers } = useDragToScroll();
 
     useEffect(() => {
         setLoading(true); // Inicia la carga de datos
@@ -62,10 +69,15 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
             setLoading(true)
             try {
 
-                const [comercioData, productosData] = await Promise.all([
+                const [comercioData, productosData, categoriasData] = await Promise.all([
                     comercioService.getComercioById(id),
-                    productoService.getProductosPorComercio(id)
+                    productoService.getProductosPorComercio(id),
+                    productoService.getCategoriasDeProductosPorComercio(id)
                 ]);
+
+                console.log('Comercio Data:', comercioData);
+                console.log('Productos Data:', productosData);
+                console.log('Categorías Data:', categoriasData);
 
                 if (!comercioData) {
                     console.error('Comercio no encontrado');
@@ -75,10 +87,12 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                 }
                 
                 setProductos(productosData || []);
+                setCategorias(categoriasData || []);
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setComercio(null); // Si hay un error, establecemos comercio como null
                 setProductos([]); // Si hay un error, establecemos productos como un array vacío
+                setCategorias([]); // Si hay un error, establecemos categorías como un array vacío
             } finally {
                 setLoading(false);
             }
@@ -95,6 +109,38 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
         }, 2000);
 
     }
+
+    const displayCategorias = useMemo(() => [
+            {
+                id_categoria_producto: 0,
+                nombre_categoria_producto: 'Todos',
+            },
+            ...categorias
+        ], [categorias]);
+
+    const handleSeleccionarCategoria = (categoriaId) => {
+        console.log('Categoría seleccionada:', categoriaId);
+        setActiveCategory(categoriaId);
+    };
+
+    const productosFiltrados = useMemo(() =>{
+            // Si no hay comercios o no hay categoría activa, no mostramos nada.
+    
+            let productosTotales = productos;
+
+        // 1. Si hay una categoría activa (diferente de 0), filtramos por ella.
+            if(activeCategory != 0 ){
+                productosTotales = productos.filter(
+                    (business) => business.id_categoria_producto === activeCategory
+                );
+            }
+    
+        // 2. Si hay un término de búsqueda, filtramos el resultado anterior.
+            
+            return productosTotales;
+        }, [activeCategory, productos]);
+
+
 
     if (!comercio) {
         return (
@@ -130,7 +176,6 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                     <strong>Horario:</strong> 
                     <br />
                     Lunes a Viernes: {comercio.hora_apertura ? comercio.hora_apertura.slice(0,5) : '--:--'} - {comercio.hora_cierre ? comercio.hora_cierre.slice(0,5) : '--:--'} 
-                    <br /> Sábado y Domingo: 10:00 AM - 10:00 PM
                 </p>
                 <p><strong>Teléfono:</strong> <a href={`tel:${comercio.telefono || '+584123456789'}`}>{comercio.telefono || '+58-412-3456789'}</a></p>
                 {/* Puedes añadir más información aquí como dirección, redes sociales, etc. */}
@@ -138,13 +183,31 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
 
             <div className="detalle-catalogo-section">
                 <h2>Catálogo de Productos</h2>
+
+                <div
+                            className="categorias-productos"
+                            ref={scrollContainerRef}
+                            {...dragHandlers}
+                        >
+
+                        {displayCategorias.map((cat) => (
+                                <button
+                                    key={cat.id_categoria_producto}
+                                    className={`span-categoria-productos ${activeCategory === cat.id_categoria_producto ? 'active' : ''}`}
+                                    onClick={() => handleSeleccionarCategoria(cat.id_categoria_producto)}
+                                >
+                                    {cat.nombre_categoria_producto}
+                                </button>
+                            ))}
+                </div>
+
                 <div className="productos-grid">
                     { 
-                    productos.map(producto => (
+                    productosFiltrados.map(producto => (
                          <ProductoCard producto={producto} handleAddToCarrito={handleAddToCarrito} key={producto.id_producto} productoEnCarrito={isProductoEnCarrito(producto.id_producto)} />
                     ))
                     }
-                    {productos.length === 0 && <p className="no-products">No hay productos disponibles en este momento.</p>} 
+                    {productosFiltrados.length === 0 && <p className="no-products">No hay productos disponibles en este momento.</p>} 
                 </div>
             </div>
         </div>

@@ -6,20 +6,29 @@ import "./css/App.css"; // Ensure you have the CSS file for styles
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import Notifications from "./components/Notifications";
-import PaymentDetail from './components/PaymentDetail';
+import PagarPendientes from "./pages/BilleteraHome/PagarPendientes";
+import PaymentDetail from './pages/BilleteraHome/PaymentDetail';
+import TransaccionIndividual from "./pages/BilleteraHome/TransaccionIndividual"; 
+
+import Noticias from "./pages/Noticias/Noticias"; // Importa el componente Noticias
+import NoticiasDetalle from "./pages/Noticias/NoticiasDetalle"; // Importa el componente NoticiasDetalle
+
 import Perfil from "./pages/Perfil/Perfil";
-import EditarPerfil from "./pages/Perfil/EditarPerfil"; // Asegúrate de que la ruta sea correcta
-import BeneficiariosLista from './pages/Perfil/BeneficiariosLista'; // Importa el nuevo componente
+import EditarPerfil from "./pages/Perfil/EditarPerfil"; 
+import BeneficiariosLista from './pages/Perfil/BeneficiariosLista'; 
 import Espacios from "./pages/Espacios/Espacios";
 
-/////
-//import ReservaUnidad from "./pages/ReservaUnidad";
-import Comercios from "./pages/Comercio/Comercio"; // Asumo que este es tu componente principal de lista de comercios
+import Comercios from "./pages/Comercio/Comercio"; 
 import ComercioDetalle from './pages/Comercio/ComercioDetalle';
-import LecturaQr from "./pages/LecturaQR/LecturaQr";
-//import PrivateRoute from "./components/PrivateRoute"; // Importa PrivateRoute
 
-//import Login from "./Login"; // Importa el componente de Login
+import Servicios from "./pages/Servicios/Servicios"; 
+import ServiciosDetalle from './pages/Servicios/ServiciosDetalle';
+
+import MisServicios from "./pages/MisServicios/MisServicios";
+import MisServiciosDetalle from "./pages/MisServicios/MisServiciosDetalle";
+
+import LecturaQr from "./pages/LecturaQR/LecturaQr";
+
 
 
 ////
@@ -102,7 +111,14 @@ function App() {
                         <Route path="/TermsOfUse" element={<TermsOfUse />} />
                         <Route path="/Progress" element={<Progress />} />
                         <Route path="/notifications" element={<Notifications />} />
-                        <Route path="/payment-detail/:id" element={<PaymentDetail />} />
+                        <Route path="/pagar-pendientes" element={<PagarPendientes />} />
+                        <Route path="/transaccion/" element={<PaymentDetail />} />
+                        <Route path="/transaccion/:id" element={ <TransaccionIndividual /> } />
+
+                        {/* Rutas de Noticias */}
+                        <Route path="/noticias" element={<Noticias />} />
+                        <Route path="/noticias/:id" element={<NoticiasDetalle />} />
+
                         {/*Ruta de Perfiles*/}
                         <Route path="/perfil" element={<Perfil user={user} />} />
                         <Route path="/perfil/editar-perfil" element={<EditarPerfil user={user} />} />
@@ -116,12 +132,20 @@ function App() {
                         <Route path="/comercios" element={<Comercios  />} />
                         <Route path="/comercio/:id" element={<ComercioDetalle   />} />
 
+                        {/* Rutas de Servicios */}
+                        <Route path="/servicios" element={<Servicios  />} />
+                        <Route path="/servicios/:id" element={<ServiciosDetalle   />} />
+
                         {/* Rutas de Lectura de QR */}
                         <Route path="/qr" element={<LecturaQr />} />
 
                         {/* Rutas de Reservas */}
                         <Route path="/reservas" element={<Reservas />} />
                         <Route path="/reservas/:id" element={<ReservasDetalle />} />
+
+                        {/* Rutas de Mis Servicios */}
+                        <Route path="/mis-servicios" element={<MisServicios />} />
+                        <Route path="/mis-servicios/:id" element={<MisServiciosDetalle />} />
                     </Route>
                 </Route>
 

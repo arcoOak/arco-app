@@ -1,0 +1,101 @@
+.clima-home {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clima-home h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.clima-semanal-container {
+    font-family: 'Arial', sans-serif;
+}
+
+.clima-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+    scrollbar-width: none; /* For Firefox */
+}
+
+.clima-tabs::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+
+.clima-tab {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: #555;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.clima-tab.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+    font-weight: bold;
+}
+
+.clima-tab:hover {
+    color: #0056b3;
+}
+
+.clima-forecast {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    gap: 15px;
+}
+
+.forecast-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 10px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    min-width: 80px;
+    text-align: center;
+}
+
+.forecast-time {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.forecast-icon {
+    font-size: 2rem;
+    margin: 5px 0;
+}
+
+.forecast-temp {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #212529;
+    margin: 5px 0;
+}
+
+.forecast-precip {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin: 0;
+}

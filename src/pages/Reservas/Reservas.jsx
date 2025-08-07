@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Reservas.css'; // Asegúrate de importar tu CSS principal
 
-import { useDragToScroll } from '../../hooks/useDragToScroll';
-
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación}
 
 import LoadingModal from '../../components/modals/LoadingModal';
 
 import reservasService from '../../services/reservas.service';
+
+import MesSelector from '../../components/MesSelector'; // Importa el componente MesSelector
 
 export default function Reservas() {
     const navigate = useNavigate();
@@ -25,8 +25,6 @@ export default function Reservas() {
 
     // Drag to scroll hook
 
-    const { scrollContainerRef, dragHandlers } = useDragToScroll();
-    const monthsRef = useRef({});
   
     useEffect(() => {
         const fetchData = async () => {
@@ -45,70 +43,10 @@ export default function Reservas() {
         };
         fetchData();
     }, []);
-     useEffect(() => {
-        const selectedMonthElement = monthsRef.current[mesSeleccionado];
 
-        if (selectedMonthElement) {
-            selectedMonthElement.scrollIntoView({
-                behavior: 'smooth', // Para una animación suave
-                inline: 'center',  // Centra el elemento horizontalmente
-                block: 'nearest'   // Evita el scroll vertical innecesario
-            });
-        }
-    }, [mesSeleccionado]);
 
-    const listaMeses = useMemo(() => {
-        return [
-            {
-                nombre: 'Enero',
-                numero: 1
-            },
-            {
-                nombre: 'Febrero',
-                numero: 2
-            },
-            {
-                nombre: 'Marzo',
-                numero: 3
-            },
-            {
-                nombre: 'Abril',
-                numero: 4
-            },
-            {
-                nombre: 'Mayo',
-                numero: 5
-            },
-            {
-                nombre: 'Junio',
-                numero: 6
-            },
-            {
-                nombre: 'Julio',
-                numero: 7
-            },
-            {
-                nombre: 'Agosto',
-                numero: 8
-            },
-            {
-                nombre: 'Septiembre',
-                numero: 9
-            },
-            {
-                nombre: 'Octubre',
-                numero: 10
-            },
-            {
-                nombre: 'Noviembre',
-                numero: 11
-            },
-            {
-                nombre: 'Diciembre',
-                numero: 12
-            }
-        ];
-    }, []);
+
+    
 
     const handleMesSeleccionado = (mes) => {
         setMesSeleccionado(mes);
@@ -136,22 +74,13 @@ export default function Reservas() {
         <LoadingModal visible={loading} />
         <div className="reservas-container">
             <h2 className='reservas-title' >Reservas</h2>
-            <div className="meses-list" ref={scrollContainerRef} {...dragHandlers}>
-                <div className="meses-list-inner">
-                    { listaMeses.map((mes) => (
-                        <div 
-                            className={`meses-item ${mesSeleccionado === mes.numero ? 'active' : ''}`} 
-                            key={mes.numero} 
-                            ref = { (element) => monthsRef.current[mes.numero] = element }
-                            onClick={() => handleMesSeleccionado(mes.numero)}
-                        >
-                            <p className="meses-item-nombre">{mes.nombre}</p>
-                        </div>
-                    ))
-                    }
 
-                </div>
-            </div>
+            <MesSelector
+                mesSeleccionado={mesSeleccionado}
+                handleMesSeleccionado={(mes) => handleMesSeleccionado(mes)}
+            />
+
+
             <div className="reservas-list" >
                 <div className="reservas-list-inner">
                     

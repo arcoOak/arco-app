@@ -1,10 +1,8 @@
-/* src/css/PaymentDetail.css */
+/* src/css/PaymentDetail.css
 
 .payment-detail-container {
     padding: 20px;
-    max-width: 600px;
-    margin: auto;
-    background-color: #f8f8f8;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -17,9 +15,14 @@
 
 .detail-header h2 {
     margin: 0 auto;
-    /* Center the title */
     font-size: 1.5em;
     color: #333;
+}
+
+.month-info{
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #555;
 }
 
 .back-button {
@@ -37,22 +40,67 @@
     background-color: #e9ecef;
 }
 
+.payments-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .detail-card {
     background-color: #fff;
-    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     text-align: left;
+    border: 1.5px solid transparent;
 }
 
 .detail-card p {
-    margin-bottom: 10px;
     color: #555;
     line-height: 1.5;
 }
 
 .detail-card p strong {
     color: #333;
+}
+
+.detail-card.pago{
+    border-color: #28a745;
+}
+
+.detail-card.pendiente{
+    border-color: #ffc107;
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.payment-header.pago {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.payment-header.pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.payment-title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.payment-details{
+    padding: 10px 20px;
+}
+
+.payment-details p {
+    margin-bottom: 10px;
 }
 
 .payment-capture {
@@ -76,13 +124,19 @@
     border-radius: 5px;
     display: inline-block;
 }
+ */
 
-.status-paid {
-    background-color: #d4edda;
-    color: #155724;
+
+ .no-payments-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.2em;
+    color: #888;   
 }
-
-.status-pending {
-    background-color: #fff3cd;
-    color: #856404;
+.no-payments-message {
+    margin: 0;
+    color: #888;
+    text-align: center;
 }

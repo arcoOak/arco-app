@@ -2,12 +2,14 @@ import {
     getAllProductosDB,
     getAllProductosIndividualesDB,
     getProductoByIdDB,
-    getProductosPorComercioDB
+    getProductosPorComercioDB,
+    getCategoriasDeProductosPorComercioDB
 } from '../models/producto.model.js';
 
 const getAllProductos = async (req, res) => {
+    const { id_club } = req.params;
     try {
-        const productos = await getAllProductosDB();
+        const productos = await getAllProductosDB(id_club);
         res.json(productos);
     } catch (error) {
         console.error('Error al obtener todos los productos:', error);
@@ -16,8 +18,9 @@ const getAllProductos = async (req, res) => {
 }
 
 const getAllProductosIndividuales = async (req, res) => {
+    const { id_club } = req.params;
     try {
-        const productos = await getAllProductosIndividualesDB();
+        const productos = await getAllProductosIndividualesDB(id_club);
         res.json(productos);
     } catch (error) {
         console.error('Error al obtener productos:', error);
@@ -53,10 +56,22 @@ const getProductosPorComercio = async (req, res) => {
     }
 }
 
+const getCategoriasDeProductosPorComercio = async (req, res) =>{
+    const { id_comercio } = req.params
+    try {
+        const categorias = await getCategoriasDeProductosPorComercioDB(id_comercio);
+        res.json(categorias);
+    } catch (error) {
+        console.error('Error al obtener categorías de productos por comercio:', error);
+        res.status(500).json({ message: 'Error interno del servidor al obtener categorías de productos por comercio' });
+    }
+}
+
 
 export default {
     getAllProductos,
     getAllProductosIndividuales,
     getProductoById,
-    getProductosPorComercio
+    getProductosPorComercio,
+    getCategoriasDeProductosPorComercio
 };

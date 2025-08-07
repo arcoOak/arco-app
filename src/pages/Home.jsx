@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/Home.css";
 import Navbar from "./Navbar";
 import NewsSection from '../components/NewsSection';
 //import Points from '../components/Points'; // Importa tu componente Carousel
-import TrainerSection from "../components/TrainerSection";
+import ServicioSection from "../components/ServicioSection";
 import MonthlyOverview from '../components/MonthlyOverview';
 import ImageSlider from '../components/ImageSlider';
 import { useState, useRef } from "react";
@@ -17,6 +17,9 @@ import BalanceSection from '../components/BalanceSection';
 import TransacctionSection from '../components/TransacctionSection';
 import Slider from '../components/Slider';
 import Progress from '../components/Progress';
+import ClimaHome from '../components/ClimaHome';
+import RedesSocialesHome from "../components/RedesSocialesHome";
+import HorarioHome from "../components/HorarioHome";
 
 import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
 
@@ -25,7 +28,7 @@ export default function App() {
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
-    const { user, login, logout, isAuthenticated } = useAuth();
+    const { user, login, logout, isAuthenticated, clubInfo } = useAuth();
 
     // State for drag functionality
     const [isDragging, setIsDragging] = useState(false);
@@ -96,15 +99,11 @@ export default function App() {
 
                     {/* <Points /> */}
                     <NewsSection />
-                    <TrainerSection />
+                    <ServicioSection />
                     <Slider />
-                    <br /><br />
-                    <h2>Clima Actual</h2>
-                    <p>🌤️ 27°C - Soleado</p>
-                    <h3>Horarios</h3>
-                    <p>Club abierto: 8:00 - 22:00</p>
-                    <h3>Redes Sociales</h3>
-                    <p>@clubplayero</p>
+                    <ClimaHome />                    
+                    <HorarioHome clubInfo={clubInfo} />
+                    <RedesSocialesHome />
                 </section>
                 {/* Footer */}
                 <footer className="footer">

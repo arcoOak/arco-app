@@ -63,3 +63,11 @@
     font-weight: 700;
     font-size: 14px;
 }
+
+.has-debt {
+    color: #dc3545;
+}
+
+.no-debt {
+    color: #333;
+}

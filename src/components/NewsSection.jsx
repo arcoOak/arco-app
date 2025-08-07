@@ -2,51 +2,44 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'; // Importa useCallback
 import NewsCard from './NewsCard';
 
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+
+import noticiasService from '../services/noticias.service';
+
+import placeholder_1 from '../img/news/placeholder_1.jpg';
+import placeholder_2 from '../img/news/placeholder_2.jpg';
+import placeholder_3 from '../img/news/placeholder_3.jpg';
+import placeholder_4 from '../img/news/placeholder_4.jpg';
+
+
 const NewsSection = () => {
-    const newsItems = [
-        {
-            id: 1,
-            category: 'Cuota Especial',
-            title: 'Arreglo de tuberias principales del Club',
-            imageUrl: './src/img/news/news1.jpg', // Ruta corregida si las imágenes están en public/src/img/news
-            imageAlt: 'Arreglo de tuberías',
-        },
-        {
-            id: 2,
-            category: 'Cuota Especial',
-            title: 'Limpieza de piscina',
-            imageUrl: './src/img/news/news2.jpg',
-            imageAlt: 'Limpieza de piscina',
-        },
-        {
-            id: 3,
-            category: 'Aniversario 35',
-            title: 'Celebración del 35 Aniversario del Club', // Título ajustado para el contexto
-            imageUrl: './src/img/news/news3.jpg',
-            imageAlt: 'Aniversario del Club',
-        },
-        {
-            id: 4,
-            category: 'Fiesta Fin de Año',
-            title: 'Gran Fiesta de Fin de Año en el Club', // Título ajustado para el contexto
-            imageUrl: './src/img/news/news4.jpg',
-            imageAlt: 'Fiesta Fin de Año',
-        },
-        {
-            id: 5,
-            category: 'Fiesta Fin de Año',
-            title: 'Preparativos para la Fiesta de Fin de Año', // Título ajustado para el contexto
-            imageUrl: './src/img/news/news4.jpg', // Usando la misma imagen, considera cambiarla
-            imageAlt: 'Preparativos Fiesta',
-        },
-        {
-            id: 6,
-            category: 'Eventos Deportivos',
-            title: 'Torneo de Tenis Interclubes 2025', // Nuevo ítem para mostrar más scroll
-            imageUrl: './src/img/news/news5.jpg', // Considera añadir una nueva imagen
-            imageAlt: 'Torneo de tenis',
-        },
-    ];
+    const { user } = useAuth(); // Obtiene el usuario del contexto
+
+    const navigate = useNavigate(); // Hook para navegar programáticamente
+
+    const [ultimasNoticias, setUltimasNoticias] = useState([]);
+
+    useEffect ( () =>{
+        const fetchUltimasNoticias = async () => {
+            try{
+                const noticias = await noticiasService.getUltimasNoticias(user.id_club);
+                setUltimasNoticias(noticias);
+
+            }catch (error){
+                console.error('Error al obtener las últimas noticias:', error);
+                setUltimasNoticias([]);
+            }
+            
+        }
+
+        if(user){
+            fetchUltimasNoticias();
+        }
+
+    }, [user] )
+
 
     const carouselRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -144,22 +137,32 @@ const NewsSection = () => {
     // Esto asegura que el efecto solo se re-ejecute si las definiciones de estas funciones cambian,
     // lo cual solo ocurre si sus propias dependencias internas cambian.
 
+    let placeholderImage = '';
+
     return (
         <div className="news-section-container">
             <div className="news-section__header">
                 <h3 className="news-section__title">Noticias Recientes</h3>
                 <button className='button__see-all'>
-                    <a href="#" className="news-section__see-all">Ver Todo</a>
+                    <a href="#" className="news-section__see-all" onClick={() => navigate('/Noticias')}>Ver Todo</a>
                 </button>
             </div>
             <div className="news-section__carousel" ref={carouselRef}>
-                {newsItems.map(news => (
+                {ultimasNoticias.map(news => (
+
+                placeholderImage = news.id_categoria == 1 ? placeholder_1 : 
+                news.id_categoria == 2 ? placeholder_2 : 
+                news.id_categoria == 3 ? placeholder_3 : 
+                news.id_categoria == 4 ? placeholder_4 : '',
+
                     <NewsCard
-                        key={news.id}
-                        category={news.category}
-                        title={news.title}
-                        imageUrl={news.imageUrl}
-                        imageAlt={news.imageAlt}
+                        key={news.id_noticia}
+                        categoria={news.nombre_categoria_noticia}
+                        titulo={news.titulo}
+                        autor={news.nombre_autor}
+                        imageUrl={news.imageUrl || placeholderImage}
+                        imageAlt={news.titulo}
+                        onClick={() => navigate(`/Noticias/${news.id_noticia}`)}
                     />
                 ))}
             </div>

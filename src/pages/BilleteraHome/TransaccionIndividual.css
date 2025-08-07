@@ -1,0 +1,25 @@
+.payment-tabla-elementos{
+    width: 100%;
+    border-collapse: collapse;
+}
+  .payment-tabla-elementos th, .payment-tabla-elementos td {
+        padding: 4px 8px;
+        border-block: 1px solid #ddd;
+        text-align: center;
+
+    }
+
+    .payment-tabla-elementos th{
+        background-color: #f4f4f4;
+        text-align: center;
+    }
+
+    .payment-tabla-elementos tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .payment-tabla-elementos td{
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #444;
+    }

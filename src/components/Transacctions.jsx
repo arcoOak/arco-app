@@ -2,7 +2,14 @@
 import React from 'react';
 import logo from '../assets/creditCard.svg'
 
-const Transacctions = ({ account, amount, date, concept }) => {
+const formatearFecha = (fecha) => {
+    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+    const fechaFormateada = new Date(fecha).toLocaleDateString('es-ES', opciones);
+    return fechaFormateada;
+};
+
+
+const Transacctions = ({ descripcion_transaccion, monto, fecha_transaccion, nombre_transaccion, classAmount }) => {
 
 
     return (
@@ -12,14 +19,14 @@ const Transacctions = ({ account, amount, date, concept }) => {
                 <i className="fa fa-credit-card"></i>
             </div>
             <div className="history-item__details">
-                <p className="transacction-item__category">{concept}</p>
-                <p className="history-item__time">{date}</p>
+                <p className="transacction-item__category">{nombre_transaccion}</p>
+                <p className="history-item__time">{formatearFecha(fecha_transaccion)}</p>
             </div>
             <div className='history-item__info'>
-                <p className="history-item__amount">
-                    {amount < 0 ? `- $${Math.abs(amount).toFixed(2)}` : `$${amount.toFixed(2)}`}
+                <p className={`history-item__amount ${classAmount} `}>
+                    {monto}
                 </p>
-                <label>**** 4561</label>
+                <label>{descripcion_transaccion}</label>
             </div>
         </div>
     );

@@ -1,8 +1,10 @@
-import React, { useState, useMemo, useRef, useEffect  } from "react";
+import React, { useState, useMemo, useRef, useEffect, use  } from "react";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import "../css/Balance.css";
 
 import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+
+import billeteraService from '../services/billetera.service';
 
 export default function Balance() {
 
@@ -10,11 +12,36 @@ export default function Balance() {
 
     const statusColorPayment = '#22ad82';
 
-    const { saldoBilletera } = useAuth(); // Obtiene el usuario del contexto de autenticación
+    const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
+
+    const [ pagosPendientes, setPagosPendientes ] = useState([]);
 
     const navigate = useNavigate();
 
     const monthsRef = useRef({});
+
+    let [totalDeuda, setTotalDeuda] = useState(0);
+
+
+    useEffect(() => {
+        const obtenerPagosPendientes = async () => {
+            try {
+                const response = await billeteraService.getPagosPendientes(user.id_socio);
+
+
+                setPagosPendientes(response);
+
+                setTotalDeuda(response.reduce((total, pago) => total + pago.total_transaccion, 0));
+
+            } catch (error) {
+                console.error('Error al obtener los pagos pendientes:', error);
+            }
+        };
+
+        obtenerPagosPendientes();
+    },[])   
+
+
 
     const listaMeses = useMemo(() => {
             return [
@@ -82,8 +109,12 @@ export default function Balance() {
             }, [mesSeleccionado]);
 
     const handleHistoryItemClick = (id) => {
-        navigate(`/payment-detail/${id}`);
+        navigate(`/transaccion/`, { state: { mes: id } });
     };
+
+    const handlePagarClick = () => {
+        navigate('/pagar-pendientes');
+    }
 
     return (
         <div className="dashboard-container">
@@ -93,7 +124,7 @@ export default function Balance() {
                         <p>Adelanta duplica <i className="fa fa-gift"></i></p>
                     </div>
                     <div>
-                        <button>Pagar</button>
+                        <button onClick={handlePagarClick}>Pagar</button>
                     </div>
                 </div>
                 <div className="balance-body">
@@ -101,13 +132,18 @@ export default function Balance() {
 
                         {
                             listaMeses.map((mes, index) => (
+
+
                                 <div
                                     key={index}
                                     className={`calendar-item ${mes.numero === 7 ? 'active-month' : ''}`}
                                     onClick={() => handleHistoryItemClick(mes.numero)}
                                     ref={el => monthsRef.current[mes.numero] = el}
                                 >
-                                    {mes.nombre.slice(0, 3).toUpperCase()} <i className="fa fa-circle" style={{ color: statusColorPayment, fontSize: '11px' }}></i>
+                                    {mes.nombre.slice(0, 3).toUpperCase()} 
+                                    <i className="fa fa-circle" 
+                                        style={{ color: pagosPendientes.some(pago => pago.mes_generacion === mes.numero) ? '#dc3545' : '#22ad82', fontSize: '11px' }}>
+                                    </i>
                                 </div>
                             ))
                         }
@@ -116,13 +152,18 @@ export default function Balance() {
                 </div>
                 <div className="balance-footer">
                     <div>
-                        <p className="recibos-balance">2 Recibos pendientes</p>
+                        <p className="recibos-balance">
+                            {pagosPendientes.length} 
+                            {pagosPendientes.length > 1 ? ' Recibos pendientes' : ' Recibo pendiente'}</p>
                     </div>
                     <div>
-                        <p className="total-balance">{saldoBilletera}$</p>
+                        <p className={`total-balance ${totalDeuda > 0 ? 'has-debt' : 'no-debt'}`}>
+                            {totalDeuda > 0 ? `-${totalDeuda}$` : "Sin deuda"}
+                        </p>
                     </div>
                 </div>
             </section>
         </div>
     );
+
 }

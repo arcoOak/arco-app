@@ -1,8 +1,8 @@
 const API_HOST = import.meta.env.VITE_API_HOST;
 
 
-const getProductos = async () => {
-  const response = await fetch(`${API_HOST}/api/productos`, {
+const getProductos = async (id_club) => {
+  const response = await fetch(`${API_HOST}/api/productos/${id_club}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
@@ -10,8 +10,8 @@ const getProductos = async () => {
   return response.json();
 }
 
-const getProductosIndividuales = async () => {
-  const response = await fetch(`${API_HOST}/api/productos/individuales`, {
+const getProductosIndividuales = async (id_club) => {
+  const response = await fetch(`${API_HOST}/api/productos/individuales/${id_club}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
@@ -20,7 +20,7 @@ const getProductosIndividuales = async () => {
 }
 
 const getProductoById = async (id) => {
-  const response = await fetch(`${API_HOST}/api/productos/${id}`, {
+  const response = await fetch(`${API_HOST}/api/productos/individual/${id}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
@@ -33,7 +33,16 @@ const getProductosPorComercio = async (id_comercio) => {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
-  if (!response.ok) throw new Error('Error al obtener los productos por comercio');
+  if (!response.ok) return [];
+  return response.json();
+}
+
+const getCategoriasDeProductosPorComercio = async (id_comercio) => {
+  const response = await fetch(`${API_HOST}/api/productos/categorias-comercio/${id_comercio}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  });
+  if (!response.ok) return [];
   return response.json();
 }
 
@@ -41,5 +50,6 @@ export default {
     getProductos,
     getProductosIndividuales,
     getProductoById,
-    getProductosPorComercio
+    getProductosPorComercio,
+    getCategoriasDeProductosPorComercio
 }

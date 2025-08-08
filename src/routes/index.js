@@ -18,6 +18,7 @@ import familiaresRoutes from './familiares.routes.js'; // Importa las rutas de f
 import invitadosRoutes from './invitados.routes.js'; // Importa las rutas de invitados
 import dataRoutes from './data.routes.js'; // Importa las rutas de datos
 import loginRoutes from './login.routes.js'; // Importa las rutas de login
+import notificacionesRoutes from './notificaciones.routes.js'; // Importa las rutas de notificaciones
 
 
 const router = express.Router();
@@ -39,5 +40,6 @@ router.use('/familiares', familiaresRoutes); // Monta las rutas de familiares en
 router.use('/invitados', invitadosRoutes); // Monta las rutas de invitados en /api/invitados
 router.use('/data', dataRoutes); // Monta las rutas de datos en /api/data
 router.use('/login', loginRoutes); // Monta las rutas de login en /api/login
+router.use('/notificaciones', notificacionesRoutes); // Monta las rutas de login en /api/login
 
 export default router;

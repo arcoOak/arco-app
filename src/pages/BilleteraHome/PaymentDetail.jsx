@@ -11,6 +11,7 @@ import { useAuth } from '../../context/AuthContext'; // Importa el contexto de a
 
 import MesSelector from '../../components/MesSelector'; // Importa el componente MesSelector
 
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el componente ButtonVolver
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -30,6 +31,7 @@ const PaymentDetail = () => {
     const location = useLocation();
 
     const mesHome = location.state?.mes;
+    const backLocation = location.state?.backLocation || '/';
 
     const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
 
@@ -101,7 +103,9 @@ const PaymentDetail = () => {
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
         <div className="payment-detail-container">
-            <button className="back-button" onClick={() => navigate('/')}>&larr; Volver</button>
+
+            <ButtonVolver to={backLocation} className="boton-volver" />
+
             <div className="detail-header">
                 <h2>Transacciones</h2>
             </div>
@@ -117,7 +121,8 @@ const PaymentDetail = () => {
 
                 unidadTransaccion = payment.id_tipo_transaccion == 1 ? ['Mensualidad', 'Mensualidades'] : 
                                     payment.id_tipo_transaccion == 2 ? ['Hora Reservada', 'Horas Reservadas'] : 
-                                    payment.id_tipo_transaccion == 3 ? ['Producto', 'Productos'] : ['Unidad', 'Unidades'],
+                                    payment.id_tipo_transaccion == 3 ? ['Producto', 'Productos'] : 
+                                    payment.id_tipo_transaccion == 4 ? ['Hora Reservada', 'Horas Reservadas'] : ['Unidad', 'Unidades'],
 
                 <div className={`detail-card ${estadoPagoUnidad ? 'pago' : 'pendiente'}`} key={idx}
                     onClick={() => handleHistoryItemClick(payment.id_billetera_transaccion)}

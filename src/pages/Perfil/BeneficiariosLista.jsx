@@ -31,6 +31,8 @@ import familiaresService from '../../services/familiares.service';
 
 import { useAuth } from "../../context/AuthContext"; // Importa el contexto de autenticación
 
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
+
 
 export default function BeneficiariosLista() {
     const navigate = useNavigate();
@@ -121,9 +123,6 @@ export default function BeneficiariosLista() {
         return `Socio:${user.id_socio}-Beneficiario:${id}-CI:${cedula}`;
     };
 
-    const handleBackClick = () => {
-        navigate('/perfil');
-    };
 
     const handleAddMemberClick = () => {
         setDataBeneficiarioNuevo({
@@ -276,17 +275,13 @@ export default function BeneficiariosLista() {
         <LoadingModal visible={loading}>Cargando...</LoadingModal>
         <ConfirmarModal onConfirm={()=>handleConfirmacion(true)} onCancel={()=>handleConfirmacion(false)} visible={showConfirmarModal}></ConfirmarModal>
         <ExitosoModal visible={showExitosoModal}></ExitosoModal>
+        <ButtonVolver to="/perfil" className="boton-volver" />
         <div className="family-list-container">
             <div className="family-list-header">
-                <button className="back-button" onClick={handleBackClick}>←</button>
                 <h2>Mis Beneficiarios</h2>
             </div>
 
-            <div className="add-member-button-container">
-                <button className="add-member-button" onClick={handleAddMemberClick}>
-                    <i className='fas fa-user'></i> Agregar Nuevo
-                </button>
-            </div>
+            
 
             
                 <div className="family-members-grid">
@@ -315,6 +310,12 @@ export default function BeneficiariosLista() {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="add-member-button-container">
+                    <button className="add-member-button" onClick={handleAddMemberClick}>
+                        <i className='fas fa-user'></i> Agregar Nuevo
+                    </button>
                 </div>
             
         </div>

@@ -29,12 +29,14 @@ const getTransaccionesBilleteraPorMesDB = async (id_socio, mes) => {
 const getUltimasTransaccioonesBilleteraDB = async (id_socio) => {
     try {
         const [rows] = await pool.execute(`
-            	SELECT  bt.* , dtt.nombre_transaccion, 
+            		SELECT  bt.* , dtt.nombre_transaccion, 
                     CASE
                     WHEN bt.id_tipo_transaccion = 1 THEN ( CONCAT(dtt.nombre_transaccion, ' ', dts.nombre_tipo_socio)  )
                     WHEN bt.id_tipo_transaccion = 2 THEN ( SELECT eru.nombre_unidad FROM reservaciones res JOIN espacios_reservables_unidad as eru ON res.id_espacio_reservable_unidad = eru.id_espacio_reservable_unidad WHERE res.id_reservacion =  bt.id_pago_asociado  )
-                        WHEN bt.id_tipo_transaccion = 3 THEN
+                    WHEN bt.id_tipo_transaccion = 3 THEN
                         ( SELECT com.nombre_comercio FROM compras_comercio coc JOIN comercios com ON coc.id_comercio = com.id_comercio WHERE coc.id_compra_comercio = bt.id_pago_asociado  )
+                    WHEN bt.id_tipo_transaccion = 4 THEN
+                        ( SELECT srv.nombre_servicio_reservable FROM reservaciones_servicios AS rsv JOIN servicios_reservables srv ON rsv.id_servicio_reservable = srv.id_servicio_reservable JOIN servicios_reservables_empresa AS sre ON rsv.id_servicio_reservable_empresa = sre.id_servicio_reservable_empresa WHERE rsv.id_reservacion_servicio = bt.id_pago_asociado )
                     END as descripcion_transaccion
                     FROM billeteras_transacciones bt
                             JOIN billeteras b ON b.id_billetera = bt.id_billetera
@@ -129,8 +131,36 @@ const getTransaccionesBilleteraCompletaPorMesDB = async (id_socio, mes) =>{
             comp.id_socio = ?
             AND MONTH(comp.fecha_compra) = ?
 
+        UNION ALL
+
+        -- Parte 4: Pago de Servicios
+
+        SELECT
+                dtt.id_tipo_transaccion,
+            rsv.estado AS estado_transaccion,
+            dtt.nombre_transaccion AS tipo_transaccion,
+            rsv.costo_reserva AS total_transaccion,
+                rsv.fecha_reservacion AS fecha_generacion,
+            bt.fecha_transaccion AS fecha_transaccion,
+                cmr.nombre_comercio AS descripcion_contenido,
+            (SELECT count(rsh.id_reservacion_servicio_hora) FROM reservaciones_servicios_horas AS rsh WHERE rsh.id_reservacion_servicio = rsv.id_reservacion_servicio )  AS descripcion_cantidad,
+            bt.id_billetera_transaccion
+        FROM
+            reservaciones_servicios AS rsv 
+        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 4
+        JOIN servicios_reservables_empresa AS sre ON sre.id_servicio_reservable_empresa = rsv.id_servicio_reservable_empresa
+        LEFT JOIN billeteras AS b ON rsv.id_socio = b.id_socio
+        JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
+            AND bt.id_tipo_transaccion = 4
+            AND bt.id_pago_asociado = rsv.id_reservacion_servicio
+        JOIN comercios AS cmr ON cmr.id_comercio = sre.id_comercio 
+        WHERE
+            rsv.id_socio = ?
+            AND MONTH(rsv.fecha_reservacion) = ?
+
+
             `, 
-            [id_socio, mes, id_socio, mes, id_socio, mes]);
+            [id_socio, mes, id_socio, mes, id_socio, mes,  id_socio, mes]);
         return rows;
     } catch (error) {
         console.error('Error consultando transacciones completas por mes:', error);
@@ -230,6 +260,28 @@ const getTransaccionPorIdDB = async (id_billetera_transaccion) => {
             AND bt.id_tipo_transaccion = 3
             AND bt.id_pago_asociado = comp.id_compra_comercio
         JOIN comercios AS cmr ON cmr.id_comercio = comp.id_comercio 
+
+        UNION ALL
+
+        SELECT
+                dtt.id_tipo_transaccion,
+            rsv.estado AS estado_transaccion,
+            dtt.nombre_transaccion AS tipo_transaccion,
+            rsv.costo_reserva AS total_transaccion,
+                rsv.fecha_reservacion AS fecha_generacion,
+            bt.fecha_transaccion AS fecha_transaccion,
+                cmr.nombre_comercio AS descripcion_contenido,
+            bt.id_billetera_transaccion,
+						bt.id_pago_asociado
+        FROM
+            reservaciones_servicios AS rsv 
+        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 4
+        JOIN servicios_reservables_empresa AS sre ON sre.id_servicio_reservable_empresa = rsv.id_servicio_reservable_empresa
+        LEFT JOIN billeteras AS b ON rsv.id_socio = b.id_socio
+        JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
+            AND bt.id_tipo_transaccion = 4
+            AND bt.id_pago_asociado = rsv.id_reservacion_servicio
+        JOIN comercios AS cmr ON cmr.id_comercio = sre.id_comercio 
         
         ) tabla
 				WHERE tabla.id_billetera_transaccion = ?

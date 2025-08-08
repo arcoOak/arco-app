@@ -56,6 +56,14 @@ const getServiciosPorEmpresaReservadora = async (id_empresa) => {
     return response.json();
 }
 
+const getCategoriasServiciosActivosPorEmpresaReservadora = async (id_empresa) => {
+    const response = await fetch(`${API_HOST}/api/servicios/categorias/empresa/${id_empresa}`);
+    if (!response.ok) {
+        return [];
+    }
+    return response.json();
+}
+
 export default {
     getTodosServicios,
     getHomeServicios,
@@ -63,5 +71,6 @@ export default {
     getCategoriasServiciosActivos,
     getServicioPorId,
     getEmpresasReservadorasPorServicio,
-    getServiciosPorEmpresaReservadora
+    getServiciosPorEmpresaReservadora,
+    getCategoriasServiciosActivosPorEmpresaReservadora
 }

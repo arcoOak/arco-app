@@ -1,11 +1,13 @@
 // src/components/ComercioDetalle.jsx (o ComercioDetalle.js)
 import React, {useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './ComercioDetalle.css'; // Crea un archivo CSS para este componente
 
 
 import comercioService from '../../services/comercio.service'; // Importa el servicio de comercios
 import productoService from '../../services/producto.service';
+import serviciosService from '../../services/servicios.service';
+
 import LoadingModal from '../../components/modals/LoadingModal';
 import ExitosoModal from '../../components/modals/ExitosoModal';
 
@@ -17,6 +19,8 @@ import aguaPlaceholder from '../../assets/agua.jpg';
 import { useDragToScroll } from '../../hooks/useDragToScroll';
 
 import { useCarrito } from '../../context/CartContext';
+
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
 
 const ProductoCard = ({ producto, handleAddToCarrito, productoEnCarrito }) => (
     <div className="producto-card" key={producto.id_producto}
@@ -46,21 +50,39 @@ const ProductoCard = ({ producto, handleAddToCarrito, productoEnCarrito }) => (
     </div>
 );
 
+const ServicioCard = ({ servicio }) => (
+    <div className="servicio-card" key={servicio.id_servicio_reservable_empresa}>
+        <h3 className="servicio-name">{servicio.nombre_servicio_reservable}</h3>
+        <p className="servicio-description">{servicio.descripcion}</p>
+        <span className="servicio-price">${Number(servicio.costo_servicio).toFixed(2)}</span>
+    </div>
+);
+
 export default function ComercioDetalle() { // Recibe allBusinesses como prop
     const { id } = useParams(); // Obtiene el ID del comercio de la URL
     const navigate = useNavigate(); // Hook para navegar programáticamente
     const [loading, setLoading] = useState(false); // Estado para manejar la carga de datos
     const [comercio, setComercio] = useState({});
     const [productos, setProductos] = useState([]); // Estado para manejar los productos del comercio
-    const [categorias, setCategorias] = useState([]); // Estado para manejar las categorías de productos
+    const [categoriasProductos, setCategoriasProductos] = useState([]); // Estado para manejar las categorías de productos
+
+    const [servicios, setServicios] = useState([]); // Estado para manejar los servicios del comercio
+    const [categoriasServicios, setCategoriasServicios] = useState([]); // Estado para
 
     const [activeCategory, setActiveCategory] = useState(0);
+    const [activeCategoryServicios, setActiveCategoryServicios] = useState(0);
+
+    const [tipoEmpresa, setTipoEmpresa] = useState(null); // Estado para manejar el tipo de comercio
 
     const [showExitosoModal, setShowExitosoModal] = useState(false); // Estado para manejar el modal de éxito
 
     const { addToCarrito, isProductoEnCarrito } = useCarrito(); // Hook para manejar el carrito de compras
 
     const { scrollContainerRef, dragHandlers } = useDragToScroll();
+
+    const location = useLocation();
+
+    const backLocation = location.state?.returnTo || '/comercios';
 
     useEffect(() => {
         setLoading(true); // Inicia la carga de datos
@@ -69,15 +91,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
             setLoading(true)
             try {
 
-                const [comercioData, productosData, categoriasData] = await Promise.all([
-                    comercioService.getComercioById(id),
-                    productoService.getProductosPorComercio(id),
-                    productoService.getCategoriasDeProductosPorComercio(id)
-                ]);
-
-                console.log('Comercio Data:', comercioData);
-                console.log('Productos Data:', productosData);
-                console.log('Categorías Data:', categoriasData);
+                const comercioData = await comercioService.getComercioById(id);
 
                 if (!comercioData) {
                     console.error('Comercio no encontrado');
@@ -85,14 +99,64 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                 }else{
                     setComercio(comercioData);
                 }
-                
-                setProductos(productosData || []);
-                setCategorias(categoriasData || []);
+
+                if(comercioData.id_tipo_comercio == 1){
+
+                    const [productosData, categoriasData] = await Promise.all([
+                        productoService.getProductosPorComercio(id),
+                        productoService.getCategoriasDeProductosPorComercio(id)
+                    ]);
+
+                    console.log('Productos Data:', productosData);
+                    console.log('Categorías Data:', categoriasData);
+
+                    setProductos(productosData || []);
+                    setCategoriasProductos(categoriasData || []);
+
+                    setTipoEmpresa(1); // Establece el tipo de comercio como 1 (Comercio de Productos)
+
+                }else if(comercioData.id_tipo_comercio == 2){
+
+                    const [serviciosData, categoriasServiciosData] = await Promise.all([
+                        serviciosService.getServiciosPorEmpresaReservadora(id),
+                        serviciosService.getCategoriasServiciosActivosPorEmpresaReservadora(id)
+                    ]);
+
+                    console.log('Servicios Data:', serviciosData);
+                    console.log('Categorías Servicios Data:', categoriasServiciosData);
+
+                    setServicios(serviciosData || []);
+                    setCategoriasServicios(categoriasServiciosData || []);
+
+                    setTipoEmpresa(2); // Establece el tipo de comercio como 2 (Comercio de Servicios)
+
+                } else {
+
+                    const [productosData, categoriasData, serviciosData, categoriasServiciosData] = await Promise.all([
+                        productoService.getProductosPorComercio(id),
+                        productoService.getCategoriasDeProductosPorComercio(id),
+                        serviciosService.getServiciosPorEmpresaReservadora(id),
+                        serviciosService.getCategoriasServiciosActivosPorEmpresaReservadora(id)
+                    ]);
+
+
+                    setProductos(productosData || []);
+                    setCategoriasProductos(categoriasData || []);
+
+
+                    setServicios(serviciosData || []);
+                    setCategoriasServicios(categoriasServiciosData || []);
+
+
+                    setTipoEmpresa(3); // Establece el tipo de comercio como 3 (Comercio Mixto)
+
+                }
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setComercio(null); // Si hay un error, establecemos comercio como null
                 setProductos([]); // Si hay un error, establecemos productos como un array vacío
-                setCategorias([]); // Si hay un error, establecemos categorías como un array vacío
+                setCategoriasProductos([]); // Si hay un error, establecemos categorías como un array vacío
             } finally {
                 setLoading(false);
             }
@@ -115,13 +179,28 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                 id_categoria_producto: 0,
                 nombre_categoria_producto: 'Todos',
             },
-            ...categorias
-        ], [categorias]);
+            ...categoriasProductos
+        ], [categoriasProductos]);
+
+    const displayCategoriasServicios = useMemo(() => [
+            {
+                id_categoria_servicio: 0,
+                nombre_categoria_servicio: 'Todos',
+            },
+            ...categoriasServicios
+        ], [categoriasServicios]);
+
 
     const handleSeleccionarCategoria = (categoriaId) => {
-        console.log('Categoría seleccionada:', categoriaId);
+        //console.log('Categoría seleccionada:', categoriaId);
         setActiveCategory(categoriaId);
     };
+
+    const handleSeleccionarCategoriaServicios = (categoriaId) => {
+        //console.log('Categoría seleccionada:', categoriaId);
+        setActiveCategoryServicios(categoriaId);
+    };
+
 
     const productosFiltrados = useMemo(() =>{
             // Si no hay comercios o no hay categoría activa, no mostramos nada.
@@ -140,12 +219,30 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
             return productosTotales;
         }, [activeCategory, productos]);
 
+    
+    const serviciosFiltrados = useMemo(() =>{
+            // Si no hay comercios o no hay categoría activa, no mostramos nada.
+    
+            let serviciosTotales = servicios;
+
+        // 1. Si hay una categoría activa (diferente de 0), filtramos por ella.
+            if(activeCategoryServicios != 0 ){
+                serviciosTotales = servicios.filter(
+                    (servicio) => servicio.id_categoria_servicio === activeCategoryServicios
+                );
+            }
+    
+        // 2. Si hay un término de búsqueda, filtramos el resultado anterior.
+            
+            return serviciosTotales;
+        }, [activeCategoryServicios, servicios]);
+
 
 
     if (!comercio) {
         return (
             <div className="detalle-container">
-                <button className="back-button" onClick={() => navigate('/comercios')}>
+                <button className="back-button" onClick={() => navigate(backLocation)}>
                     <i className='bx bx-arrow-back'></i> Volver
                 </button>
                 <p className="error-message">Lo sentimos, el comercio que buscas no fue encontrado.</p>
@@ -160,9 +257,8 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
         <ExitosoModal visible={showExitosoModal} mensaje="Producto Añadido al Carrito"></ExitosoModal>
         <LoadingModal visible={loading}></LoadingModal>
         <div className="detalle-container">
-            <button className="back-button" onClick={() => navigate('/comercios')}>
-                <i className='bx bx-arrow-back'></i> Volver
-            </button>
+
+            <ButtonVolver to={backLocation} className="boton-volver" />
 
             <div className="detalle-header">
                 <img src={`${comercio.img || comercioImagePlaceholder}`} alt={comercio.nombre_comercio} className="detalle-img" />
@@ -181,25 +277,40 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                 {/* Puedes añadir más información aquí como dirección, redes sociales, etc. */}
             </div>
 
+            { productos.length > 0 && servicios.length > 0 && (
+
+                <div className='selector-tipo-empresa'>
+
+                    <button
+                        className={`tipo-empresa-button ${tipoEmpresa === 1 ? 'active' : ''}`}
+                        onClick={() => setTipoEmpresa(1)}
+                    >
+                        Productos
+                    </button>
+                    <button
+                        className={`tipo-empresa-button ${tipoEmpresa === 2 ? 'active' : ''}`}
+                        onClick={() => setTipoEmpresa(2)}
+                    >
+                        Servicios
+                    </button>
+
+                </div>
+
+            ) }
+
+            {productos.length > 0 && tipoEmpresa === 1 && 
             <div className="detalle-catalogo-section">
                 <h2>Catálogo de Productos</h2>
 
-                <div
-                            className="categorias-productos"
-                            ref={scrollContainerRef}
-                            {...dragHandlers}
-                        >
-
-                        {displayCategorias.map((cat) => (
-                                <button
-                                    key={cat.id_categoria_producto}
-                                    className={`span-categoria-productos ${activeCategory === cat.id_categoria_producto ? 'active' : ''}`}
-                                    onClick={() => handleSeleccionarCategoria(cat.id_categoria_producto)}
-                                >
-                                    {cat.nombre_categoria_producto}
-                                </button>
-                            ))}
-                </div>
+                <SelectorCategorias
+                    id={'id_categoria_producto'}
+                    nombre = {'nombre_categoria_producto'}
+                    displayCategorias={displayCategorias}
+                    activeCategory={activeCategory}
+                    handleSeleccionarCategoria={handleSeleccionarCategoria}
+                    scrollContainerRef={scrollContainerRef}
+                    dragHandlers={dragHandlers}
+                />
 
                 <div className="productos-grid">
                     { 
@@ -209,8 +320,53 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
                     }
                     {productosFiltrados.length === 0 && <p className="no-products">No hay productos disponibles en este momento.</p>} 
                 </div>
-            </div>
-        </div>
-        </React.Fragment>
+            </div>}
+
+            {servicios.length > 0 && tipoEmpresa === 2 &&
+            <div className="detalle-servicios-section">
+                <h2>Catálogo de Servicios</h2>
+
+                <SelectorCategorias
+                    id={'id_categoria_servicio'}
+                    nombre = {'nombre_categoria_servicio'}
+                    displayCategorias={displayCategoriasServicios}
+                    activeCategory={activeCategoryServicios}
+                    handleSeleccionarCategoria={handleSeleccionarCategoriaServicios}
+                    scrollContainerRef={scrollContainerRef}
+                    dragHandlers={dragHandlers}
+                />
+
+                <div className="servicios-grid">
+                    {serviciosFiltrados.map(servicio => (
+                        <ServicioCard servicio={servicio} key={servicio.id_servicio_reservable_empresa} />
+                    ))}
+                    {serviciosFiltrados.length === 0 && <p className="no-products">No hay servicios disponibles en este momento.</p>}
+                </div>
+                </div>
+            }
+    </div>
+    </React.Fragment>
     );
+}
+
+
+const SelectorCategorias = ({ id, nombre, displayCategorias, activeCategory, handleSeleccionarCategoria, scrollContainerRef, dragHandlers }) => {
+    return (
+        <div
+            className="categorias-productos"
+            ref={scrollContainerRef}
+            {...dragHandlers}
+            >
+
+                        {displayCategorias.map((cat) => (
+                                <button
+                                    key={cat[id]}
+                                    className={`span-categoria-productos ${activeCategory === cat[id] ? 'active' : ''}`}
+                                    onClick={() => handleSeleccionarCategoria(cat[id])}
+                                >
+                                    {cat[nombre]}
+                                </button>
+                            ))}
+                </div>
+    )
 }

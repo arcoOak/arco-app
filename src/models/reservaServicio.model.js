@@ -5,7 +5,7 @@ const getReservaServicioByIdDB = async (id_reservacion_servicio) =>{
     try{
 
         const [row] = await pool.execute(`
-            SELECT rss.*, srv.nombre_servicio_reservable, cmr.nombre_comercio, sre.costo_servicio, sre.capacidad
+            SELECT rss.*, srv.nombre_servicio_reservable, cmr.id_comercio, cmr.nombre_comercio, sre.costo_servicio, sre.capacidad
             FROM reservaciones_servicios rss
             JOIN servicios_reservables srv ON rss.id_servicio_reservable = srv.id_servicio_reservable 
 			JOIN servicios_reservables_empresa sre ON rss.id_servicio_reservable_empresa = sre.id_servicio_reservable_empresa

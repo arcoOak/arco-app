@@ -129,6 +129,11 @@ const TrainerSection = () => {
     // Esto asegura que el efecto solo se re-ejecute si las definiciones de estas funciones cambian,
     // lo cual solo ocurre si sus propias dependencias internas cambian.
 
+    const handleNavigate = (path, id) => {
+        navigate(`/${path}/${id}`, { state: { returnTo: location.pathname } });
+    };
+
+
     return (
         <div className="trainer-section-container">
             <div className="trainer-section__header">
@@ -146,7 +151,7 @@ const TrainerSection = () => {
                         description={data.descripcion}
                         imageUrl={data.imageUrl || servicioImagePlaceholder} // Usa la imagen del servicio o una imagen por defecto
                         imageAlt={data.nombre_categoria_servicio}
-                        onClick={() => navigate(`/servicios/${data.id_servicio_reservable}`)} // Navega al detalle del servicio
+                        onClick={() => handleNavigate('servicios', data.id_servicio_reservable)} // Navega al detalle del servicio
 
                     />
                 ))}

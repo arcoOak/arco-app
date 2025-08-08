@@ -101,6 +101,20 @@ const getServiciosPorEmpresaReservadoraDB = async (id_empresa) => {
     }
 }
 
+const getCategoriasServiciosActivosPorEmpresaReservadoraDB = async (id_empresa) => {
+    try {
+        const [rows] = await pool.execute(`
+            SELECT dcs.* FROM servicios_reservables srv 
+            JOIN servicios_reservables_empresa sre ON sre.id_servicio_reservable = srv.id_servicio_reservable
+            JOIN comercios cmr ON sre.id_comercio = cmr.id_comercio 
+            JOIN data_categoria_servicio dcs ON dcs.id_categoria_servicio = srv.id_categoria_servicio
+            WHERE cmr.id_comercio = ? GROUP BY srv.id_categoria_servicio`, [id_empresa]);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     getTodosServiciosDB,
     getHomeServiciosDB,
@@ -108,6 +122,7 @@ export {
     getCategoriasServiciosActivosDB,
     getServicioPorIdDB,
     getEmpresasReservadorasPorServicioDB,
-    getServiciosPorEmpresaReservadoraDB
+    getServiciosPorEmpresaReservadoraDB,
+    getCategoriasServiciosActivosPorEmpresaReservadoraDB
 
 }

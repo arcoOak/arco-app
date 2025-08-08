@@ -110,3 +110,56 @@
     padding: 2rem 0;
 }
 
+
+
+.info-card-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa; /* Fondo gris claro */
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.info-card-link:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.info-card-link__text {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-card-link__label {
+    font-size: 0.8rem;
+    color: #6c757d; /* Un gris más suave para la etiqueta */
+    margin-bottom: 0.25rem;
+}
+
+.info-card-link__value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #343a40; /* Color oscuro para el valor */
+}
+
+.info-card-link__subvalue {
+    font-size: 0.9rem;
+    color: #6c757d; /* Un gris más suave para el valor secundario */
+    margin-top: 0.25rem;
+}
+
+.info-card-link__icon {
+    font-size: 1.5rem;
+    color: #adb5bd; /* Un gris para el icono */
+    transition: color 0.3s ease;
+}
+
+.info-card-link:hover .info-card-link__icon {
+    color: #343a40;
+}

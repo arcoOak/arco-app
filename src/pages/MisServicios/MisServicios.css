@@ -9,8 +9,7 @@
     gap: 1rem;
 }
 
-.reservas-title {
-    font-size: 2.5rem;
+.mis-reservas-title {
     font-weight: bold;
     color: #2c3e50; /* Un color oscuro pero no negro puro */
     margin-bottom: 0.5rem;

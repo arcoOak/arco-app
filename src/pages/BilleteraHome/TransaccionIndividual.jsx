@@ -1,6 +1,6 @@
 // src/components/PaymentDetail.jsx
 import React, { useState, useEffect, useMemo  } from 'react'; // Importa useState
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import './TransaccionIndividual.css';
 
 import LoadingModal from '../../components/modals/LoadingModal'; // Importa el componente de modal de carga
@@ -8,6 +8,7 @@ import LoadingModal from '../../components/modals/LoadingModal'; // Importa el c
 import billeteraService from '../../services/billetera.service'; // Importa el servicio de billetera
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+import BotonVolver from '../../components/buttons/ButtonVolver';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -20,6 +21,9 @@ const TransaccionIndividual = () => {
     const { id } = useParams();
 
     const navigate = useNavigate();
+
+    const location = useLocation(); // Obtiene la ubicación actual para manejar la navegación
+    const backLocation = location.state?.returnTo || '/transaccion'; // Define la ruta de retorno
 
     const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
 
@@ -43,16 +47,19 @@ const TransaccionIndividual = () => {
                 setListaElementosTransaccion(listaElementosTransaccion);
             } catch (error) {
                 console.error('Error al obtener el registro de transacciones:', error);
+            }finally{
+                setTimeout( () => {
+                    setLoading(false); // Cambia el estado de carga a false después de 1 segundo
+                }, 500)
             }
         };
 
         if(user) {
+             // Cambia el estado de carga a true cuando comienza la carga
             obtenerRegistroTransaccion();
         }
 
-        setTimeout( () => {
-            setLoading(false); // Cambia el estado de carga a false después de 1 segundo
-        }, 500)
+        
 
 
     },[user] );
@@ -63,7 +70,7 @@ const TransaccionIndividual = () => {
         return (
             <div className="payment-detail-container">
                 <h2>Detalle del Pago no encontrado</h2>
-                <button className="back-button" onClick={() => navigate('/')}>Volver al Inicio</button>
+                <button className="back-button" onClick={() => navigate(backLocation)}>Volver al Inicio</button>
             </div>
         );
     }
@@ -73,7 +80,9 @@ const TransaccionIndividual = () => {
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
         <div className="payment-detail-container">
-            <button className="back-button" onClick={() => navigate('/')}>&larr; Volver</button>
+
+            <BotonVolver to={backLocation} />
+
             <div className="detail-header">
                 <h2>Detalle de Pago</h2>
             </div>

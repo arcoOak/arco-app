@@ -7,7 +7,9 @@ import { useAuth } from '../../context/AuthContext';
 import LoadingModal from '../../components/modals/LoadingModal';
 import reservasService from '../../services/reservas.service';
 
-import BotonVolver from '../../components/buttons/ButtonVolver';
+import ButtonVolver from '../../components/buttons/ButtonVolver';
+
+
 
 export default function ReservasDetalle() {
     const navigate = useNavigate();
@@ -33,6 +35,8 @@ export default function ReservasDetalle() {
                     reservasService.getInvitadosPorReserva(id),
                     reservasService.getHorasReservadasPorReserva(id)
                 ]);
+
+                console.log(reserva);
 
                 setReservaDetalle(reserva);
                 setListaInvitados(invitados);
@@ -91,6 +95,11 @@ export default function ReservasDetalle() {
             return result;
         };
 
+    const handleNavigate = (path, id) =>{
+        navigate(`/${path}/${id}`, { state: { returnTo: location.pathname } });
+    }
+
+
     return (
         <React.Fragment>
         <LoadingModal visible={loading} />
@@ -104,9 +113,17 @@ export default function ReservasDetalle() {
                 <div className="reserva-info">
                     <div className='reserva-info-header'>
                         <h2>Información de la Reserva</h2>
+
+                        <div className='info-card-link' onClick={() => handleNavigate('espacios', reservaDetalle.id_espacio_reservable)}>
+                            <div className='info-card-link__text'>
+                                <span className='info-card-link__label'>Espacio Reservado</span>
+                                <span className='info-card-link__value'>{reservaDetalle.nombre_espacio_reservable}</span>
+                                <span className='info-card-link__subvalue'>{reservaDetalle.nombre_unidad}</span>
+                            </div>
+                            <i className='bx bx-chevron-right info-card-link__icon'></i>
+                        </div>
+
                         <p><strong>Fecha Reserva:</strong> {new Date(reservaDetalle.fecha_reservacion).toLocaleDateString()}</p>
-                        <p><strong>Espacio Reservable:</strong> {reservaDetalle.nombre_espacio_reservable}</p>
-                        <p><strong>Unidad:</strong> {reservaDetalle.nombre_unidad}</p>
                         <p><strong>Cantidad de Horas Reservadas:</strong> {listaHoras.length}</p>
                     </div>
                     <div className='reserva-info-details'>

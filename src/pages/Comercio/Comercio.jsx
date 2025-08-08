@@ -59,7 +59,7 @@ export default function Comercio() {
 
     // Función para manejar el clic en "Ver más"
     const handleVerMasClick = (comercioId) => {
-        navigate(`/comercio/${comercioId}`);
+        navigate(`/comercios/${comercioId}`);
     };
 
     const handleSeleccionarCategoria = (categoriaId) => {

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import './NoticiasDetalle.css'; 
 
 import { useAuth } from '../../context/AuthContext';
@@ -17,6 +17,9 @@ import ButtonVolver from '../../components/buttons/ButtonVolver';
 
 const NoticiasDetalle = () => {
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const backLocation = location.state?.returnTo || '/noticias';
 
     const { user } = useAuth(); 
     const { id } = useParams();
@@ -65,7 +68,7 @@ const NoticiasDetalle = () => {
         <React.Fragment>
         <LoadingModal visible={loading} />
 
-        <ButtonVolver to="/noticias" className="boton-volver" />
+        <ButtonVolver to={backLocation} className="boton-volver" />
         <div className="noticias-detalle-container">
             <div className="noticias-detalle-header">
             

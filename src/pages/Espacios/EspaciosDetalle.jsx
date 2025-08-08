@@ -1,5 +1,5 @@
 import React, { use, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useState, useEffect } from 'react';
 import './EspaciosDetalle.css'; // Crea un archivo CSS para este componente
 
@@ -14,6 +14,9 @@ import reservasService from '../../services/reservas.service';
 import qrTokenService from '../../services/qrtoken.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
+
 
 
 // Función para obtener el número de días en un mes específico
@@ -51,6 +54,11 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
     const [notaReserva, setNotaReserva] = useState('');
     const [invitadosFamiliares, setInvitadosFamiliares] = useState([]);
     const [invitadosReserva, setInvitadosReserva] = useState([]);
+
+
+    const location = useLocation();
+
+    const backLocation = location.state?.returnTo || '/espacios';
 
     // Buscar el espacio por ID
 
@@ -455,9 +463,9 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                 ></EspacioReservaModal>
             <LoadingModal visible={loading} />
             <div className="reserva-header">
-                <button className="back-button-espacios" onClick={() => navigate('/espacios')}>
-                    <i className='bx bx-arrow-back'></i> Volver
-                </button>
+
+                <ButtonVolver to={backLocation} className="boton-volver-white" />
+
                 {/* <img src={`../${espacio.img}`} alt={espacio.name} className="reserva-img" /> */}
                 <h1>{espacio?.nombre_espacio_reservable}</h1>
                 <p className="espacio-detalle-description">{espacio?.descripcion_espacio_reservable}</p>

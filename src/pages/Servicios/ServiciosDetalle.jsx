@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // Import useNavigate
 import './ServiciosDetalle.css'; // Crea un archivo CSS para este componente
 
 
@@ -14,6 +14,8 @@ import serviciosService from '../../services/servicios.service';
 import reservaServicioService from '../../services/reservasServicio.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
 
 
 
@@ -78,7 +80,8 @@ export default function ServiciosDetalle() {
     const [showServicioReservaModal, setShowServicioReservaModal] = useState(false); // Estado para manejar la visibilidad del modal de reserva
     const [notaReserva, setNotaReserva] = useState('');
 
-
+    const location = useLocation();
+    const backLocation = location.state?.returnTo || '/servicios'; // Ruta a la que volver, por defecto a /servicios
 
 
     useEffect(() => {
@@ -110,7 +113,7 @@ export default function ServiciosDetalle() {
                         setUnidadSeleccionada(unidadesData[0]?.id_servicio_reservable_empresa || null);
 
 
-                        console.log('Empresas Reservadoras:', unidadesData);
+                        //console.log('Empresas Reservadoras:', unidadesData);
                         //Se carga por defecto a la fecha de hoy en formato YYYY-MM-DD
 
                         const fechaActualFormateada = new Date().toISOString().slice(0, 10)
@@ -346,9 +349,9 @@ export default function ServiciosDetalle() {
             const empresaSeleccionada = empresasReservadoras.find(e => e.id_servicio_reservable_empresa === unidadSeleccionada);
             const cantidadTrabajadores = empresaSeleccionada?.cantidad_trabajadores || 1;
 
-            console.log('Reservaciones para la fecha:', reservacionesParaLaFecha);
-            console.log('Cantidad de trabajadores:', cantidadTrabajadores);
-            console.log('Empresa seleccionada:', empresaSeleccionada);
+            // console.log('Reservaciones para la fecha:', reservacionesParaLaFecha);
+            // console.log('Cantidad de trabajadores:', cantidadTrabajadores);
+            // console.log('Empresa seleccionada:', empresaSeleccionada);
 
             setListaHorarios(currentHorarios =>
                 currentHorarios.map(horario => {
@@ -461,9 +464,9 @@ export default function ServiciosDetalle() {
             <LoadingModal visible={loading} />
 
             <div className="servicio-header">
-                <button className="back-button-espacios" onClick={() => navigate('/servicios')}>
-                    <i className='bx bx-arrow-back'></i> Volver
-                </button>
+
+                <ButtonVolver to={backLocation} className="boton-volver-white" />
+
                 <h1>{servicio ? servicio.nombre_servicio_reservable : ''}</h1>
                 <p className="espacio-detalle-description">{servicio?.descripcion}</p>
                 {

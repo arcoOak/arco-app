@@ -109,7 +109,7 @@ export default function Balance() {
             }, [mesSeleccionado]);
 
     const handleHistoryItemClick = (id) => {
-        navigate(`/transaccion/`, { state: { mes: id } });
+        navigate(`/transaccion/`, { state: { mes: id, backLocation: '/'} });
     };
 
     const handlePagarClick = () => {

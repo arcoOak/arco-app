@@ -10,5 +10,6 @@ router.get('/categorias/:id_club', servicioController.getCategoriasServiciosActi
 router.get('/servicio/:id_servicio', servicioController.getServicioPorId); // GET /api/servicios/servicio/:id_servicio
 router.get('/empresas/:id_servicio', servicioController.getEmpresasReservadorasPorServicio); // GET /api/servicios/empresas/:id_servicio
 router.get('/servicio/empresa/:id_empresa', servicioController.getServiciosPorEmpresaReservadora); // GET /api/servicios/empresa/:id_empresa
+router.get('/categorias/empresa/:id_empresa', servicioController.getCategoriasServiciosActivosPorEmpresaReservadora); // GET /api/servicios/categorias/empresa/:id_empresa
 
 export default router; // Exporta el router para usarlo en app.js

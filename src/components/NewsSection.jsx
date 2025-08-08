@@ -139,6 +139,10 @@ const NewsSection = () => {
 
     let placeholderImage = '';
 
+    const handleNavigate = (id) => {
+        navigate(`/Noticias/${id}`, { state: { returnTo: '/' } });
+    }
+
     return (
         <div className="news-section-container">
             <div className="news-section__header">
@@ -162,7 +166,7 @@ const NewsSection = () => {
                         autor={news.nombre_autor}
                         imageUrl={news.imageUrl || placeholderImage}
                         imageAlt={news.titulo}
-                        onClick={() => navigate(`/Noticias/${news.id_noticia}`)}
+                        onClick={() => handleNavigate(news.id_noticia)}
                     />
                 ))}
             </div>

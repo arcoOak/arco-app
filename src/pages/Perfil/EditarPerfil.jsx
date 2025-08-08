@@ -10,6 +10,8 @@ import ExitosoModal from '../../components/modals/ExitosoModal';
 
 import userImagePlaceholder from '../../assets/user_placeholder.svg';
 
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
+
 const EditarPerfil = () => {
 
     const { user, login, logout, editarUsuario, isAuthenticated, loading } = useAuth();
@@ -53,8 +55,11 @@ const EditarPerfil = () => {
         <React.Fragment>
         <ExitosoModal visible={showExitosoModal} message="Perfil actualizado exitosamente" />
         <LoadingModal visible={loading} />
+        <ButtonVolver to="/perfil" className="boton-volver" />
         <div className="edit-profile-container">
-            <button className="back-button" onClick={handleCancel}><i className="bx bx-arrow-back"></i> Volver</button>
+
+            
+
             <div className="edit-profile-header">
                 <h2>Editar Perfil</h2>
             </div>

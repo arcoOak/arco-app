@@ -37,7 +37,7 @@ export default function TransacctionSection() {
 
     const handleHistoryItemClick = (id_billetera_transaccion) => {
         if(id_billetera_transaccion && id_billetera_transaccion !== null) {
-            navigate(`/transaccion/${id_billetera_transaccion}`);
+            navigate(`/transaccion/${id_billetera_transaccion}`, { state: { returnTo: location.pathname } });
         }
         
     };

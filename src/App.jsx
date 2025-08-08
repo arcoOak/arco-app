@@ -130,7 +130,7 @@ function App() {
 
                         {/* Rutas de Comercios */}
                         <Route path="/comercios" element={<Comercios  />} />
-                        <Route path="/comercio/:id" element={<ComercioDetalle   />} />
+                        <Route path="/comercios/:id" element={<ComercioDetalle   />} />
 
                         {/* Rutas de Servicios */}
                         <Route path="/servicios" element={<Servicios  />} />

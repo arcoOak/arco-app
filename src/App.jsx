@@ -5,7 +5,7 @@ import React from "react";
 import "./css/App.css"; // Ensure you have the CSS file for styles
 import Layout from "./Layout";
 import Home from "./pages/Home";
-import Notifications from "./components/Notifications";
+import Notifications_user from "./pages/Notificaciones/Notifications_user";
 import PagarPendientes from "./pages/BilleteraHome/PagarPendientes";
 import PaymentDetail from './pages/BilleteraHome/PaymentDetail';
 import TransaccionIndividual from "./pages/BilleteraHome/TransaccionIndividual"; 
@@ -110,7 +110,7 @@ function App() {
                         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
                         <Route path="/TermsOfUse" element={<TermsOfUse />} />
                         <Route path="/Progress" element={<Progress />} />
-                        <Route path="/notifications" element={<Notifications />} />
+                        <Route path="/notifications_user" element={<Notifications_user />} />
                         <Route path="/pagar-pendientes" element={<PagarPendientes />} />
                         <Route path="/transaccion/" element={<PaymentDetail />} />
                         <Route path="/transaccion/:id" element={ <TransaccionIndividual /> } />

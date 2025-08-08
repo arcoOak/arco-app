@@ -73,7 +73,7 @@ const Navbar = () => {
     }, []);
 
     const handleNotification = () => {
-        navigate(`notifications`)
+        navigate(`notifications_user`)
     };
 
     const handleSeleccionarBoton = (item) => {

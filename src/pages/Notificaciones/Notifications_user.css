@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
+}
+
+.app-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  min-height: 100vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.header h1 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.back-arrow, .settings-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.customize-banner {
+  background-color: #000;
+  color: #fff;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  margin-top: 16px;
+}
+
+.customize-banner p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.customize-banner .close-icon {
+  font-size: 1.25rem;
+  font-weight: bold;
+  transform: rotate(45deg);
+}
+
+.notifications-list {
+  margin-top: 24px;
+}
+
+.previously-heading {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.notification-card {
+  display: flex;
+  align-items: flex-start;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.notification-avatar {
+  background-color: #f2e2e7;
+  color: #c94073;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: 12px;
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.notification-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.notification-date {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.notification-message {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.notification-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #007bff;
+  border-radius: 50%;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.historical-link {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.historical-link p {
+  margin: 0 0 8px 0;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.historical-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+}

@@ -1,5 +1,5 @@
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getAllComerciosDB = async (id_club) => {
     try {

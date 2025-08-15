@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './Comercio.css'; // Importa el CSS específico para este componente
 
 import LoadingModal from '../../components/modals/LoadingModal';
+import CategoriaSelector from '../../components/CategoriaSelector'; // Importa el componente de carrusel de categorías
 
 import { useDragToScroll } from '../../hooks/useDragToScroll'; // Importa el hook personalizado para arrastrar y desplazar
 
@@ -13,6 +14,8 @@ import comercioService from '../../services/comercio.service'; // Importa el ser
 import comercioImagePlaceholder from '../../assets/comercio_placeholder.webp';
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+
+import BuscadorTexto from '../../components/BuscadorTexto';
 
 // Si usas este componente Comercio, la lista 'allBusinesses' DEBE ser pasada como una prop
 export default function Comercio() {
@@ -25,7 +28,7 @@ export default function Comercio() {
 
     const { scrollContainerRef, dragHandlers } = useDragToScroll();
 
-    const { user } = useAuth(); // Obtén el usuario del contexto de autenticación
+    const { user , isDarkTheme } = useAuth(); // Obtén el usuario del contexto de autenticación
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -63,7 +66,7 @@ export default function Comercio() {
     };
 
     const handleSeleccionarCategoria = (categoriaId) => {
-        console.log('Categoría seleccionada:', categoriaId);
+        //console.log('Categoría seleccionada:', categoriaId);
         setActiveCategory(categoriaId);
     };
 
@@ -108,38 +111,27 @@ export default function Comercio() {
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
         <section>
-            <h2 className='mb-2 mt-2'>Tiendas Disponibles</h2>
+            <h2 className={`mb-2 mt-2 ${isDarkTheme ? 'title-darkMode' : ''}`}>Tiendas Disponibles</h2>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-12 p-0">
-                        <div
-                            className="categorias"
-                            ref={scrollContainerRef}
-                            {...dragHandlers}
-                        >
 
-                        {displayCategorias.map((cat) => (
-                                <button
-                                    key={cat.id_categoria_comercio}
-                                    className={`span-categoria ${activeCategory === cat.id_categoria_comercio ? 'active' : ''}`}
-                                    onClick={() => handleSeleccionarCategoria(cat.id_categoria_comercio)}
-                                >
-                                    <i className={`fa ${cat.icon_fa}`}></i> {cat.nombre_categoria_comercio}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="search-categoria">
-                            <button>
-                                <i className='bx bx-search-big'></i>
-                            </button>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Busca la tienda que necesitas"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
+                        <CategoriaSelector
+                            scrollContainerRef={scrollContainerRef}
+                            dragHandlers={dragHandlers}
+                            displayCategorias={displayCategorias}
+                            activeCategory={activeCategory}
+                            handleSeleccionarCategoria={handleSeleccionarCategoria}
+                            id="id_categoria_comercio"
+                            nombre="nombre_categoria_comercio"
+                        />
+
+                        <BuscadorTexto
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            placeholder="Busca la tienda que necesitas"
+                        />
+                        
                         <div className="comercios p-0">
                             {filteredBusinesses.length > 0 ? (
                                 filteredBusinesses.map((comercio) => (
@@ -168,3 +160,4 @@ export default function Comercio() {
         </React.Fragment>
     );
 }
+

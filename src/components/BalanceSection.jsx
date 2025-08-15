@@ -12,7 +12,7 @@ export default function BalanceSection() {
                     <div className="balance-button">
                         
                         <button>
-                            <i class="fa-solid fa-wallet"></i>
+                            <i className="fa-solid fa-wallet"></i>
                             <label>Recargar</label>
                         </button>
                         

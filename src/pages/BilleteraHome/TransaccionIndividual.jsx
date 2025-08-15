@@ -79,9 +79,12 @@ const TransaccionIndividual = () => {
     return (
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
+
+        <BotonVolver to={backLocation} />
+
         <div className="payment-detail-container">
 
-            <BotonVolver to={backLocation} />
+            
 
             <div className="detail-header">
                 <h2>Detalle de Pago</h2>
@@ -91,7 +94,7 @@ const TransaccionIndividual = () => {
 
                     <div className={`detail-card ${registroTransaccion.estado_transaccion ? 'pago' : 'pendiente'}`} >
                         <div className={`payment-header ${registroTransaccion.estado_transaccion ? 'pago' : 'pendiente'}`}>
-                            <p className='payment-title'>{registroTransaccion.tipo_transaccion}</p>
+                            <h3 className='payment-title'>{registroTransaccion.tipo_transaccion}</h3>
                         </div>
                         <div className="payment-details">
                         <p className='payment-date'><strong>Fecha: </strong> {formatDate(registroTransaccion.fecha_generacion)}</p>

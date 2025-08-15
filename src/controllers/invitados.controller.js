@@ -6,7 +6,7 @@ import {
     createReservaInvitadosDB
 } from '../models/invitado.model.js';
 
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getCantidadInvitadosPorUsuarioMes = async (req, res) => {
     const { id_usuario, mes } = req.params;

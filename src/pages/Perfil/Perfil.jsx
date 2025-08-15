@@ -61,18 +61,17 @@ export default function Perfil() {
         <LoadingModal visible={loading}></LoadingModal>
         <div className="container-fluid">
             {/* ... (Tu código actual de encabezado y perfil) ... */}
-            <div className="row mb-4 mt-4" > 
-                <div className="col-md-12">
+            <div className="perfil-header" > 
+                
                     <div className="profile-photo-container">
                         <img src={user.avatar || userImagePlaceholder} alt="Profile" className="profile-photo" />
                     </div>
                     <h2 className="mb-2">{user.nombre} {user.apellido}</h2>
                     <span className="profile-mail">Acción: {user.id_usuario}</span>
-                </div>
+                
             </div >
 
-            <div className="row mb-2">
-                <div className="col-md-12">
+            <div className="profile-info-container">
                     <div className="profile-info">
 
                         {/* Nombre y Apellido */}
@@ -81,9 +80,7 @@ export default function Perfil() {
                                 <div className={`${activeDiv === 1 ? 'active' : ''} faq`} onClick={() => handleDivClick(1)}>
                                     <div className="head">
                                         <span className="label-info">Nombre y Apellido</span>
-                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
-                                        </svg>
+                                        <i className="fa-solid fa-circle-arrow-down"></i>
                                     </div>
                                     <div
                                         className="content"
@@ -101,9 +98,7 @@ export default function Perfil() {
                                 <div className={`${activeDiv === 2 ? 'active' : ''} faq`} onClick={() => handleDivClick(2)}>
                                     <div className="head">
                                         <span className="label-info">Cédula</span>
-                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
-                                        </svg>
+                                        <i className="fa-solid fa-circle-arrow-down"></i>
                                     </div>
                                     <div
                                         className="content"
@@ -121,9 +116,7 @@ export default function Perfil() {
                                 <div className={`${activeDiv === 3 ? 'active' : ''} faq`} onClick={() => handleDivClick(3)}>
                                     <div className="head">
                                         <span className="label-info">Teléfono</span>
-                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
-                                        </svg>
+                                        <i className="fa-solid fa-circle-arrow-down"></i>
                                     </div>
                                     <div
                                         className="content"
@@ -141,9 +134,7 @@ export default function Perfil() {
                                 <div className={`${activeDiv === 4 ? 'active' : ''} faq`} onClick={() => handleDivClick(4)}>
                                     <div className="head">
                                         <span className="label-info">Dirección</span>
-                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
-                                        </svg>
+                                        <i className="fa-solid fa-circle-arrow-down"></i>
                                     </div>
                                     <div
                                         className="content"
@@ -161,9 +152,7 @@ export default function Perfil() {
                                 <div className={`${activeDiv === 5 ? 'active' : ''} faq`} onClick={() => handleDivClick(5)}>
                                     <div className="head">
                                         <span className="label-info">Fecha de Nacimiento</span>
-                                        <svg width={18} height={19} viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 14.469L1 6.46897L1.96897 5.5L9 12.531L16.031 5.5L17 6.46897L9 14.469Z" fill="black" />
-                                        </svg>
+                                        <i className="fa-solid fa-circle-arrow-down"></i>
                                     </div>
                                     <div
                                         className="content"
@@ -199,15 +188,9 @@ export default function Perfil() {
                             <span className="value"><i className='bx bx-arrow-in-right-square-half exit'></i></span>
                         </div>
                     </div>
-                </div>
+                
             </div>
             <Outlet />
-            {/* Footer */}
-            <footer className="footer">
-                <p>© 2025 Oak Tree C.A.</p>
-                <p>Todos los derechos reservados.</p>
-                <p><a href="#">Política de Privacidad</a> | <a href="#">Términos de Uso</a></p>
-            </footer>
         </div>
         </React.Fragment>
     );

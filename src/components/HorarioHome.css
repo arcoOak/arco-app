@@ -1,10 +1,10 @@
 .horario-section {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 8px;
+    background-color: var(--color-surface-primary);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-md);
     padding: 16px;
     margin: 16px 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     text-align: center;
 }
 
@@ -15,20 +15,20 @@
     margin: 0 auto;
     font-weight: 500;
     padding: 8px 15px;
-    border-radius: 20px; /* Bordes redondeados para el estado */
+    border-radius: var(--border-radius-lg); /* Bordes redondeados para el estado */
     display: inline-block; /* Para que el fondo se ajuste al texto */
     max-width: 80%;
 }
 
 /* Estilo para el estado 'Abierto' */
 .horario-text.status-abierto {
-    color: #155724; /* Verde oscuro para el texto */
-    background-color: #d4edda; /* Fondo verde claro */
+    color: var(--color-white); /* Verde oscuro para el texto */
+    background-color: var(--color-success); /* Fondo verde claro */
 }
 
 /* Estilo para el estado 'Cerrado' */
 .horario-text.status-cerrado {
-    color: #721c24; /* Rojo oscuro para el texto */
-    background-color: #f8d7da; /* Fondo rojo claro */
+    color: var(--color-white); /* Rojo oscuro para el texto */
+    background-color: var(--color-danger); /* Fondo rojo claro */
 }
 

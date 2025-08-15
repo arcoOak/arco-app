@@ -3,6 +3,7 @@ import './ServicioReservaModal.css';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
+import Button from '../../components/buttons/Button'; // Importa el botón de confirmar
 
 export default function ConfirmacionReservaModal({
     visible,
@@ -92,6 +93,8 @@ export default function ConfirmacionReservaModal({
 
                 <h2 className='reserva-modal__title'>Confirmar Servicio</h2>
 
+                <div className='modal-content-block'>
+
                 <div className='reserva-modal__info'>
                     <p className='reserva-modal__text'><strong>Servicio:</strong> {servicio?.nombre_servicio_reservable}</p>
                 
@@ -125,16 +128,22 @@ export default function ConfirmacionReservaModal({
                     />
                 </div>
 
-                
+                </div>
 
                 <div className="modal-actions">
-                    <button onClick={onConfirm} className="button-primary" disabled={loading}>
-                        {loading ? 'Procesando...' : 'Confirmar'}
-                    </button>
-                    <button onClick={onClose} className="button-secondary" disabled={loading}>
-                        Cancelar
-                    </button>
+
+                    <Button
+                        className='primary'
+                        onClick={onConfirm}
+                        disabled={loading}
+                    >
                     
+                        {loading ? 'Procesando...' : 'Confirmar'}
+                    </Button>
+                    <Button onClick={onClose} className="neutral" disabled={loading}>
+                        Cancelar
+                    </Button>
+
                 </div>
             </div>
         </div>

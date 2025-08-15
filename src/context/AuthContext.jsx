@@ -1,5 +1,5 @@
 // src/context/AuthContext.js
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
 import authService from '../services/auth.service';
 
 import modificarSocio from '../services/modificar.service'; 
@@ -8,6 +8,9 @@ import clubService from '../services/club.service'; // Importa el servicio de cl
 import LoadingModal from '../components/modals/LoadingModal';
 
 import billeteraService from '../services/billetera.service'; // Importa el servicio de billetera
+
+import logoLight from '../img/logo.png'; // Importa tu logo
+import logoDark from '../img/logo-dark.png'; // Importa tu logo oscuro
 
 
 // Contexto
@@ -23,9 +26,23 @@ export const AuthProvider = ({ children }) => {
 
   const [saldoBilletera, setSaldoBilletera] = useState(0); // Almacena el saldo de la billetera
 
+  // Inicializa el estado del tema desde localStorage o la preferencia del sistema
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  const logo = useMemo(() => {
+    return isDarkTheme ? logoDark : logoLight;
+  }, [isDarkTheme]);
+
   useEffect(() => {
     // Aquí puedes intentar cargar los datos del usuario desde localStorage o una cookie
     // Cuando la aplicación se carga por primera vez
+    setLoading(true);
     try{
       const storedUser = localStorage.getItem('currentUser');
       if (storedUser) {
@@ -65,6 +82,12 @@ export const AuthProvider = ({ children }) => {
       
     }
   }, [user]);
+
+  // Efecto para manejar los cambios de tema: actualiza la clase del body y localStorage
+  useEffect(() => {
+    document.body.classList.toggle('dark-theme', isDarkTheme);
+    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
 
 
   // useEffect(() => {
@@ -144,6 +167,11 @@ export const AuthProvider = ({ children }) => {
     
   }
 
+  // Función para cambiar el tema
+  const toggleTheme = () => {
+    setIsDarkTheme(prevTheme => !prevTheme);
+  };
+
   // isAuthenticated es un valor derivado del estado 'user'.
   // No necesita su propio estado con useState y useEffect.
   const isAuthenticated = !!user;
@@ -156,6 +184,9 @@ export const AuthProvider = ({ children }) => {
     logout,
     editarUsuario,
     isAuthenticated, // Un booleano para saber si el usuario está autenticado
+    isDarkTheme,
+    toggleTheme,
+    logo
   };
 
   // if (loading) {

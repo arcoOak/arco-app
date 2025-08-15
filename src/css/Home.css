@@ -4,14 +4,6 @@
   margin: auto;
 }
 
-button:hover {
-  /* background-color: #4070f4 !important; */
-  /* color: white !important; */
-}
-
-button:focus {
-  outline: none;
-}
 
 .app-header {
   display: flex;
@@ -30,6 +22,11 @@ button:focus {
   font-weight: bold;
 }
 
+.home-bienvenida{
+  text-align: left;
+}
+
+
 .header-actions {
   display: flex;
   align-items: center;
@@ -47,7 +44,7 @@ button:focus {
 
 .banner img {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--border-radius-md);
   margin: 10px 0;
 }
 
@@ -55,29 +52,17 @@ button:focus {
   text-align: left;
 }
 
-.titleHome {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-  padding: 0 1.6rem;
-}
 
-.titleHome img {
-  width: 50px;
-  height: 50px;
-  border-radius: 15px;
-}
 
-.titleHome i {
-  font-size: 24px;
+.titleNotification i{
+  color: var(--color-text-secondary);
 }
 
 .notification {
   width: 7px;
   height: 7px;
   background-color: red;
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   position: relative;
   left: 15px;
   top: 9px;
@@ -107,23 +92,8 @@ section:hover {
 
 h2 {
   margin-top: 0;
-  color: #2d3436;
 }
 
-button {
-  padding: 10px 16px;
-  background-color: #00b894;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 14px;
-}
-
-/* button:hover {
-  background-color: #019875;
-} */
 
 .status {
   font-weight: bold;
@@ -141,7 +111,7 @@ button {
   width: 100%;
   height: 10px;
   background: #dfe6e9;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
   margin-top: 10px;
 }
@@ -170,32 +140,7 @@ button {
   padding: 10px 0;
 }
 
-.quick-actions button {
-  flex: 1;
-  font-size: 16px;
-}
 
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  margin: 6px 0;
-}
-
-.footer {
-  text-align: center;
-  font-size: 12px;
-  color: #636e72;
-  margin: 20px 0;
-}
-
-.footer a {
-  color: #0984e3;
-  text-decoration: none;
-  margin: 0 5px;
-}
 
 .bottom-nav {
   position: fixed;
@@ -218,10 +163,17 @@ ul li {
 }
 
 .dues-section {
-  padding: 2rem;
+  padding: 1rem 2rem;
 
 }
 
+
+/**/
+
+.home-bienvenida-text{
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+}
 
 
 /* src/components/NewsSection.css */
@@ -246,13 +198,10 @@ ul li {
 .news-section__title {
   font-size: 1.3em;
   font-weight: bold;
-  color: #333;
   margin: 0;
 }
 
-.button__see-all{
-  background-color: #4070f4;
-}
+
 
 .news-section__see-all {
   font-size: .9em;
@@ -276,7 +225,7 @@ ul li {
   /* Mejora la experiencia en iOS */
   scroll-snap-type: x mandatory;
   /* Opcional: Para que los ítems se "enganchen" al parar el scroll */
-  padding: 0 20px 20px 20px;
+  padding: 0 0px 20px 0px;
   /* Padding horizontal para que las tarjetas no se peguen a los bordes */
   /* El padding-bottom es para la sombra si es que sale */
   gap: 15px;
@@ -299,17 +248,6 @@ ul li {
   justify-content: space-evenly;
 }
 
-.payment_action button {
-  display: flex;
-  flex-direction: column;
-  width: 130px;
-  background-color: #4070f4;
-  border-radius: 15px;
-}
-
-.payment_action button i {
-  font-size: 2.2em;
-}
  
 .addCard {
   display: flex;
@@ -317,14 +255,4 @@ ul li {
   padding: 0 2rem;
   margin-top: 1rem;
   align-items: end;
-}
-
-.addCard label {
-  margin-left: 10px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.addCard i {
-  font-size: 13px;
 }

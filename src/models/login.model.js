@@ -1,7 +1,7 @@
 import { response } from 'express';
 
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 import bcrypt from 'bcryptjs';
 
@@ -12,11 +12,12 @@ const getLoginDB = async (username, password) => {
     try {
     //connection = await connectToDatabase();
     const [rows] = await pool.execute(
-      `SELECT a.*, b.*, c.nombre_genero, d.id_tipo_socio, d.nombre_tipo_socio
+      `SELECT a.*, b.*, c.nombre_genero, d.id_tipo_socio, d.nombre_tipo_socio, e.id_billetera
       FROM usuarios a 
       LEFT JOIN socios b ON a.id_usuario = b.id_socio 
       LEFT JOIN data_genero c ON b.id_genero = c.id_genero 
       LEFT JOIN data_tipo_socio d ON b.id_tipo_socio = d.id_tipo_socio
+      LEFT JOIN billeteras e ON a.id_usuario = e.id_usuario
       WHERE a.email = ? AND a.activo = 1`, 
       [username]
     );
@@ -51,6 +52,7 @@ const getLoginDB = async (username, password) => {
         response: true,
         id_tipo_socio: user.id_tipo_socio,
         nombre_tipo_socio: user.nombre_tipo_socio,
+        id_billetera: user.id_billetera
       };
     }else{
       return {response: false}; // usuario no encontrado o contraseña incorrecta

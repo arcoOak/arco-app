@@ -1,6 +1,6 @@
 
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 // Obtener todos los familiares
 async function getAllFamiliaresDB() {

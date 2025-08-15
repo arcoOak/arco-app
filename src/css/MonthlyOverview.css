@@ -18,7 +18,7 @@
     /* Fuente por defecto */
     display: flex;
     flex-direction: column;
-    border-radius: 40px;
+    border-radius: var(--border-radius-pill);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -54,7 +54,7 @@
     margin: -25px 20px 5px 20px;
     /* Margen negativo para superponerse al header */
     padding: 20px;
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     /* Sombra más pronunciada */
     text-align: center;
@@ -123,7 +123,7 @@
     height: 3px;
     background-color: #000080;
     /* Color de la línea (naranja/rojo) */
-    border-radius: 2px;
+    border-radius: var(--border-radius-sm);
 }
 
 /* Contenido del Historial */
@@ -163,13 +163,14 @@
 .history-item__icon-wrapper {
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
     /* Color de fondo del círculo del icono */
-    border-radius: 15px;
+    border-radius: var(--border-radius-lg);
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: var(--color-text-primary);
     /* Sombra sutil */
 }
 
@@ -197,6 +198,7 @@
 
 .history-item__info label{
     font-size: 12px;
+    color: var(--color-text-primary);
 }
 
 .history-item__category {
@@ -208,14 +210,14 @@
 
 .transacction-item__category {
     font-weight: 600;
-    color: #333;
+    color: var(--color-text-primary);
     font-size: .9em;
     margin: 0;
 }
 
 .history-item__time {
     font-size: 0.8em;
-    color: #999;
+    color: var(--color-text-secondary);
     margin: 0;
 }
 
@@ -233,7 +235,7 @@
     color: white;
     /* Color del texto del botón */
     border: none;
-    border-radius: 15px;
+    border-radius: var(--border-radius-lg);
     padding: 15px 25px;
     font-size: 1em;
     font-weight: bold;
@@ -256,6 +258,7 @@
     cursor: pointer;
     /* Add any hover effects if desired */
     transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--color-border-span);
 }
 
 .history-item-clickable:hover {

@@ -1,4 +1,4 @@
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getReservaServicioByIdDB = async (id_reservacion_servicio) =>{
 

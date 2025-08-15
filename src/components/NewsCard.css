@@ -1,17 +1,18 @@
 .news-card {
-  background-color: white;
-  border-radius: 12px;
+  background-color: var(--color-surface-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
   /* ¡Crucial! Evita que las tarjetas se encojan */
   /* Bordes redondeados de la tarjeta */
   overflow: hidden;
   /* Para que la imagen se recorte si es más grande que el contenedor con el border-radius */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
   /* Sombra sutil como en el ejemplo */
   margin-right: 15px;
   /* Espacio entre las tarjetas en el scroll horizontal */
   flex-shrink: 0;
   /* Evita que las tarjetas se encojan en un contenedor flex */
-  width: 325px;
+  width: 100%;
   /* Ancho fijo para cada tarjeta, ajusta según necesites */
   height: auto;
   /* La altura se ajustará al contenido */
@@ -27,7 +28,7 @@
   height: 180px;
   /* Altura de la imagen */
   overflow: hidden;
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
   /* Mismos bordes redondeados que la tarjeta */
 }
 
@@ -38,13 +39,13 @@
   /* Asegura que la imagen cubra el contenedor sin distorsionarse */
   display: block;
   /* Elimina espacio extra debajo de la imagen */
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--border-radius-lg);
   /* Asegura que la imagen también tenga bordes redondeados */
 }
 
 .news-card__category {
-  font-size: 0.7em;
-  color: #007bff;
+  font-size: 0.875em;
+  color: var(--color-text-primary);
   /* Un verde claro para la categoría */
   text-transform: uppercase;
   font-weight: bold;
@@ -58,7 +59,7 @@
   font-size: 1em;
   font-weight: 600;
   /* Ligeramente en negrita */
-  color: #333;
+  color: var(--color-text-secondary);
   /* Color oscuro para el título */
   margin: 0 20px;
   /* Margen interno para el título */
@@ -68,7 +69,7 @@
 
 .news-card__author {
   font-size: 0.8em;
-  color: #666;
+  color: var(--color-text-primary);
   /* Un gris claro para el autor */
   margin: 5px 20px;
   /* Margen interno para el autor */

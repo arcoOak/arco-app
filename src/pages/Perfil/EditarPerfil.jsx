@@ -8,6 +8,8 @@ import { useAuth } from "../../context/AuthContext"; // Importa el contexto de a
 import LoadingModal from '../../components/modals/LoadingModal'; // Importa el modal de carga
 import ExitosoModal from '../../components/modals/ExitosoModal';
 
+import Button from '../../components/buttons/Button'; // Importa el botón personalizado
+
 import userImagePlaceholder from '../../assets/user_placeholder.svg';
 
 import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
@@ -69,7 +71,11 @@ const EditarPerfil = () => {
                     src={profileData.avatar || userImagePlaceholder} 
                     className="current-profile-photo"
                 />
-                <button className="change-photo-button" onClick={handleChangePhoto}>Cambiar Foto</button>
+
+                <Button className="secondary" onClick={handleChangePhoto}>
+                    <i className="fa-solid fa-camera" /> Cambiar Foto
+                </Button>
+
             </div>
 
             <ProfileForm initialData={profileData} onSave={handleSaveProfile} onCancel={handleCancel} />

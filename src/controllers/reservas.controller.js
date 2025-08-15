@@ -14,7 +14,7 @@ import {
     createReservaFamiliaresDB
 } from '../models/reservas.model.js';
 
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getReservaById = async (req, res) => {
     const { id_reserva } = req.params;
@@ -178,7 +178,7 @@ const createReserva = async (req, res) => {
         // Si todo fue exitoso, confirmar la transacción
         await connection.commit();
 
-        res.status(201).json(newReserva);
+        res.status(201).json(idReserva);
     } catch (error) {
         // Si hay cualquier error, revertir todos los cambios
         await connection.rollback(); 

@@ -1,10 +1,13 @@
 /* src/css/PaymentDetail.css */
 
 .payment-detail-container {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin-inline: auto;
+    padding: var(--spacing-lg);
+    background-color: var(--color-surface-primary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
 }
 
 .detail-header {
@@ -16,8 +19,6 @@
 .detail-header h2 {
     margin: 0 auto;
     /* Center the title */
-    font-size: 1.5em;
-    color: #333;
 }
 
 .month-info{
@@ -33,7 +34,7 @@
     color: #007bff;
     cursor: pointer;
     padding: 5px 10px;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     transition: background-color 0.2s ease;
 }
 
@@ -45,64 +46,64 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    min-height: 50vh;
 }
 
 .detail-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-surface-secondary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
     text-align: left;
-    border: 1.5px solid transparent;
+    border: 1px solid var(--color-border-primary);
 }
 
 .detail-card p {
-    color: #555;
+    color: var(--color-text-secondary);
     line-height: 1.5;
 }
 
 .detail-card p strong {
-    color: #333;
+    color: var(--color-text-primary);
 }
 
-.detail-card.pago{
+/* .detail-card.pago{
     border-color: rgb(34, 173, 130);
 }
 
 .detail-card.pendiente{
     border-color: rgb(220, 53, 69);
-}
+} */
 
 .payment-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd;
+    padding: var(--spacing-sm);
+    background-color: var(--color-surface-primary);
+    border-bottom: 1px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 }
 
 .payment-header.pago {
-    background-color: rgb(34, 173, 130);
-    color: #155724;
+    background-color: var(--color-success-bg);
 }
 
 .payment-header.pendiente {
-    background-color: rgb(220, 53, 69);
-    color: #856404;
+    background-color: var(--color-warning-bg);
 }
 
 .payment-title {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: #fff !important;
+    color: var(--color-text-primary) !important;
 }
 
 .payment-details{
-    padding: 10px 20px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--color-surface-tertiary);
 }
 
 .payment-details p {
     margin-bottom: 10px;
+    color: var(--color-text-tertiary);
 }
 
 .payment-capture {
@@ -110,7 +111,7 @@
     height: auto;
     margin-top: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
 }
 
 .capture-section {
@@ -123,7 +124,7 @@
     font-weight: bold;
     margin-top: 20px;
     padding: 8px 12px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
     display: inline-block;
 }
 
@@ -132,7 +133,7 @@
     color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
     transition: background-color 0.2s ease;
 }

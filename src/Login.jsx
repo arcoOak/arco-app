@@ -14,7 +14,7 @@ export default function Login() {
     const [showPostLoginPreloader, setShowPostLoginPreloader] = useState(false); // Nuevo estado para el preloader post-login
     const navigate = useNavigate();
 
-    const { user, login, logout, isAuthenticated, loading } = useAuth();
+    const { user, login, logout, isAuthenticated, loading, logo } = useAuth();
 
     const handleSubmit = async (e) => {
 
@@ -50,7 +50,7 @@ export default function Login() {
 
 
             <div className="app-logo-header">
-                <img src="../src/img/logo.png" alt="App Logo" />
+                <img src={logo} alt="App Logo" />
             </div>
 
             <div className="login-container" style={{ display: showPostLoginPreloader ? 'none' : 'block' }}>
@@ -66,9 +66,9 @@ export default function Login() {
                         <div className="form-group">
                             <label htmlFor="username">Usuario</label>
                             <div className='input-group'>
-                                <button className='button-input'>
+                                <div className='fa-icon-centerer'>
                                     <i className='fa fa-user'></i>
-                                </button>
+                                </div>
                                 <input
                                     type="text"
                                     id="username"
@@ -85,9 +85,9 @@ export default function Login() {
                         <div className="form-group">
                             <label htmlFor="password">Contraseña</label>
                             <div className='input-group'>
-                                <button className='button-input'>
+                                <div className='fa-icon-centerer'>
                                     <i className='fa fa-lock'></i>
-                                </button>
+                                </div>
                                 <input
                                     type={inputType}
                                     id="password"
@@ -103,7 +103,9 @@ export default function Login() {
                                     className='button-input-eye'
                                     type='button'
                                     onClick={() => setInputType(inputType === 'password' ? 'text' : 'password')}>
-                                    <i className='fa fa-eye'></i>
+                                    <div className='fa-icon-centerer'>
+                                        <i className='fa fa-eye'></i>
+                                    </div>
                                 </button>
                             </div>
                         </div>

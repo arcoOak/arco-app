@@ -2,8 +2,7 @@ import React, { use, useMemo } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useState, useEffect } from 'react';
 import './EspaciosDetalle.css'; // Crea un archivo CSS para este componente
-
-
+import '../../css/Concecionario.css';
 
 import LoadingModal from '../../components/modals/LoadingModal';
 import ExitosoModal from '../../components/modals/ExitosoModal';
@@ -12,10 +11,14 @@ import EspacioReservaModal from './EspacioReservaModal'; // Asegúrate de que la
 import espacioService from '../../services/espacio.service';
 import reservasService from '../../services/reservas.service';
 import qrTokenService from '../../services/qrtoken.service';
+import billeteraService from '../../services/billetera.service';
+import transaccionesService from '../../services/transacciones.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
+
+import Button from '../../components/buttons/Button'; // Importa el botón de reservar
 
 
 
@@ -31,7 +34,7 @@ const getFirstDayOfMonth = (year, month) => {
 
 export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
-    const { user } = useAuth(); // Obtiene el usuario autenticado desde el contexto
+    const { user, saldoBilletera } = useAuth(); // Obtiene el usuario autenticado desde el contexto
     const { id } = useParams();
     const navigate = useNavigate(); // Hook para navegar programáticamente
     const [loading, setLoading] = useState(false); // Estado para manejar la carga de datos
@@ -85,7 +88,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                         setEspacio(espacioConsultado);
                         setHoraApertura(espacioConsultado.hora_apertura || ''); // Establece un valor por defecto si no hay hora de apertura
                         setHoraCierre(espacioConsultado.hora_cierre || '');
-                        setCosteReserva(espacioConsultado.costo_reserva);
+                        setCosteReserva(unidadesData[0]?.costo_reserva);
 
                         setUnidadesEspacio(unidadesData || []); // Si no hay unidades, se establece un array vacío
                         setUnidadSeleccionada(unidadesData[0]?.id_espacio_reservable_unidad || null);
@@ -373,29 +376,47 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                     coste_total: totalReserva,
                     id_socio: user?.id_socio || null, // Asegúrate de que el usuario esté autenticado
                 },
+                transaccionData: {
+                    id_billetera: user.id_billetera, 
+                    id_tipo_transaccion: 2, 
+                    monto: (totalReserva * -1)
+                },
                 listaInvitados: invitadosReserva,
                 listaFamiliares: invitadosFamiliares,
                 listaHoras: horariosReserva,
                 id_usuario: user?.id_usuario || null // Asegúrate de que el usuario esté autenticado
             }
 
-            console.log('Datos completos reserva:', datosCompletosReserva);
+            //console.log('Datos completos reserva:', datosCompletosReserva);
             
 
-            await reservasService.createReserva(datosCompletosReserva);
+            // const reservaResponse = await reservasService.createReserva(datosCompletosReserva);
 
-            if(invitadosFamiliares.length > 0){
-                await qrTokenService.createTokenQrAFamiliares(user.id_usuario, invitadosFamiliares);
+            // if(invitadosFamiliares.length > 0){
+            //     await qrTokenService.createTokenQrAFamiliares(user.id_usuario, invitadosFamiliares);
+            // }
+
+            // if(invitadosReserva.length > 0){
+            //     await qrTokenService.createTokenQrAInvitados(user.id_usuario, invitadosReserva);
+            // }
+
+
+             // Mostrar modal de éxito
+
+            // Crear Transaccion
+
+            const transaccionResponse = await transaccionesService.crearReservaTransaccion(datosCompletosReserva);
+
+            if(transaccionResponse) {
+                setShowExitosoModal(true);
             }
 
-            if(invitadosReserva.length > 0){
-                await qrTokenService.createTokenQrAInvitados(user.id_usuario, invitadosReserva);
-            }
+            //await billeteraService.crearTransaccionBilletera(transaccionData);
 
-            setShowExitosoModal(true); // Mostrar modal de éxito
+            // if(totalReserva <= saldoBilletera){
+            //     await billeteraService.pagarTransaccion(transaccionData);
+            // }
 
-
-            
 
             setShowEspacioReservaModal(false); // Cerrar el modal de reserva
 
@@ -464,7 +485,9 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
             <LoadingModal visible={loading} />
             <div className="reserva-header">
 
-                <ButtonVolver to={backLocation} className="boton-volver-white" />
+                <div className='boton-volver-container'>
+                    <ButtonVolver to={backLocation} className="boton-volver-white" />
+                </div>
 
                 {/* <img src={`../${espacio.img}`} alt={espacio.name} className="reserva-img" /> */}
                 <h1>{espacio?.nombre_espacio_reservable}</h1>
@@ -476,7 +499,6 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
             </div>
 
             <div className="reserva-container">
-                <div className="booking-container">
                     <main className="booking-main-content">
 
                         <div className='reserva-unidades-container'>
@@ -491,7 +513,9 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                                             <div className="unidad-info">
                                                 <h3>{unidad.nombre_unidad}</h3>
                                                 <p className="unidad-capacity">Capacidad: {unidad.capacidad}</p>
-                                                {unidad.costo_reserva > 0 ? <p>{unidad.costo_reserva}$</p> : <p>Sin Coste</p>}
+                                                <p className="unidad-costo">{unidad.costo_reserva > 0 ? 
+                                                <span>{unidad.costo_reserva}$</span> : <span>Sin Coste</span>}
+                                                </p>
                                             </div>
                                         </div>
                                     ))}
@@ -549,7 +573,7 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                         </section>
 
                         <section className="time-section">
-                            <label>Horario</label>
+                            <h2>Horario</h2>
                             <div className='time-range'>
                                 <span className="time-value">{formatearHora(horaApertura)}</span>
                                 <span className="time-separator">-</span>
@@ -586,14 +610,17 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
                     <footer className="booking-footer">
                         
-                        <button className={`proceed-button`} 
-                            disabled={ isBotonReservarDisabled } 
-                            onClick={() => { setShowEspacioReservaModal(true) }}>
+
+                        <Button 
+                            disabled={isBotonReservarDisabled}
+                            onClick={() => { setShowEspacioReservaModal(true) }}
+                            className='primary big'
+                        >
                             {totalReserva > 0 ? `Reservar por $${totalReserva}` : 'Reservar'}
-                        </button>
+                        </Button>
+
                     </footer>
 
-                </div>
             </div>
         </React.Fragment>
     );

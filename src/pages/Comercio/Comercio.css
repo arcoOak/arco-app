@@ -1,3 +1,71 @@
+.comercios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  /* Responsive grid */
+  gap: 20px;
+  padding: 20px;
+}
+
+.comercio-card {
+  background-color: var(--color-surface-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.comercio-card:hover {
+  transform: translateY(-5px);
+}
+
+.comercio-card img {
+  width: 150px;
+  /* Adjust size as needed */
+  height: 150px;
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-surface-tertiary);
+  /* Make images circular */
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #eee;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.comercio-card h3 {
+  color: var(--color-text-primary);
+}
+
+.comercio-card p {
+  font-size: 0.8em;
+  color: #777;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.comercio-card .btn {
+  background-color: #007bff;
+  /* Bootstrap primary blue */
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.comercio-card .btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+
+}
+
 .comercio-card-button{
     margin-top: auto; 
 }

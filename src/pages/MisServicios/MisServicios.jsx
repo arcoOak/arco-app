@@ -112,7 +112,7 @@ export default function MisServicios() {
                         ))
                     ) : (
                         <div className="no-reservas">
-                            <p>No tienes reservas activas.</p>
+                            <p>No tienes servicios reservados para esta fecha.</p>
                         </div>
                     )}
 

@@ -5,6 +5,8 @@ import { useCarrito } from "./context/CartContext";
 import VistaCarrito from "./components/cart/VistaCarrito";
 import ModalCarrito from "./components/cart/ModalCarrito";
 
+import './css/Wrapper.css'; // Importa tu CSS para el layout
+
 import Navbar from "./pages/Navbar";
 
 export default function Layout() {
@@ -59,6 +61,12 @@ export default function Layout() {
                     <div className="indicator" />
                 </ul>
             </div>
+
+            <footer className={`footer`}>
+                    <p><a href="#" onClick={() => navigate('/PrivacyPolicy')}>Política de Privacidad</a> | <a href="#" onClick={() => navigate('/TermsOfUse')}>Términos de Uso</a> | <a href="#" onClick={() => navigate('/FAQPage')} >FAQs</a></p>
+                    <p>© 2025 Oak Tree C.A.</p>
+                    <p>Todos los derechos reservados.</p>
+                </footer>
         </div>
     );
 }

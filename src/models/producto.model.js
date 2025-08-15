@@ -1,5 +1,5 @@
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 //Trae todos los archivos de comercios activos
 const getAllProductosDB = async (id_club) => {

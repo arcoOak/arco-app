@@ -4,7 +4,7 @@ import app from './app.js'; // Importa la aplicación Express configurada
 import serverConfig from './config/server.config.js'; // Importa la configuración del servidor
  //import {connectToDatabase, poolConection} from './config/db.config.js'; // Solo si lo usas para iniciar el servidor
 
-import pool from './config/db.config.js'; // Importa el pool de conexiones a la base de datos
+import {pool} from './config/db.config.js'; // Importa el pool de conexiones a la base de datos
 
 const PORT = serverConfig.port;
 

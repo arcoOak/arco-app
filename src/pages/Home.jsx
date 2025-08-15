@@ -15,7 +15,7 @@ import Carousel from '../components/Carousel';
 import Balance from '../components/Balance';
 import BalanceSection from '../components/BalanceSection';
 import TransacctionSection from '../components/TransacctionSection';
-import Slider from '../components/Slider';
+import PromotionCard from '../components/PromotionCard';
 import Progress from '../components/Progress';
 import ClimaHome from '../components/ClimaHome';
 import RedesSocialesHome from "../components/RedesSocialesHome";
@@ -28,7 +28,7 @@ export default function App() {
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
-    const { user, login, logout, isAuthenticated, clubInfo } = useAuth();
+    const { user, login, logout, isAuthenticated, clubInfo, isDarkTheme } = useAuth();
 
     // State for drag functionality
     const [isDragging, setIsDragging] = useState(false);
@@ -81,9 +81,9 @@ export default function App() {
         <>
             <div className="addCard">
 
-                <div style={{ textAlign: 'left' }}>
-                    <p>Bienvenido,</p>
-                    <h3>{user.nombre + ' ' + user.apellido}</h3>
+                <div className={"home-bienvenida"}>
+                    <p className={"home-bienvenida-text"}>Bienvenido,</p>
+                    <h2>{user.nombre + ' ' + user.apellido}</h2>
                 </div>
             </div>
             <Balance />
@@ -100,17 +100,13 @@ export default function App() {
                     {/* <Points /> */}
                     <NewsSection />
                     <ServicioSection />
-                    <Slider />
+                    <PromotionCard />
                     <ClimaHome />                    
                     <HorarioHome clubInfo={clubInfo} />
                     <RedesSocialesHome />
                 </section>
                 {/* Footer */}
-                <footer className="footer">
-                    <p>© 2025 Oak Tree C.A.</p>
-                    <p>Todos los derechos reservados.</p>
-                    <p><a href="#" onClick={() => navigate('/PrivacyPolicy')}>Política de Privacidad</a> | <a href="#" onClick={() => navigate('/TermsOfUse')}>Términos de Uso</a> | <a href="#" onClick={() => navigate('/FAQPage')} >FAQs</a></p>
-                </footer>
+                
             </div>
         </>
     );

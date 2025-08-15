@@ -4,12 +4,15 @@ import { useCarrito } from '../../context/CartContext';
 import './VistaCarrito.css'; 
 
 import ConfirmarModal from '../modals/ConfirmarModal';
+import Button from '../buttons/Button';
 
 import hamburguesaPlaceholder from '../../assets/hamburguesa.png'; // Asegúrate de que la ruta sea correcta
 
 function VistaCarrito({onClose}) {
     // Obtenemos todo lo que necesitamos del contexto
     const { elementosCarrito, removeFromCarrito, updateCantidad, limpiarCarrito } = useCarrito();
+
+    const [nota, setNota] = useState('');
 
     const [showConfirmarModal, setShowConfirmarModal] = useState(false);
 
@@ -45,6 +48,26 @@ function VistaCarrito({onClose}) {
     const confirmLimpiarCarrito = () => {
         setShowConfirmarModal(true);
     }
+
+    const handlePagar = () =>{
+
+        const dataCompraCompleta = {
+            listaItems: elementosCarrito,
+            total: total,
+            precio_total: user.id_socio,
+            nota: nota
+        }
+
+        /*
+        
+        1. Crear funcion en AuthContext para actualizar saldo de billetera
+        2. Crear la transaccion de handlePagar de las Compras
+        3. Crear funcion de asignacion de mensualidades cada mes
+        4. Crear condicion de comparacion de saldo actual con los pagos
+        
+        
+        */ 
+    }
     
 
     return (
@@ -77,10 +100,23 @@ function VistaCarrito({onClose}) {
                     ))}
                 </ul>
                 <div className='vista-carrito-footer'>
+                    <textarea 
+                        placeholder='Añadir una nota...'
+                        className='vista-nota-compra' 
+                        value={nota} onChange={(e) => setNota(e.target.value)}>
+                    </textarea>
                     <h3 className='vista-carrito-total'>Total: ${total.toFixed(2)}</h3>
                     <div className='vista-carrito-acciones'>
-                        <button className='vista-carrito-boton-pagar'>Proceder al Pago</button> {/* Este te llevará a la página de checkout */}
-                        <button className='vista-carrito-boton-limpiar' onClick={confirmLimpiarCarrito}>Limpiar Carrito</button>
+
+                        <Button 
+                            className='secondary'
+                            >
+                            Proceder al Pago
+                        </Button>
+                        <Button className='tertiary' onClick={confirmLimpiarCarrito}>
+                            Limpiar Carrito
+                        </Button>
+
                     </div>
                 </div>
             </div>

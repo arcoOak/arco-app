@@ -10,5 +10,7 @@ router.get('/:id_socio/transacciones-completas/:mes', billeteraController.getTra
 router.get('/:id_socio/pagos-pendientes', billeteraController.getPagosPendientes); // Trae pagos pendientes
 router.get('/:id_socio/ultimas-transacciones', billeteraController.getUltimasTransaccionesBilletera); // Trae las últimas transacciones de la billetera
 router.get('/:transaccion/:id_billetera_transaccion', billeteraController.getTransaccionPorId); // Trae una transacción específica por ID
+router.post('/', billeteraController.createTransaccion); // Crea una nueva transacción
+router.post('/pagar/:id_pago_asociado', billeteraController.pagarTransaccion); // Paga una transacción
 
 export default router; // Exporta el router para usarlo en app.js

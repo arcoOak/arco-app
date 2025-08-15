@@ -1,0 +1,158 @@
+.promotion-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    /* Alinea "Recent News" y "See All" */
+    padding: 0;
+    /* Padding horizontal para el encabezado */
+    margin-bottom: 20px;
+}
+
+.promotion-section__title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.promotion-section__see-all {
+    font-size: .9em;
+    color: white;
+    /* Un azul para el enlace, como en iOS */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.promotion-section__see-all:hover {
+    text-decoration: none;
+}
+
+.promotion-section__carousel {
+    /* Propiedades clave para el scroll horizontal */
+    display: flex;
+    cursor: grab;
+    overflow-x: scroll;
+    /* ¡Esta es la que habilita el scroll! */
+    -webkit-overflow-scrolling: touch;
+    /* Mejora la experiencia en iOS */
+    scroll-snap-type: x mandatory;
+    /* Opcional: Para que los ítems se "enganchen" al parar el scroll */
+    padding: 0 0px 20px 00px;
+    /* Padding horizontal para que las tarjetas no se peguen a los bordes */
+    /* El padding-bottom es para la sombra si es que sale */
+    gap: 15px;
+    /* Espacio entre las tarjetas. ¡Más moderno que margin-right en cada item! */
+
+    /* Ocultar la barra de scroll (solo visualmente, el scroll sigue funcionando) */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+.promotion-section__carousel::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.promotion-card {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    /* ¡Crucial! Evita que las tarjetas se encojan */
+    /* Bordes redondeados de la tarjeta */
+    overflow: hidden;
+    /* Para que la imagen se recorte si es más grande que el contenedor con el border-radius */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    /* Sombra sutil como en el ejemplo */
+    margin-right: 15px;
+    /* Espacio entre las tarjetas en el scroll horizontal */
+    flex-shrink: 0;
+    /* Evita que las tarjetas se encojan en un contenedor flex */
+    width: 100%;
+    /* Ancho fijo para cada tarjeta, ajusta según necesites */
+    height: auto;
+    /* La altura se ajustará al contenido */
+    display: flex;
+    scroll-snap-align: start;
+    /* Espacio debajo del texto */
+}
+
+.promotion-card__image-container {
+    border-radius: var(--border-radius-md);
+    width: 40%;
+    padding: .7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Mismos bordes redondeados que la tarjeta */
+}
+
+.promotion-card__image {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--border-radius-md);
+}
+
+.promotion-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    width: 70%;
+    padding: 1rem 1rem 1rem 0;
+}
+
+.promotion-card__category {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    text-align: left;
+    color: #606060;
+    font-weight: 600;
+}
+
+.promotion-card__title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.promotion-card__title h5 {
+    font-size: 1em;
+    font-weight: 600;
+    /* Ligeramente en negrita */
+    color: #333;
+    /* Color oscuro para el título */
+    /* Margen interno para el título */
+    line-height: 1.3;
+    text-align: left;
+}
+
+.promotion-price {
+    display: flex;
+    justify-content: space-between;
+}
+
+.promotion-card__description{
+    font-size: 0.875em;
+    color: #333;
+    margin-top: 5px;
+    /* Espacio entre la categoría y la descripción */
+    line-height: 1.4;
+    /* Mejora la legibilidad */
+}
+
+.swiper{
+    position: 0;
+}
+.swiper-cube .swiper-cube-shadow:before {
+    opacity: .4;
+}
+
+.slider-section {
+    width: 100%;
+    text-align: left;
+}
+
+.swiper-slide img {
+    width: 100% !important;
+    border-radius: var(--border-radius-sm);
+}

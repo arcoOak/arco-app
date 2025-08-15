@@ -17,15 +17,15 @@
 
 .exitoso-modal-content {
   max-width: 80%;
-  background: #fff;
+  background: var(--color-surface-primary);
   padding: 24px 32px;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  color: #333;
+  color: var(--color-text-primary);
   animation: fadeIn 1s ease-in-out;
 }
 
@@ -39,5 +39,4 @@
     font-size:1.25rem;
     font-weight: 600;
     text-align: center;
-    color: #333;
 }

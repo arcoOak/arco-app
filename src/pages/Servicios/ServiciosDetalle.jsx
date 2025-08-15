@@ -12,6 +12,7 @@ import ServicioReservaModal from './ServicioReservaModal'; // Asegúrate de que 
 import serviciosService from '../../services/servicios.service';
 
 import reservaServicioService from '../../services/reservasServicio.service';
+import transaccionesService from '../../services/transacciones.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
@@ -394,12 +395,18 @@ export default function ServiciosDetalle() {
                     coste_total: totalReserva,
                     id_socio: user?.id_socio || null, // Asegúrate de que el usuario esté autenticado
                 },
+                transaccionData: {
+                    id_billetera: user.id_billetera, 
+                    id_tipo_transaccion: 4, 
+                    monto: (totalReserva * -1)
+                },
                 listaHoras: horariosReserva
             }
             
             //console.log('Datos de reserva:', datosCompletosReserva);
 
-            await reservaServicioService.createReservaServicio(datosCompletosReserva);
+            //await reservaServicioService.createReservaServicio(datosCompletosReserva);
+            await transaccionesService.crearReservaServicioTransaccion(datosCompletosReserva)
           
 
             setShowExitosoModal(true); // Mostrar modal de éxito
@@ -465,7 +472,9 @@ export default function ServiciosDetalle() {
 
             <div className="servicio-header">
 
-                <ButtonVolver to={backLocation} className="boton-volver-white" />
+                <div className='boton-volver-container'>
+                    <ButtonVolver to={backLocation} className="boton-volver-white" />
+                </div>
 
                 <h1>{servicio ? servicio.nombre_servicio_reservable : ''}</h1>
                 <p className="espacio-detalle-description">{servicio?.descripcion}</p>
@@ -476,7 +485,6 @@ export default function ServiciosDetalle() {
             </div>
 
             <div className="servicio-container">
-                <div className="booking-container">
                     <main className="booking-main-content">
 
                         <SelectorDeEmpresaReservadora
@@ -534,7 +542,7 @@ export default function ServiciosDetalle() {
                         </section>
 
                         <section className="time-section">
-                            <label>Horario</label>
+                            <h2>Horario</h2>
                             <div className='time-range'>
                                 <span className="time-value">{formatearHora(horaApertura)}</span>
                                 <span className="time-separator">-</span>
@@ -559,7 +567,6 @@ export default function ServiciosDetalle() {
                         </button>
                     </footer>
 
-                </div>
             </div>
         </React.Fragment>
     );
@@ -567,7 +574,7 @@ export default function ServiciosDetalle() {
 
 const SelectorDeEmpresaReservadora = ({ empresasReservadoras, unidadSeleccionada, handleUnidadSeleccionada }) => {
     return (
-        <div className='servicio-unidades-container'>
+        <div className='reserva-unidades-container'>
                             {empresasReservadoras.length > 0 && (
                                 <div className="unidades-list">
                                     <h2>Seleccionables</h2>

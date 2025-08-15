@@ -1,6 +1,8 @@
 // src/components/ProfileForm.jsx
 import React, { useState, useEffect } from 'react';
 
+import Button from './buttons/Button'; // Importa el botón personalizado
+
 
 const ProfileForm = ({ initialData, onSave, onCancel }) => {
     const [formData, setFormData] = useState(initialData);
@@ -51,8 +53,9 @@ const ProfileForm = ({ initialData, onSave, onCancel }) => {
             </div>
 
             <div className="form-buttons">
-                <button type="button" className="cancel-button" onClick={onCancel}>Cancelar</button>
-                <button type="submit" className="save-button">Guardar Cambios</button>
+                <Button type="submit" className="primary">Guardar</Button>
+                <Button type="button" className="neutral" onClick={onCancel}>Cancelar</Button>
+                
             </div>
         </form>
     );

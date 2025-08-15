@@ -11,7 +11,6 @@
 .trainer-section__title {
     font-size: 1.3em;
     font-weight: bold;
-    color: #333;
     margin: 0;
 }
 
@@ -37,7 +36,7 @@
     /* Mejora la experiencia en iOS */
     scroll-snap-type: x mandatory;
     /* Opcional: Para que los ítems se "enganchen" al parar el scroll */
-    padding: 0 20px 20px 20px;
+    padding: 0 0px 20px 00px;
     /* Padding horizontal para que las tarjetas no se peguen a los bordes */
     /* El padding-bottom es para la sombra si es que sale */
     gap: 15px;
@@ -56,19 +55,20 @@
 }
 
 .trainer-card {
-    background-color: white;
-    border-radius: 12px;
+    background-color: var(--color-surface-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
     /* ¡Crucial! Evita que las tarjetas se encojan */
     /* Bordes redondeados de la tarjeta */
     overflow: hidden;
     /* Para que la imagen se recorte si es más grande que el contenedor con el border-radius */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-md);
     /* Sombra sutil como en el ejemplo */
     margin-right: 15px;
     /* Espacio entre las tarjetas en el scroll horizontal */
     flex-shrink: 0;
     /* Evita que las tarjetas se encojan en un contenedor flex */
-    width: 325px;
+    width: 100%;
     /* Ancho fijo para cada tarjeta, ajusta según necesites */
     height: auto;
     /* La altura se ajustará al contenido */
@@ -78,7 +78,7 @@
 }
 
 .trainer-card__image-container {
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     width: 40%;
     padding: .7rem;
     display: flex;
@@ -91,7 +91,7 @@
     width: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
 }
 
 .trainer-content {
@@ -107,7 +107,7 @@
     font-size: 0.7em;
     text-transform: uppercase;
     text-align: left;
-    color: #606060;
+    color: var(--color-text-secondary);
     font-weight: 600;
 }
 
@@ -120,7 +120,6 @@
     font-size: 1em;
     font-weight: 600;
     /* Ligeramente en negrita */
-    color: #333;
     /* Color oscuro para el título */
     /* Margen interno para el título */
     line-height: 1.3;
@@ -134,7 +133,7 @@
 
 .trainer-card__description{
     font-size: 0.875em;
-    color: #333;
+    color: var(--color-text-primary);
     margin-top: 5px;
     /* Espacio entre la categoría y la descripción */
     line-height: 1.4;

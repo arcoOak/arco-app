@@ -54,11 +54,34 @@ const getTransaccionPorId = async (id_billetera_transaccion) => {
     return response.json();
 }
 
+
+const crearTransaccionBilletera = async (transaccionData) => {
+    const response = await fetch(`${API_HOST}/api/billetera`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(transaccionData)
+    });
+    if (!response.ok) throw new Error('Error al crear la transacción');
+    return response.json();
+}
+
+const pagarTransaccion = async (transaccionData) => {
+    const response = await fetch(`${API_HOST}/api/billetera/pagar/${transaccionData.id_pago_asociado}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(transaccionData)
+    });
+    if (!response.ok) throw new Error('Error al editar la transacción');
+    return response.json();
+}
+
 export default {
     getBilletera,
     getUltimasTransaccionesBilletera,
     getTransaccionesBilleteraPorMes,
     getTransaccionesBilleteraCompletaPorMes,
     getPagosPendientes,
-    getTransaccionPorId
+    getTransaccionPorId,
+    crearTransaccionBilletera,
+    pagarTransaccion
 }

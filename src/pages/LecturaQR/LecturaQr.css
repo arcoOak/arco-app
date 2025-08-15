@@ -1,21 +1,35 @@
 
 .qr-code-box {
-  margin-top: 5rem;
   text-align: center;
-  width: 100%;
-  background-color: white;
-  border-radius: 15px;
-  padding: 5rem 1rem 3rem;
+  width: 90%;
+  margin-inline: auto;
+  background-color: var(--color-surface-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: var(--spacing-md);
+  margin-top: 125px;
+}
+
+.qr-code{
+  padding: var(--spacing-md);
+  background-color: var(--color-surface-secondary);
+  border-radius: var(--border-radius-md);
 }
 
 .qr-code-box .img {
+  margin-top: -150px;
   width: 150px;
   height: 150px;
-  margin-top: -130px;
+}
+
+.qr-code-box p{
+  color: var(--color-text-secondary);
 }
 
 .img-qr {
@@ -71,8 +85,12 @@
     background-color: #28a745; /* Color verde */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
     font-size: 1.1rem;
     font-weight: 600;
+}
+
+.qr-code-info {
+  
 }

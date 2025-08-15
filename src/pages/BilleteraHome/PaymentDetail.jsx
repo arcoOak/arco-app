@@ -13,6 +13,10 @@ import MesSelector from '../../components/MesSelector'; // Importa el componente
 
 import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el componente ButtonVolver
 
+import Button from '../../components/buttons/Button';
+
+import ExitosoModal from '../../components/modals/ExitosoModal';
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -41,7 +45,7 @@ const PaymentDetail = () => {
 
     const [mesSeleccionado, setMesSeleccionado] = useState(mesHome || new Date().getMonth() + 1);
 
-
+    const [showExitosoModal, setShowExitosoModal] = useState(false);
     
 
     useEffect(() => {
@@ -99,12 +103,47 @@ const PaymentDetail = () => {
     let unidadTransaccion = '';
          
 
+    const handlePagar = async (transaccion) => {
+        setLoading(true);
+        try{
+            const transaccionData = {
+                id_pago_asociado: transaccion.id_pago_asociado,
+                id_billetera: user.id_billetera,
+                id_tipo_transaccion: transaccion.id_tipo_transaccion,
+                monto: (transaccion.total_transaccion * (-1))
+            }
+            const response = await billeteraService.pagarTransaccion(transaccionData);
+            
+            if(response) {
+                setShowExitosoModal(true);
+            }
+        } catch (error) {
+            console.error('Error al procesar el pago:', error);
+        } finally{
+            setLoading(false);
+
+            setTimeout(() => {
+                setShowExitosoModal(false); // Cerrar modal de éxito después de 2
+            }, 2000);
+
+        }
+
+
+            // Actualiza
+    }
+
+
     return (
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
+            <ButtonVolver to={backLocation} className="boton-volver" />
+            <ExitosoModal 
+                visible={showExitosoModal} 
+                mensaje='¡Pago con éxito!'  
+            />
         <div className="payment-detail-container">
 
-            <ButtonVolver to={backLocation} className="boton-volver" />
+            
 
             <div className="detail-header">
                 <h2>Transacciones</h2>
@@ -128,7 +167,7 @@ const PaymentDetail = () => {
                     onClick={() => handleHistoryItemClick(payment.id_billetera_transaccion)}
                 >
                     <div className={`payment-header ${estadoPagoUnidad ? 'pago' : 'pendiente'}`}>
-                        <p className='payment-title'>{payment.tipo_transaccion}</p>
+                        <h3 className='payment-title'>{payment.tipo_transaccion}</h3>
                     </div>
                     <div className="payment-details">
                         <p className='payment-date'><strong>Fecha: </strong> {formatDate(payment.fecha_generacion)}</p>
@@ -165,24 +204,30 @@ const PaymentDetail = () => {
 
                 {/* Mostrar el botón "Reportar Pago" solo si el estado es 'pendiente' */}
                 {estadoPagoUnidad == 0 && (
-                    <button className="report-payment-button" onClick={ () => {} }>
+                    <Button
+                        className='primary'
+                        onClick={() => handlePagar(payment.id_billetera_transaccion)}
+                    >
                         Pagar
-                        {/* {showReportForm ? 'Cancelar Reporte' : 'Pagar'} */}
-                    </button>
+                    </Button>
+                    
                 ) }
 
                 </div>
             </div>)
             )}
-            </div>
-            {/* Si no hay pagos, mostrar un mensaje */}
-            {registroTransacciones.length === 0 && (
+
+                {registroTransacciones.length === 0 && (
                 <div className="no-payments-container">
                     <p className="no-payments-message">No hay pagos registrados.</p>
                     
                 </div>
-            )
-            }
+                )
+                }
+
+            </div>
+            {/* Si no hay pagos, mostrar un mensaje */}
+            
         </div>
         </React.Fragment>
     );

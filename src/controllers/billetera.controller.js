@@ -7,8 +7,18 @@ import {
     getTransaccionPorIdDB,
     getDatosMensualidadDB,
     getDatosReservacionDB,
-    getDatosCompraDB
+    getDatosCompraDB,
+    getDatosServicioDB,
+    createTransaccionDB,
+    pagarMensualidadDB,
+    pagarReservacionDB,
+    pagarCompraDB,
+    pagarServicioDB,
+    actualizarBilleteraDB
 } from '../models/billetera.model.js';
+
+
+import {pool} from '../config/db.config.js';
 
 const getBilletera = async (req, res) => {
     const { id_socio } = req.params;
@@ -83,6 +93,8 @@ const getTransaccionPorId = async (req, res) => {
             listaElementosTransaccion = await getDatosReservacionDB(transaccion.id_pago_asociado);
         }else if(transaccion.id_tipo_transaccion === 3){
             listaElementosTransaccion = await getDatosCompraDB(transaccion.id_pago_asociado);
+        }else if(transaccion.id_tipo_transaccion === 4){
+            listaElementosTransaccion = await getDatosServicioDB(transaccion.id_pago_asociado);
         }
 
         res.json({transaccion, listaElementosTransaccion});
@@ -92,11 +104,63 @@ const getTransaccionPorId = async (req, res) => {
     }
 }
 
+const createTransaccion = async (req, res) => {
+    const { id_billetera, id_tipo_transaccion, id_pago_asociado, monto } = req.body;
+    try {
+        const transaccion = await createTransaccionDB(id_billetera, id_tipo_transaccion, id_pago_asociado, monto);
+        res.status(201).json(transaccion);
+    } catch (error) {
+        console.error('Error al crear la transacción:', error);
+        res.status(500).json({ message: 'Error interno del servidor al crear la transacción' });
+    }
+}
+
+const pagarTransaccion = async (req, res) =>{
+    const { id_billetera, id_tipo_transaccion, id_pago_asociado, monto} = req.body;
+    let response;
+
+    const connection = await pool.getConnection(); 
+    try{
+        await connection.beginTransaction();
+
+
+        if(id_tipo_transaccion === 1){
+            response = await pagarMensualidadDB(id_pago_asociado, connection);
+        }else if(id_tipo_transaccion === 2){
+            response = await pagarReservacionDB(id_pago_asociado, connection);
+        }else if(id_tipo_transaccion === 3){
+            response = await pagarCompraDB(id_pago_asociado, connection);
+        }else if(id_tipo_transaccion === 4){
+            response = await pagarServicioDB(id_pago_asociado, connection);
+        }
+
+        if(!response){
+            await connection.rollback();
+            return res.status(404).json({ message: 'No se encontró el pago asociado o ya está pagado.' });
+        }
+
+        await actualizarBilleteraDB(id_billetera, monto, connection);
+
+        await connection.commit();
+
+        res.status(200).json(response);
+    }catch(error){
+        console.error('Error al pagar la transacción:', error);
+        res.status(500).json({ message: 'Error interno del servidor al pagar la transacción' });
+
+        await connection.rollback();
+    }
+}
+
+
+
 export default {
     getBilletera,
     getTransaccionesBilleteraPorMes,
     getTransaccionesBilleteraCompletaPorMes,
     getPagosPendientes,
     getUltimasTransaccionesBilletera,
-    getTransaccionPorId
+    getTransaccionPorId,
+    createTransaccion,
+    pagarTransaccion
 };

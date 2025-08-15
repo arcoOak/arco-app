@@ -6,6 +6,8 @@ import { useAuth } from '../context/AuthContext'; // Importa el contexto de aute
 
 import billeteraService from '../services/billetera.service';
 
+import Button from './buttons/Button'; // Asegúrate de que la ruta sea correcta
+
 export default function Balance() {
 
     const [mesSeleccionado, setMesSeleccionado] = useState(new Date().getMonth() + 1); 
@@ -123,9 +125,9 @@ export default function Balance() {
                     <div>
                         <p>Adelanta duplica <i className="fa fa-gift"></i></p>
                     </div>
-                    <div>
-                        <button onClick={handlePagarClick}>Pagar</button>
-                    </div>
+
+                    <Button onClick={handlePagarClick} className="primary">Pagar</Button>
+                    
                 </div>
                 <div className="balance-body">
                     <div className="calendar-balance">
@@ -136,11 +138,11 @@ export default function Balance() {
 
                                 <div
                                     key={index}
-                                    className={`calendar-item ${mes.numero === 7 ? 'active-month' : ''}`}
+                                    className={`calendar-item ${mes.numero == mesSeleccionado ? 'active-month' : ''}`}
                                     onClick={() => handleHistoryItemClick(mes.numero)}
                                     ref={el => monthsRef.current[mes.numero] = el}
                                 >
-                                    {mes.nombre.slice(0, 3).toUpperCase()} 
+                                    <p>{mes.nombre.slice(0, 3).toUpperCase()} </p>
                                     <i className="fa fa-circle" 
                                         style={{ color: pagosPendientes.some(pago => pago.mes_generacion === mes.numero) ? '#dc3545' : '#22ad82', fontSize: '11px' }}>
                                     </i>
@@ -154,7 +156,7 @@ export default function Balance() {
                     <div>
                         <p className="recibos-balance">
                             {pagosPendientes.length} 
-                            {pagosPendientes.length > 1 ? ' Recibos pendientes' : ' Recibo pendiente'}</p>
+                            {pagosPendientes.length != 1 ? ' Recibos pendientes' : ' Recibo pendiente'}</p>
                     </div>
                     <div>
                         <p className={`total-balance ${totalDeuda > 0 ? 'has-debt' : 'no-debt'}`}>

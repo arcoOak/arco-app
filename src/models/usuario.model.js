@@ -2,7 +2,7 @@
 
 // import {connectToDatabase, poolConection} from '../config/db.config.js'; // Importa la función de conexión a la base de datos
 
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 import bcrypt from 'bcryptjs';
 

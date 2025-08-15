@@ -47,7 +47,7 @@
     height: 14px;
 
     border: 2px solid red;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     position: absolute;
     top: 0;
     left: 0;
@@ -65,7 +65,7 @@
     border: 2px solid #000;
     border-left-color: transparent;
     border-bottom-color: transparent;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     /* Corregido: border-radius para la forma circular */
 
     position: absolute;

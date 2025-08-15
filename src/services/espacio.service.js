@@ -1,7 +1,7 @@
 const API_HOST = import.meta.env.VITE_API_HOST;
 
-const getAllEspaciosReservables = async () => {
-    const response = await fetch(`${API_HOST}/api/espacios`, {
+const getAllEspaciosReservables = async (id_club) => {
+    const response = await fetch(`${API_HOST}/api/espacios/${id_club}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -9,8 +9,8 @@ const getAllEspaciosReservables = async () => {
     return response.json();
 }
 
-const getEspacioByCategoria = async (id_categoria_espacio) => {
-    const response = await fetch(`${API_HOST}/api/espacios/categoria/${id_categoria_espacio}`, {
+const getEspacioByCategoria = async (id_categoria_espacio, id_club) => {
+    const response = await fetch(`${API_HOST}/api/espacios/categoria/${id_categoria_espacio}/${id_club}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -19,7 +19,7 @@ const getEspacioByCategoria = async (id_categoria_espacio) => {
 }
 
 const getEspacioById = async (id_espacio) => {
-    const response = await fetch(`${API_HOST}/api/espacios/${id_espacio}`, {
+    const response = await fetch(`${API_HOST}/api/espacios/individual/${id_espacio}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });
@@ -36,8 +36,8 @@ const getEspacioUnidadesById = async (id_espacio) => {
     return response.json();
 }
 
-const getCategoriasEspacioDisponible = async () => {
-    const response = await fetch(`${API_HOST}/api/espacios/categorias-disponibles`, {
+const getCategoriasEspacioDisponible = async (id_club) => {
+    const response = await fetch(`${API_HOST}/api/espacios/categorias-disponibles/${id_club}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });

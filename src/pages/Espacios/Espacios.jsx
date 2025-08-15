@@ -5,16 +5,23 @@ import './Espacios.css'; // Asegúrate de importar tu CSS principal
 import { useDragToScroll } from '../../hooks/useDragToScroll';
 
 import LoadingModal from '../../components/modals/LoadingModal';
+import CategoriaSelector from '../../components/CategoriaSelector'; // Importa el componente de carrusel de categorías
 
 import espacioService from '../../services/espacio.service';
 
 import comercioImagePlaceholder from '../../assets/comercio_placeholder.webp';
+
+import { useAuth } from '../../context/AuthContext';
+
+import BuscadorTexto from '../../components/BuscadorTexto'; // Importa el componente de buscador de texto
 
 export default function Espacios() {
     const navigate = useNavigate();
 
     const [activeCategory, setActiveCategory] = useState(0); // To highlight the active category
     const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
+
+    const {user, isDarkTheme} = useAuth();
 
     const [loading, setLoading] = useState(false);
 
@@ -33,8 +40,8 @@ export default function Espacios() {
             try{
 
                 const [categorias, espaciosData] = await Promise.all([
-                    espacioService.getCategoriasEspacioDisponible(), 
-                    espacioService.getAllEspaciosReservables()
+                    espacioService.getCategoriasEspacioDisponible(user.id_club), 
+                    espacioService.getAllEspaciosReservables(user.id_club)
                 ]);
 
                 setCategoriasDisponibles(categorias);
@@ -95,37 +102,28 @@ export default function Espacios() {
         <React.Fragment>
         <LoadingModal visible={loading} />
         <section>
-            <h2 className='mb-2 mt-2'>Espacios Reservables</h2>
+            <h2 className={`mb-2 mt-2 ${isDarkTheme ? 'title-darkMode' : ''}`}>Espacios Reservables</h2>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-12 p-0">
-                        <div
-                            className="categorias"
-                            ref={scrollContainerRef}
-                            {...dragHandlers}
-                        >
-                            {displayCategorias.map((cat) => (
-                                <button
-                                    key={cat.id_categoria_espacio}
-                                    className={`span-categoria ${activeCategory === cat.id_categoria_espacio ? 'active' : ''}`}
-                                    onClick={() => setActiveCategory(cat.id_categoria_espacio)}
-                                >
-                                    <i className={`fa ${cat.icon_fa}`}></i> {cat.nombre_categoria_espacio}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="search-categoria">
-                            <button>
-                                <i className='bx bx-search-big'></i>
-                            </button>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Busca el espacio que necesitas"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
+
+                        <CategoriaSelector
+                            scrollContainerRef={scrollContainerRef}
+                            dragHandlers={dragHandlers}
+                            displayCategorias={displayCategorias}
+                            activeCategory={activeCategory}
+                            handleSeleccionarCategoria={setActiveCategory}
+                            id="id_categoria_espacio"
+                            nombre="nombre_categoria_espacio"
+                        />
+
+                        <BuscadorTexto
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            placeholder="Busca el espacio que necesitas"
+                        />
+
+                        
                         <div className="espacios p-0">
                             {filteredEspacios.length > 0 ? (
                                 filteredEspacios.map((espacio) => (
@@ -135,7 +133,7 @@ export default function Espacios() {
                                     </div>
                                 ))
                             ) : (
-                                <p style={{ textAlign: 'center', gridColumn: '1 / -1', color: '#777' }}>
+                                <p className={`${isDarkTheme ? 'text-darkMode' : ''}`} style={{ textAlign: 'center', gridColumn: '1 / -1', color: '#777' }}>
                                     No se encontraron espacios reservables para esta búsqueda o categoría.
                                 </p>
                             )}

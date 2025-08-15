@@ -7,6 +7,8 @@ import { useAuth } from '../context/AuthContext'; // Import useAuth
 
 import billeteraService from "../services/billetera.service";
 
+import Button from './buttons/Button';
+
 export default function TransacctionSection() {
 
     const [ultimasTransacciones, setUltimasTransacciones] = useState([]);
@@ -46,8 +48,15 @@ export default function TransacctionSection() {
         <div className="dashboard-container">
             <section className="investments-section">
                 <div className="investments-header">
-                    <h3>Últimas Transacciones</h3>
-                    <button className="view-all" onClick={() => navigate('/transaccion')}>Ver más</button>
+                    <h3 className=''>Últimas Transacciones</h3>
+
+                    <Button 
+                        onClick={() => navigate('/transaccion')}
+                        className='primary'
+                    >
+                        Ver Todo
+                    </Button>
+
                 </div>
                 <div className="statistics-placeholder">
                     {ultimasTransacciones.map(item => (

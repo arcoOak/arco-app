@@ -22,6 +22,8 @@ import ExitosoModal from '../../components/modals/ExitosoModal';
 import ModalFormulario from '../../components/modals/ModalFormulario'; 
 import ConfirmarModal from '../../components/modals/ConfirmarModal';
 
+import Button from '../../components/buttons/Button'; // Importa el botón personalizado
+
 import FormatearFecha from '../../utils/FormatearFecha';
 import { Edit } from 'lucide-react';
 
@@ -313,9 +315,13 @@ export default function BeneficiariosLista() {
                 </div>
 
                 <div className="add-member-button-container">
-                    <button className="add-member-button" onClick={handleAddMemberClick}>
+
+                    <Button
+                        onClick={handleAddMemberClick}
+                        className={"secondary"}
+                    >
                         <i className='fas fa-user'></i> Agregar Nuevo
-                    </button>
+                    </Button>
                 </div>
             
         </div>

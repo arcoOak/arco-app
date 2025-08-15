@@ -108,11 +108,11 @@ export default function ReservasDetalle() {
 
         <div className="reservas-detalle-container">
             <div className="reservas-detalle-header">
-            <h1>Detalle de Reserva</h1>
+            <h2>Detalle de Reserva</h2>
             {reservaDetalle ? (
                 <div className="reserva-info">
                     <div className='reserva-info-header'>
-                        <h2>Información de la Reserva</h2>
+                        <h3>Información de la Reserva</h3>
 
                         <div className='info-card-link' onClick={() => handleNavigate('espacios', reservaDetalle.id_espacio_reservable)}>
                             <div className='info-card-link__text'>
@@ -127,7 +127,7 @@ export default function ReservasDetalle() {
                         <p><strong>Cantidad de Horas Reservadas:</strong> {listaHoras.length}</p>
                     </div>
                     <div className='reserva-info-details'>
-                        <h2>Detalles del Espacio</h2>
+                        <h3>Detalles del Espacio</h3>
                         <p><strong>Descripción:</strong> <br/> {reservaDetalle.descripcion}</p>
                         <p><strong>Capacidad:</strong> {reservaDetalle.capacidad}</p>
                         <p><strong>Coste por Hora:</strong> ${reservaDetalle.costo_reserva}</p>
@@ -142,7 +142,7 @@ export default function ReservasDetalle() {
             </div>
 
             <div className='horas-reservadas'>
-            <h2>Horas Reservadas</h2>
+            <h3>Horas Reservadas</h3>
             {listaHoras.length > 0 ? (
                 <ul className='horas-list'>
                     {formatearHorarios(listaHoras).map((hora, index) => (
@@ -155,7 +155,7 @@ export default function ReservasDetalle() {
             </div>
 
             <div className='invitados-reservados'>
-            <h2>Invitados</h2>
+            <h3>Invitados</h3>
             {listaInvitados.length > 0 ? (
                 <ul className="invitados-list">
                     {listaInvitados.map((invitado) => (

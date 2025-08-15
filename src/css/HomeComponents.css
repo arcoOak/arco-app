@@ -1,36 +1,4 @@
-:root {
-    /* Colors */
-    --bg-dark: #1a1a1a;
-    --text-primary: #ffffff;
-    --text-secondary: #888888;
-    --text-dark: #292929;
 
-    --card-gradient-start: #12182b;
-    /* Adjust based on image */
-    --card-gradient-end: #00ccff;
-    /* Adjust based on image */
-    --card-brown-start: #12182b;
-    /* Adjust based on image */
-    --card-brown-end: #8a5a4a;
-    /* Adjust based on image */
-    --button-orange: #ff6f00;
-    --divider-color: #333333;
-
-    /* Font Sizes */
-    --font-size-lg: 1.5rem;
-    --font-size-md: 1rem;
-    --font-size-sm: 0.8rem;
-
-    /* Spacing */
-    --spacing-lg: 20px;
-    --spacing-md: 15px;
-    --spacing-sm: 10px;
-
-    /* Border Radius */
-    --border-radius-lg: 20px;
-    --border-radius-md: 10px;
-    --border-radius-sm: 5px;
-}
 
 .welcome-text {
     font-size: var(--font-size-sm);
@@ -63,7 +31,7 @@
 .avatar {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -152,7 +120,7 @@
 .card-indicator {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     background-color: #ff4500;
     /* Orange/red dot */
 }

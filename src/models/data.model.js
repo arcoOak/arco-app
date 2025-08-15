@@ -1,6 +1,6 @@
 
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getGenerosDB = async () => {
     //let connection;

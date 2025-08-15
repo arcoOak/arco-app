@@ -1,4 +1,4 @@
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 
 
@@ -19,9 +19,10 @@ const getQrTokenByUsuarioDB = async (id_usuario, id_rol) => {
     }
 }
 
-const getQrTokenByUsuarioFamiliarDB = async (id_usuario, id_rol, id_familiar) => {
+const getQrTokenByUsuarioFamiliarDB = async (id_usuario, id_rol, id_familiar, connection) => {
+    const executor = connection || pool;
     try {
-        const [rows] = await pool.execute(
+        const [rows] = await executor.execute(
             `SELECT * FROM qr_token WHERE id_usuario = ? AND id_rol = ? AND id_familiar = ? AND status = 1`,
             [id_usuario, id_rol, id_familiar]
         );
@@ -36,9 +37,10 @@ const getQrTokenByUsuarioFamiliarDB = async (id_usuario, id_rol, id_familiar) =>
     }
 }
 
-const getQrTokenByUsuarioInvitadoDB = async (id_usuario, id_rol, id_invitado) => {
-    try{
-        const [rows] = await pool.execute(
+const getQrTokenByUsuarioInvitadoDB = async (id_usuario, id_rol, id_invitado, connection) => {
+    const executor = connection || pool;
+    try {
+        const [rows] = await executor.execute(
             `SELECT * FROM qr_token WHERE id_usuario = ? AND id_rol = ? AND id_invitado = ? AND status = 1`,
             [id_usuario, id_rol, id_invitado]
         );
@@ -71,16 +73,17 @@ const createQrTokenDB = async (id_usuario, token, id_rol) => {
     }
 }
 
-const createQrTokenFamiliarDB = async (id_usuario, token, id_rol, id_familiar) => {
+const createQrTokenFamiliarDB = async (id_usuario, token, id_rol, id_familiar, connection) => {
+    const executor = connection || pool;
     try {
-        const [result] = await pool.execute(
+        const [result] = await executor.execute(
             `INSERT INTO qr_token (id_usuario, token, id_rol, id_familiar) VALUES (?, ?, ?, ?)`,
             [id_usuario, token, id_rol, id_familiar]
         );
         if (result.affectedRows == 0) {
             return {success: false, data: null}; // Retorna false si no se insertó ningún registro
         }else{
-            const newTokenData = await getQrTokenByUsuarioFamiliarDB(id_usuario, id_rol, id_familiar); // Obtiene el token recién creado
+            const newTokenData = await getQrTokenByUsuarioFamiliarDB(id_usuario, id_rol, id_familiar, connection); // Obtiene el token recién creado
             return {success: true, data: newTokenData.data}; // Retorna el ID del usuario y el nuevo token
         }
     } catch (error) {
@@ -89,13 +92,14 @@ const createQrTokenFamiliarDB = async (id_usuario, token, id_rol, id_familiar) =
     }
 }
 
-const createQrTokenInvitadoDB = async (id_usuario, token, id_rol, dataInvitado) => {
+const createQrTokenInvitadoDB = async (id_usuario, token, id_rol, dataInvitado, connection) => {
     try {
+        const executor = connection || pool;
         const { nombre, apellido, correo, documento_identidad } = dataInvitado;
 
         let invitadoId;
 
-        const [createInvitado] = await pool.execute(
+        const [createInvitado] = await executor.execute(
             `INSERT INTO invitados (id_usuario, nombre, apellido, correo, documento_identidad) VALUES (?, ?, ?, ?, ?)`,
             [id_usuario, nombre, apellido, correo, documento_identidad]
         );
@@ -106,7 +110,7 @@ const createQrTokenInvitadoDB = async (id_usuario, token, id_rol, dataInvitado) 
 
         invitadoId = createInvitado.insertId; // Obtiene el ID del nuevo invitado
 
-        const [result] = await pool.execute(
+        const [result] = await executor.execute(
             `INSERT INTO qr_token (id_usuario, token, id_rol, id_invitado) VALUES (?, ?, ?, ?)`,
             [id_usuario, token, id_rol, invitadoId]
         );
@@ -114,7 +118,7 @@ const createQrTokenInvitadoDB = async (id_usuario, token, id_rol, dataInvitado) 
         if (result.affectedRows == 0) {
             return {success: false, data: null}; // Retorna false si no se insert
         }else{
-            const newTokenData = await getQrTokenByUsuarioInvitadoDB(id_usuario, id_rol, invitadoId); // Obtiene el token recién creado
+            const newTokenData = await getQrTokenByUsuarioInvitadoDB(id_usuario, id_rol, invitadoId, connection); // Obtiene el token recién creado
             return {success: true, data: newTokenData.data}; // Retorna el ID del usuario y el nuevo token
         }
     } catch (error) {
@@ -141,16 +145,17 @@ const updateQrTokenDB = async (id_usuario, new_token, id_rol) => {
     }
 }
 
-const updateQrTokenFamiliarDB = async (id_usuario, new_token, id_rol, id_familiar) => {
+const updateQrTokenFamiliarDB = async (id_usuario, new_token, id_rol, id_familiar, connection) => {
     try {
-        const [result] = await pool.execute(
+        const executor = connection || pool;
+        const [result] = await executor.execute(
             `UPDATE qr_token SET token = ? WHERE id_usuario = ? AND id_rol = ? AND id_familiar = ? AND status = 1`,
             [new_token, id_usuario, id_rol, id_familiar]
         );
          if (result.affectedRows == 0){// Retorna true si se actualizó al menos un registro
             return {success: false, data: null};
          } else{
-            const newTokenData = await getQrTokenByUsuarioFamiliarDB(id_usuario, id_rol, id_familiar); // Obtiene el nuevo token actualizado
+            const newTokenData = await getQrTokenByUsuarioFamiliarDB(id_usuario, id_rol, id_familiar, connection); // Obtiene el nuevo token actualizado
             return {success: true, data: newTokenData.data}; // Retorna el ID del usuario y el nuevo token
          }
     } catch (error) {

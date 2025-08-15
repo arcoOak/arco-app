@@ -9,21 +9,21 @@
 }
 
 .loading-modal-content {
-  background: #fff;
+  background: var(--color-surface-primary);
   padding: 32px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .loading-spinner {
   border: 6px solid #f3f3f3;
   border-top: 6px solid #4a69bd;
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   width: 64px;
   height: 64px;
   animation: spin 1s linear infinite;

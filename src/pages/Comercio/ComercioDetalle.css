@@ -11,6 +11,67 @@
     position: relative;
 }
 
+
+.reserva-img-wrapper {
+    position: relative;
+    width: 50%;
+    margin-inline: auto;
+    margin-bottom: 15px;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    /* ensures border-radius applies to children */
+}
+
+.reserva-img-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-surface-primary);
+    opacity: 0.5;
+    z-index: 1;
+    border-radius: var(--border-radius-lg);
+}
+
+.reserva-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-white);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+.reserva-description{
+    color: var(--color-white);
+    width: 80%;
+    margin-inline: auto;
+}
+
+.reserva-info-section{
+        padding: 25px 25px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+}
+
+.reserva-info-section p{
+    color: var(--color-text-primary);
+}
+
+.reserva-info-section p a{
+    color: var(--color-text-link);
+    text-decoration: none;
+}
+
+.reserva-catalogo-section{
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
 .detalle-container.no-comercio {
     display: flex;
     flex-direction: column;
@@ -51,7 +112,7 @@
 .detalle-img {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     object-fit: cover;
     border: 5px solid #eee;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -75,7 +136,7 @@
 .detalle-catalogo-section,
 .detalle-servicios-section {
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: var(--border-radius-md);
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -115,7 +176,7 @@
 
 .producto-card {
     /* background-color: #fff; */
-    border-radius: 10px;
+    border-radius: var(--border-radius-md);
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
     text-align: center;
@@ -137,10 +198,11 @@
     flex-direction: column;
     align-items: center;
     width: 60%;
-    background-color: #ffffffdd;
-    border-radius: 5px;
+    background-color: var(--color-surface-primary);
+    opacity: 0.85;
+    border-radius: var(--border-radius-md);
     padding: 1rem 0.5rem 0.5rem;
-    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-md);
 }
 
 .producto-card:hover {
@@ -151,7 +213,7 @@
     width: 40%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--border-radius-md);
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -160,7 +222,7 @@
     font-size: 0.95em;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #444;
+    color: var(--color-text-primary);
     white-space: normal;
     /* Allow name to wrap */
     overflow: hidden;
@@ -170,7 +232,7 @@
 
 .producto-description {
     font-size: 0.75em;
-    color: #666;
+    color: var(--color-text-secondary);
     margin-bottom: 8px;
     font-weight: 500;
     display: -webkit-box;
@@ -194,6 +256,7 @@
     /* Green button */
     color: #fff;
     border: none;
+    border-radius: var(--border-radius-pill);
     padding: 6px 12px;
     cursor: pointer;
     font-size: 0.75em;
@@ -210,18 +273,6 @@
     background-color: #218838;
 }
 
-.servicio-card {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
-    text-align: left;
-}
-
-.servicio-card:hover {
-    transform: translateY(-3px);
-}
 
 .servicio-name {
     font-size: 1.1em;
@@ -293,11 +344,13 @@
 
 .span-categoria-productos {
     flex-shrink: 0; /* Evita que los botones se encojan y mantiene su tamaño original. */
-    background-color: #fff; /* Color de fondo claro para los botones. */
-    color: #000;
-    border-radius: 25px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-    border: 1px solid #ddd;
+    background-color: var(--color-surface-primary); /* Color de fondo claro para los botones. */
+    color: var(--color-text-primary);
+    border-radius: var(--border-radius-lg);
+    border: solid 2px var(--color-border-primary);
+    box-shadow: 0px 0px 1px var(--color-shadow);
+    padding: var(--spacing-sm) var(--spacing-md);
+
 }
 
 .span-categoria-productos.active{
@@ -312,7 +365,7 @@
     margin-bottom: 20px;
     background-color: #f0f2f5;
     padding: 5px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-md);
 }
 
 .tipo-empresa-button {
@@ -322,10 +375,10 @@
     background-color: #fff;
     color: #555;
     border: 2px solid #ccc;
-    border-radius: 15px !important;
+    border-radius: var(--border-radius-lg) !important;
     font-weight: 600;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--border-radius-md);
     transition: background-color 0.3s ease, color 0.3s ease;
     text-align: center;
 }

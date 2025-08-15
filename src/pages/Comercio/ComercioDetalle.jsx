@@ -2,7 +2,7 @@
 import React, {useState, useEffect, useMemo } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './ComercioDetalle.css'; // Crea un archivo CSS para este componente
-
+import '../../css/Concecionario.css';
 
 import comercioService from '../../services/comercio.service'; // Importa el servicio de comercios
 import productoService from '../../services/producto.service';
@@ -10,6 +10,7 @@ import serviciosService from '../../services/servicios.service';
 
 import LoadingModal from '../../components/modals/LoadingModal';
 import ExitosoModal from '../../components/modals/ExitosoModal';
+import Button from '../../components/buttons/Button'; // Importa el botón de volver
 
 import comercioImagePlaceholder from '../../assets/comercio_placeholder.webp';
 import productoImagePlaceholder from '../../assets/producto_placeholder.webp';
@@ -241,7 +242,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
 
     if (!comercio) {
         return (
-            <div className="detalle-container">
+            <div className="reserva-container">
                 <button className="back-button" onClick={() => navigate(backLocation)}>
                     <i className='bx bx-arrow-back'></i> Volver
                 </button>
@@ -256,17 +257,23 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
         <React.Fragment>
         <ExitosoModal visible={showExitosoModal} mensaje="Producto Añadido al Carrito"></ExitosoModal>
         <LoadingModal visible={loading}></LoadingModal>
-        <div className="detalle-container">
 
-            <ButtonVolver to={backLocation} className="boton-volver" />
-
-            <div className="detalle-header">
-                <img src={`${comercio.img || comercioImagePlaceholder}`} alt={comercio.nombre_comercio} className="detalle-img" />
+        <div className="reserva-header">
+                <div className='boton-volver-container'>
+                    <ButtonVolver to={backLocation} className="boton-volver-white" />
+                </div>
+                
+                <div className='reserva-img-wrapper'>
+                    <img src={`${comercio.img || comercioImagePlaceholder}`} alt={comercio.nombre_comercio} className="reserva-img" />
+                </div>
                 <h1>{comercio.nombre_comercio}</h1>
-                <p className="detalle-description">{comercio.descripcion_comercio}</p>
+                <p className="reserva-description">{comercio.descripcion_comercio}</p>
             </div>
 
-            <div className="detalle-info-section">
+        <div className="reserva-container">
+
+
+            <div className="reserva-info-section">
                 <h2>Información de Contacto</h2>
                 <p>
                     <strong>Horario:</strong> 
@@ -299,7 +306,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
             ) }
 
             {productos.length > 0 && tipoEmpresa === 1 && 
-            <div className="detalle-catalogo-section">
+            <div className="reserva-catalogo-section">
                 <h2>Catálogo de Productos</h2>
 
                 <SelectorCategorias
@@ -323,7 +330,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
             </div>}
 
             {servicios.length > 0 && tipoEmpresa === 2 &&
-            <div className="detalle-servicios-section">
+            <div className="reserva-servicios-section">
                 <h2>Catálogo de Servicios</h2>
 
                 <SelectorCategorias

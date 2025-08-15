@@ -15,7 +15,6 @@ const TrainerCard = ({ sport, name, description, imageUrl, imageAlt, onClick }) 
             <div className='trainer-content'>
                 <div className="trainer-card__title">
                     <h5 className="">{name}</h5>
-                    <label><i className="fa fa-heart"></i></label>
                 </div>
                 <p className="trainer-card__category">{sport}</p>
                 <p className="trainer-card__description">{descriptionText}</p>

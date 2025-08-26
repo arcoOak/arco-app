@@ -1,11 +1,11 @@
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getReservaServicioByIdDB = async (id_reservacion_servicio) =>{
 
     try{
 
         const [row] = await pool.execute(`
-            SELECT rss.*, srv.nombre_servicio_reservable, cmr.nombre_comercio, sre.costo_servicio, sre.capacidad
+            SELECT rss.*, srv.nombre_servicio_reservable, cmr.id_comercio, cmr.nombre_comercio, sre.costo_servicio, sre.capacidad
             FROM reservaciones_servicios rss
             JOIN servicios_reservables srv ON rss.id_servicio_reservable = srv.id_servicio_reservable 
 			JOIN servicios_reservables_empresa sre ON rss.id_servicio_reservable_empresa = sre.id_servicio_reservable_empresa
@@ -135,7 +135,7 @@ const createReservaServicioDB = async (reservaServicioData, db_connection) =>{
         const [result] = await executor.execute(`
             INSERT INTO reservaciones_servicios 
             (id_socio, id_servicio_reservable, id_servicio_reservable_empresa, costo_reserva, fecha_reservacion, nota, fecha_creacion, estado)
-            VALUES (?, ?, ?, ?, ?, ?, NOW(), 1)
+            VALUES (?, ?, ?, ?, ?, ?, NOW(), 0)
         `, [id_socio, id_servicio_reservable, id_servicio_reservable_empresa, coste_total, fecha_reservacion, nota]);
 
         return result.insertId;

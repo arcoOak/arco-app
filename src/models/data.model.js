@@ -1,6 +1,6 @@
 
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 const getGenerosDB = async () => {
     //let connection;
@@ -64,4 +64,14 @@ const getCategoriasComercioDB = async ()=>{
   }
 }
 
-export { getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDB };
+const getMetodosPagoDB = async () => {
+  try {
+    const [rows] = await pool.execute(
+      `SELECT * FROM data_metodo_pago`
+    );
+    return rows;
+  } finally {
+  }
+}
+
+export { getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDB, getMetodosPagoDB };

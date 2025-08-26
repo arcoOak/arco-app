@@ -7,8 +7,9 @@ import {
 } from '../models/espacio.model.js';
 
 const getAllEspaciosReservables = async (req, res) => {
+    const { id_club } = req.params;
     try {
-        const espacios = await getAllEspaciosReservablesDB();
+        const espacios = await getAllEspaciosReservablesDB(id_club);
         res.status(200).json(espacios);
     } catch (error) {
         console.error('Error al obtener los espacios reservables:', error);
@@ -17,9 +18,9 @@ const getAllEspaciosReservables = async (req, res) => {
 }
 
 const getEspacioByCategoria = async (req, res) => {
-    const { id_categoria_espacio } = req.params;
+    const { id_categoria_espacio, id_club } = req.params;
     try {
-        const espacios = await getEspacioByCategoriaDB(id_categoria_espacio);
+        const espacios = await getEspacioByCategoriaDB(id_categoria_espacio, id_club);
         if (!espacios || espacios.length === 0) {
             return res.status(404).json({ message: 'No se encontraron espacios para esta categoría' });
         }
@@ -59,8 +60,9 @@ const getEspacioUnidadesById = async (req, res) => {
 }
 
 const getCategoriasEspacioDisponible = async (req, res) => {
+    const { id_club } = req.params;
     try {
-        const categorias = await getCategoriasEspacioDisponibleDB();
+        const categorias = await getCategoriasEspacioDisponibleDB(id_club);
         res.status(200).json(categorias);
     } catch (error) {
         console.error('Error al obtener categorías de espacio disponibles:', error);

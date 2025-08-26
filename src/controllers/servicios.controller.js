@@ -5,8 +5,10 @@ import {
     getCategoriasServiciosActivosDB,
     getServicioPorIdDB,
     getEmpresasReservadorasPorServicioDB,
-    getServiciosPorEmpresaReservadoraDB
+    getServiciosPorEmpresaReservadoraDB,
+    getCategoriasServiciosActivosPorEmpresaReservadoraDB
 } from '../models/servicios.model.js';
+
 
 const getTodosServicios = async (req, res) => {
     try {
@@ -81,6 +83,16 @@ const getServiciosPorEmpresaReservadora = async (req, res) => {
     }
 }
 
+const getCategoriasServiciosActivosPorEmpresaReservadora = async (req, res) => {
+    try {
+        const { id_empresa } = req.params;
+        const categorias = await getCategoriasServiciosActivosPorEmpresaReservadoraDB(id_empresa);
+        res.json(categorias);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export default {
     getTodosServicios,
     getHomeServicios,
@@ -88,5 +100,6 @@ export default {
     getCategoriasServiciosActivos,
     getServicioPorId,
     getEmpresasReservadorasPorServicio,
-    getServiciosPorEmpresaReservadora
+    getServiciosPorEmpresaReservadora,
+    getCategoriasServiciosActivosPorEmpresaReservadora
 }

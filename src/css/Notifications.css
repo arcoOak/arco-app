@@ -20,7 +20,7 @@
     width: 90%;
     padding: .5rem 2rem;
     background-color: white;
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
     margin: 0 auto;
 }
 

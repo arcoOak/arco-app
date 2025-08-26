@@ -1,25 +1,31 @@
 .payment-tabla-elementos{
     width: 100%;
     border-collapse: collapse;
+    border-radius: var(--border-radius-md);
 }
   .payment-tabla-elementos th, .payment-tabla-elementos td {
         padding: 4px 8px;
-        border-block: 1px solid #ddd;
+        border-block: 1px solid var(--color-border);
         text-align: center;
 
     }
 
     .payment-tabla-elementos th{
-        background-color: #f4f4f4;
+        background-color: var(--color-surface-primary);
+        color: var(--color-text-primary);
         text-align: center;
     }
 
+    .payment-tabla-elementos tr {
+        background-color: var(--color-surface-secondary);
+        color: var(--color-text-secondary);
+    }
+
     .payment-tabla-elementos tr:nth-child(even) {
-        background-color: #f9f9f9;
+        background-color: var(--color-surface-secondary);
     }
 
     .payment-tabla-elementos td{
         font-size: 0.875rem;
         font-weight: 500;
-        color: #444;
     }

@@ -9,12 +9,13 @@ import {useAuth} from '../context/AuthContext';
 import serviciosService from '../services/servicios.service';
 
 import servicioImagePlaceholder from '../assets/comercio_placeholder.webp';
+import Button from './buttons/Button';
 
 
 const TrainerSection = () => {
 
     const [servicios, setServicios] = useState([]);
-    const {user} = useAuth(); // Obtiene el usuario del contexto de autenticación
+    const {user, isDarkTheme} = useAuth(); // Obtiene el usuario del contexto de autenticación
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
@@ -129,13 +130,23 @@ const TrainerSection = () => {
     // Esto asegura que el efecto solo se re-ejecute si las definiciones de estas funciones cambian,
     // lo cual solo ocurre si sus propias dependencias internas cambian.
 
+    const handleNavigate = (path, id) => {
+        navigate(`/${path}/${id}`, { state: { returnTo: location.pathname } });
+    };
+
+
     return (
         <div className="trainer-section-container">
             <div className="trainer-section__header">
-                <h3 className="trainer-section__title">Servicios Disponibles</h3>
-                <button className='button__see-all'>
-                    <a href="#" onClick={ () => navigate('/servicios')} className="trainer-section__see-all">Ver Todo</a>
-                </button>
+                <h3 className={`trainer-section__title`}>Servicios Disponibles</h3>
+
+                <Button
+                    onClick={() => navigate('/servicios')}
+                    className='primary'
+                >
+                    Ver Todo
+                </Button>
+
             </div>
             <div className="trainer-section__carousel" ref={carouselRef}>
                 {servicios.map(data => (
@@ -146,7 +157,7 @@ const TrainerSection = () => {
                         description={data.descripcion}
                         imageUrl={data.imageUrl || servicioImagePlaceholder} // Usa la imagen del servicio o una imagen por defecto
                         imageAlt={data.nombre_categoria_servicio}
-                        onClick={() => navigate(`/servicios/${data.id_servicio_reservable}`)} // Navega al detalle del servicio
+                        onClick={() => handleNavigate('servicios', data.id_servicio_reservable)} // Navega al detalle del servicio
 
                     />
                 ))}

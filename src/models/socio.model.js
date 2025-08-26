@@ -1,7 +1,7 @@
 
 // import {connectToDatabase, poolConection} from '../config/db.config.js';
 
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 // Obtener todos los socios
 async function getAllSociosDB() {
@@ -9,7 +9,13 @@ async function getAllSociosDB() {
   try {
     //connection = await connectToDatabase();
     const [rows] = await pool.execute(
-      'SELECT id_socio, id_usuario, nombre, apellido, documento_identidad, fecha_nacimiento, telefono, direccion, fecha_ingreso_club, b.nombre_genero FROM socios LEFT JOIN data_genero b ON socios.id_genero = b.id_genero'
+      `SELECT socios.id_socio, socios.id_usuario, socios.nombre, socios.apellido, 
+      socios.documento_identidad, socios.fecha_nacimiento, socios.telefono, 
+      socios.direccion, socios.fecha_ingreso_club, b.nombre_genero, c.id_billetera
+      FROM socios 
+      LEFT JOIN data_genero b ON socios.id_genero = b.id_genero
+      JOIN billeteras c ON socios.id_socio = c.id_socio
+      `
     );
     return rows;
   } finally {

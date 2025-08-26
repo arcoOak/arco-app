@@ -2,29 +2,41 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"; // Importa useNavigate para la navegación
 // Assuming you've moved the CSS into Navbar.css
-import '../css/Navbar.css'; // Make sure this path is correct relative to Navbar.jsx
+import './Navbar.css'; // Make sure this path is correct relative to Navbar.jsx
 
 import logo from '../img/logo.png'; // Importa tu logo
 import logoDark from '../img/logo-dark.png'; // Importa tu logo oscuro
+
+import {useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+
+// Es una buena práctica definir constantes que no dependen del estado o props fuera del componente.
+// Esto evita que se recreen en cada renderizado.
+const menuItems = [
+    { name: 'Inicio', icon: 'home', path: '/' },
+    { name: 'Mis Reservas', icon: 'calendar_month', path: '/reservas' },
+    { name: 'Mis Servicios', icon: 'work', path: '/mis-servicios' },
+    { name: 'Mis Compras', icon: 'shopping_cart', path: '/compras' },
+    { name: 'Espacios', icon: 'location_on', path: '/espacios' },
+    { name: 'QR', icon: 'qr_code_scanner', path: '/qr' },
+    { name: 'Noticias', icon: 'article', path: '/noticias' },
+    { name: 'Comercios', icon: 'storefront', path: '/comercios' },
+    { name: 'Servicios', icon: 'build', path: '/servicios' },
+    { name: 'Beneficiarios', icon: 'group', path: '/perfil/beneficiarios' },
+    { name: 'Ajustes', icon: 'settings', path: '/perfil' },
+];
 
 const Navbar = () => {
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed based on your HTML
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
-    const [activeMenuItem, setActiveMenuItem] = useState('Dashboard'); // State for active menu item
-    const [actualLogo, setActualLogo] = useState(logo); // State for logo
+
+    const [activeMenuItem, setActiveMenuItem] = useState('Inicio'); // State for active menu item
+
+    const { isDarkTheme, toggleTheme, logo } = useAuth();
 
     // Function to toggle sidebar
     const toggleSidebar = () => {
         setIsSidebarCollapsed(prevState => !prevState);
-        setActiveMenuItem(''); // Reset active menu item when toggling sidebar
-    };
-
-    // Function to toggle theme
-    const toggleTheme = () => {
-        setIsDarkTheme(prevState => !prevState);
-        setActualLogo(prevState => prevState === logo ? logoDark : logo); // Toggle between logos
     };
 
     // Function to update theme icon based on sidebar state and theme
@@ -32,38 +44,14 @@ const Navbar = () => {
         return isDarkTheme ? 'light_mode' : 'dark_mode'; 
     };
 
-    // Effect for initial theme setup and updating body class
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        // Set initial theme based on local storage or system preference
-        const initialTheme = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
-        setIsDarkTheme(initialTheme);
-        document.body.classList.toggle('dark-theme', initialTheme);
-
-        if (savedTheme === 'dark') {
-            setActualLogo(logoDark); // Set dark logo if dark theme is saved
-        } else {
-            setActualLogo(logo); // Set light logo if dark theme is not saved
-        }
-        
-    }, []); // Run once on component mount
-
-    // Effect to update body class when isDarkTheme changes
-    useEffect(() => {
-        document.body.classList.toggle('dark-theme', isDarkTheme);
-    }, [isDarkTheme]);
-
     // Effect to handle sidebar collapse on window resize (optional, but good for responsiveness)
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 768) {
                 setIsSidebarCollapsed(false);
-            } else {
-                // You might want to re-collapse on small screens if it's currently expanded
-                // setIsSidebarCollapsed(true); // Uncomment if you want it to collapse automatically
-            }
+            } else { 
+                setIsSidebarCollapsed(true);
+            } 
         };
 
         window.addEventListener('resize', handleResize);
@@ -76,41 +64,16 @@ const Navbar = () => {
         navigate(`notifications_user`)
     };
 
-    const handleSeleccionarBoton = (item) => {
-        setActiveMenuItem(item);
+    const handleSeleccionarBoton = (e, item) => {
+        e.preventDefault(); // Prevenir el comportamiento por defecto de la etiqueta <a>
+        setActiveMenuItem(item.name);
+        navigate(item.path);
 
-        // Navigate to the corresponding page based on the item clicked
-        switch (item) {
-            case 'Inicio':
-                navigate(`/`);
-                break;
-            case 'Mis Reservas':
-                navigate(`/reservas`);
-                break;
-            case 'Mis Servicios':
-                navigate(`/mis-servicios`);
-                break;
-            case 'Noticias':
-                navigate(`/noticias`);
-                break;
-            case 'Comercios':
-                navigate(`/comercios`);
-                break;
-            case 'Servicios':
-                navigate(`/servicios`);
-                break;
-            case 'Beneficiarios':
-                navigate(`/perfil/beneficiarios`);
-                break;
-            case 'Ajustes':
-                navigate(`/perfil`);
-                break;
-            default:
-                navigate(`/`);
-                break;
+        // En pantallas pequeñas, el sidebar es un overlay, así que lo cerramos tras la selección.
+        if (window.innerWidth <= 768) {
+            toggleSidebar();
         }
-        toggleSidebar(); // Close sidebar after selection
-0    };
+    };
 
 
     return (
@@ -118,13 +81,8 @@ const Navbar = () => {
 
             <div className="titleHome">
                 <div className="titleHomeSide">
-                    {/* <img src="../src/img/perfil.jpg" alt="Logo" className="logo" />
-                    <div className="text-left">
-                        <p>Bienvenido!</p>
-                        <h3>Johny Roria</h3>
-                    </div> */}
                     <button className="sidebar-toggle" onClick={toggleSidebar}>
-                        <span className="material-symbols-rounded">menu</span>
+                        <i className='fa fa-solid fa-bars'></i>
                     </button>
                 </div>
                 <div
@@ -132,7 +90,7 @@ const Navbar = () => {
                     onClick={handleNotification}
                 >
                     <div className="notification"></div>
-                    <i className='bx bx-bell'></i>
+                    <i className='fa-solid fa-bell'></i>
                 </div>
             </div>
 
@@ -141,7 +99,7 @@ const Navbar = () => {
             <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
                 <div className="sidebar-header">
                     {/* Make sure 'logo.png' is in your public folder or imported correctly */}
-                    <img src={actualLogo} alt="CodingNepal" className="header-logo" />
+                    <img src={logo} alt="Logo de Arco App" className="header-logo" />
                     <button className="sidebar-toggle" onClick={toggleSidebar}>
                         <span className="material-symbols-rounded">close</span>
                     </button>
@@ -162,21 +120,12 @@ const Navbar = () => {
 
                     {/* Sidebar Menu */}
                     <ul className="menu-list">
-                        {[
-                            { name: 'Inicio', icon: 'home' },
-                            { name: 'Mis Reservas', icon: 'calendar_month' },
-                            { name: 'Mis Servicios', icon: 'work' },
-                            { name: 'Noticias', icon: 'article' },
-                            { name: 'Comercios', icon: 'storefront' },
-                            { name: 'Servicios', icon: 'build' },
-                            { name: 'Beneficiarios', icon: 'group' },
-                            { name: 'Ajustes', icon: 'settings' },
-                        ].map((item) => (
+                        {menuItems.map((item) => (
                             <li className="menu-item" key={item.name}>
                                 <a
                                     href="#"
                                     className={`menu-link ${activeMenuItem === item.name ? 'active' : ''}`}
-                                    onClick={() => handleSeleccionarBoton(item.name)}
+                                    onClick={(e) => handleSeleccionarBoton(e, item)}
                                 >
                                     <span className="material-symbols-rounded">{item.icon}</span>
                                     <span className="menu-label">{item.name}</span>

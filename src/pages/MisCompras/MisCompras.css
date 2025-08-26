@@ -1,0 +1,92 @@
+/* Estilos para el contenedor principal de la página de compras */
+.compras-container {
+    padding: 1rem;
+    background-color: var(--color-surface-primary); /* Un color de fondo suave y neutro */
+    min-height: 50vh; /* Asegura que ocupe al menos toda la altura de la pantalla */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 1rem;
+    width: 90%;
+    margin-inline: auto;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-md);
+}
+
+.mis-compras-title {
+    color: var(--color-text-primary); /* Un color oscuro pero no negro puro */
+    margin-bottom: 0.5rem;
+}
+
+
+
+/* Estilos para la lista con scroll horizontal que usa el hook useDragToScroll */
+.compras-list{
+    display: flex;
+    flex-direction: column; /* Cambia la dirección del flujo a vertical */
+}
+
+/* Ocultar la barra de scroll para un look más limpio, ya que se puede arrastrar */
+.compras-list::-webkit-scrollbar {
+    display: none;
+}
+
+.compras-list {
+    -ms-overflow-style: none;  /* Para IE y Edge */
+    scrollbar-width: none;  /* Para Firefox */
+}
+
+.compras-list-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.compra-item{
+    background-color: var(--color-surface-tertiary);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border-tertiary);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.compra-item-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--color-border-tertiary);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.compra-item-title{
+    margin: 0;
+}
+
+.compra-item-date{
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+.compra-item-details{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.compra-item-price{
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+.compra-item-cantidad{
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}

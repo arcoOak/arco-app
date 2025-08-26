@@ -1,14 +1,19 @@
 import {
     getClimaSemanalDB,
-    cargarDatosClimaSemanalDB
 } from '../models/clima.model.js';
+
+
 
 const getClimaSemanal = async (req, res) => {
     const { id_club } = req.params; // Asegúrate de que el id_club se pase como query parameter
     const fecha = new Date(); // Puedes ajustar la fecha según sea necesario
 
     try {
+        // La data es actualizada por un cron job. Este endpoint solo la consulta.
         const climaSemanal = await getClimaSemanalDB(id_club, fecha);
+        if (climaSemanal.length === 0) {
+            console.warn(`No se encontraron datos de clima para el club ${id_club}. El cron job podría no haberse ejecutado.`);
+        }
         res.json(climaSemanal);
     } catch (error) {
         console.error('Error al obtener clima semanal:', error);
@@ -16,35 +21,8 @@ const getClimaSemanal = async (req, res) => {
     }
 }
 
-const cargarDatosClimaSemanal = async (req, res) => {
-    const { id_club } = req.params; // Asegúrate de que el id_club se pase como query parameter
-    const datosSemanales = req.body; // Los datos climáticos semanales deben enviarse en el cuerpo de la solicitud
 
-    const datosFormateados = formatearDatosClimaSemanal(datosSemanales);
-
-
-    try {
-        const result = await cargarDatosClimaSemanalDB(id_club, datosFormateados);
-        res.json({ message: `${result} registros insertados correctamente` });
-    } catch (error) {
-        console.error('Error al cargar datos climáticos semanales:', error);
-        res.status(500).json({ message: 'Error interno del servidor al cargar datos climáticos semanales' });
-    }
-}
-
-const formatearDatosClimaSemanal = (datos) =>{
-    const datosTime = datos.hourly.time;
-    const datosTemp = datos.hourly.temperature_2m;
-    const datosPrecipitacion = datos.hourly.precipitation_probability;
-
-    return datosTime.map((time, index) => ({
-        fecha: time,
-        temperatura: datosTemp[index],
-        precipitacion_porcentaje: datosPrecipitacion[index]
-    }));
-}
 
 export default {
-    getClimaSemanal,
-    cargarDatosClimaSemanal
+    getClimaSemanal
 };

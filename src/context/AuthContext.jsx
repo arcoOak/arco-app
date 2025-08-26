@@ -1,5 +1,5 @@
 // src/context/AuthContext.js
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import authService from '../services/auth.service';
 
 import modificarSocio from '../services/modificar.service'; 
@@ -8,6 +8,9 @@ import clubService from '../services/club.service'; // Importa el servicio de cl
 import LoadingModal from '../components/modals/LoadingModal';
 
 import billeteraService from '../services/billetera.service'; // Importa el servicio de billetera
+
+import logoLight from '../img/logo.png'; // Importa tu logo
+import logoDark from '../img/logo-dark.png'; // Importa tu logo oscuro
 
 
 // Contexto
@@ -23,9 +26,23 @@ export const AuthProvider = ({ children }) => {
 
   const [saldoBilletera, setSaldoBilletera] = useState(0); // Almacena el saldo de la billetera
 
+  // Inicializa el estado del tema desde localStorage o la preferencia del sistema
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  const logo = useMemo(() => {
+    return isDarkTheme ? logoDark : logoLight;
+  }, [isDarkTheme]);
+
   useEffect(() => {
     // Aquí puedes intentar cargar los datos del usuario desde localStorage o una cookie
     // Cuando la aplicación se carga por primera vez
+    setLoading(true);
     try{
       const storedUser = localStorage.getItem('currentUser');
       if (storedUser) {
@@ -41,30 +58,39 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // Se usa useCallback para memorizar la función y evitar que se recree en cada render,
+  // a menos que sus dependencias (en este caso, 'user') cambien.
+  const actualizarSaldoBilletera = useCallback(async () => {
+    if (!user) return; // No hacer nada si no hay usuario
+    try {
+      const response = await billeteraService.getBilleteraBySocio(user.id_socio);
+      console.log('Respuesta de billetera:', response);
+      const saldo = response.saldo_actual || 0; // Asegurarse de que el saldo sea un número
+      setSaldoBilletera(saldo);
+    } catch (error) {
+      console.error('Error al actualizar el saldo de la billetera:', error);
+      setSaldoBilletera(0); // Establecer saldo a 0 en caso de error
+    }
+  }, [user]); // La función depende del objeto 'user'
+
   useEffect(() => {
-
-    const obtenerSaldoBilletera = async () => {
-      try {
-        const response = await billeteraService.getBilletera(user.id_socio);
-        const saldo = response.saldo_actual || 0; // Asegurarse de que el saldo sea un número
-        setSaldoBilletera(saldo);
-      } catch (error) {
-        console.error('Error al obtener el saldo de la billetera:', error);
-        setSaldoBilletera(0); // Establecer saldo a 0 en caso de error
-      }
-    };
-
     const obtenerDatosClub = async () =>{
       const clubData = await clubService.getDatosClub(user.id_club);
         setClubInfo(clubData);
     }
 
     if (user) {
-      obtenerSaldoBilletera();
+      actualizarSaldoBilletera();
       obtenerDatosClub();
       
     }
   }, [user]);
+
+  // Efecto para manejar los cambios de tema: actualiza la clase del body y localStorage
+  useEffect(() => {
+    document.body.classList.toggle('dark-theme', isDarkTheme);
+    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
 
 
   // useEffect(() => {
@@ -144,6 +170,12 @@ export const AuthProvider = ({ children }) => {
     
   }
 
+
+  // Función para cambiar el tema
+  const toggleTheme = () => {
+    setIsDarkTheme(prevTheme => !prevTheme);
+  };
+
   // isAuthenticated es un valor derivado del estado 'user'.
   // No necesita su propio estado con useState y useEffect.
   const isAuthenticated = !!user;
@@ -151,11 +183,15 @@ export const AuthProvider = ({ children }) => {
     user,
     clubInfo, // Información del club
     saldoBilletera,
+    actualizarSaldoBilletera, // Exponer la función para actualizar el saldo
     loading,
     login,
     logout,
     editarUsuario,
     isAuthenticated, // Un booleano para saber si el usuario está autenticado
+    isDarkTheme,
+    toggleTheme,
+    logo
   };
 
   // if (loading) {

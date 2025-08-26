@@ -32,7 +32,7 @@
     padding: 24px;
     background: #fff;
     color: #333;
-    border-radius: 14px;
+    border-radius: var(--border-radius-lg);
     box-shadow: 0 4px 24px rgba(0,0,0,0.10);
     text-align: center;
 }
@@ -47,7 +47,7 @@
     margin: 12px auto;
     padding: 12px;
     background: #fff;
-    border-radius: 14px;
+    border-radius: var(--border-radius-lg);
     box-shadow: 0 4px 24px rgba(0,0,0,0.10);
     text-align: center;
     color: #333;
@@ -59,7 +59,7 @@
     height: 220px;
     background-size: cover;
     background-position: center;
-    border-radius: 10px;
+    border-radius: var(--border-radius-md);
     margin-bottom: 22px;
     box-shadow: 0 2px 12px rgba(99,99,99,0.10);
 }

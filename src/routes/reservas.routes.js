@@ -13,6 +13,6 @@ router.get('/horas/unidad/:id_unidad/:fecha', reservasController.getHorasReserva
 router.get('/horas/reserva/:id_reserva', reservasController.getHorasReservadasPorReserva);
 router.get('/invitados/:id_reserva', reservasController.getInvitadosPorReserva);
 
-router.post('/', reservasController.createReserva);
+router.post('/', reservasController.crearReservaTransaccion);
 
 export default router; // Exporta el router para usarlo en app.js

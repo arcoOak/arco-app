@@ -14,6 +14,8 @@ import servicioImagePlaceholder from '../../assets/comercio_placeholder.webp';
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
+import BuscadorTexto from '../../components/BuscadorTexto';
+
 // Si usas este componente Servicios, la lista 'allBusinesses' DEBE ser pasada como una prop
 export default function Servicios() {
     const navigate = useNavigate();
@@ -128,18 +130,12 @@ export default function Servicios() {
                                 </button>
                             ))}
                         </div>
-                        <div className="search-categoria">
-                            <button>
-                                <i className='bx bx-search-big'></i>
-                            </button>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Busca el servicio que necesitas"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
+
+                        <BuscadorTexto
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            placeholder="Busca el servicio que necesitas"
+                        />
                         <div className="servicios p-0">
                             {filteredBusinesses.length > 0 ? (
                                 filteredBusinesses.map((servicio) => (

@@ -1,16 +1,16 @@
 /* Contenedor principal de la sección de redes sociales */
 .redes-sociales-home {
-    background-color: #ffffff; /* Fondo blanco */
-    border-radius: 12px; /* Bordes redondeados */
+    background-color: var(--color-surface-primary); /* Fondo blanco */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);; /* Bordes redondeados */
     padding: 20px; /* Espaciado interno */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+    box-shadow: var(--shadow-md);
     text-align: center; /* Centrar el contenido */
 }
 
 /* Título de la sección */
 .redes-sociales-title {
     font-size: 1.5rem; /* Tamaño de fuente grande */
-    color: #333; /* Color de texto oscuro */
     margin-bottom: 15px; /* Espacio debajo del título */
     font-weight: 600; /* Fuente en negrita */
 }
@@ -36,11 +36,11 @@
     display: flex; /* Alinear icono y texto */
     align-items: center; /* Centrar verticalmente */
     text-decoration: none; /* Quitar el subrayado del enlace */
-    color: #555; /* Color de texto gris oscuro */
+    color: var(--color-text-secondary); /* Color de texto gris oscuro */
     font-size: 1rem; /* Tamaño de fuente */
     padding: 8px 15px; /* Espaciado interno para crear un "botón" */
-    border-radius: 20px; /* Bordes redondeados para el "botón" */
-    background-color: #f0f2f5; /* Color de fondo claro */
+    border-radius: var(--border-radius-lg);; /* Bordes redondeados para el "botón" */
+    background-color: var(--color-surface-secondary); /* Color de fondo claro */
     transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
 }
 

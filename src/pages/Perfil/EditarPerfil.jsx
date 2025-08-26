@@ -8,7 +8,11 @@ import { useAuth } from "../../context/AuthContext"; // Importa el contexto de a
 import LoadingModal from '../../components/modals/LoadingModal'; // Importa el modal de carga
 import ExitosoModal from '../../components/modals/ExitosoModal';
 
+import Button from '../../components/buttons/Button'; // Importa el botón personalizado
+
 import userImagePlaceholder from '../../assets/user_placeholder.svg';
+
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
 
 const EditarPerfil = () => {
 
@@ -53,8 +57,11 @@ const EditarPerfil = () => {
         <React.Fragment>
         <ExitosoModal visible={showExitosoModal} message="Perfil actualizado exitosamente" />
         <LoadingModal visible={loading} />
+        <ButtonVolver to="/perfil" className="boton-volver" />
         <div className="edit-profile-container">
-            <button className="back-button" onClick={handleCancel}><i className="bx bx-arrow-back"></i> Volver</button>
+
+            
+
             <div className="edit-profile-header">
                 <h2>Editar Perfil</h2>
             </div>
@@ -64,7 +71,11 @@ const EditarPerfil = () => {
                     src={profileData.avatar || userImagePlaceholder} 
                     className="current-profile-photo"
                 />
-                <button className="change-photo-button" onClick={handleChangePhoto}>Cambiar Foto</button>
+
+                <Button className="secondary" onClick={handleChangePhoto}>
+                    <i className="fa-solid fa-camera" /> Cambiar Foto
+                </Button>
+
             </div>
 
             <ProfileForm initialData={profileData} onSave={handleSaveProfile} onCancel={handleCancel} />

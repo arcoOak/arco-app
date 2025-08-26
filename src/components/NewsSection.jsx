@@ -8,6 +8,8 @@ import { useAuth } from '../context/AuthContext'; // Importa el contexto de aute
 
 import noticiasService from '../services/noticias.service';
 
+import Button from './buttons/Button';
+
 import placeholder_1 from '../img/news/placeholder_1.jpg';
 import placeholder_2 from '../img/news/placeholder_2.jpg';
 import placeholder_3 from '../img/news/placeholder_3.jpg';
@@ -15,7 +17,7 @@ import placeholder_4 from '../img/news/placeholder_4.jpg';
 
 
 const NewsSection = () => {
-    const { user } = useAuth(); // Obtiene el usuario del contexto
+    const { user, isDarkTheme } = useAuth(); // Obtiene el usuario del contexto
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
@@ -139,13 +141,22 @@ const NewsSection = () => {
 
     let placeholderImage = '';
 
+    const handleNavigate = (id) => {
+        navigate(`/Noticias/${id}`, { state: { returnTo: '/' } });
+    }
+
     return (
         <div className="news-section-container">
             <div className="news-section__header">
-                <h3 className="news-section__title">Noticias Recientes</h3>
-                <button className='button__see-all'>
-                    <a href="#" className="news-section__see-all" onClick={() => navigate('/Noticias')}>Ver Todo</a>
-                </button>
+                <h3 className={`news-section__title`}>Noticias Recientes</h3>
+
+                <Button
+                    onClick={() => navigate('/Noticias')}
+                    className='primary'
+                >
+                    Ver Todo
+                </Button>
+
             </div>
             <div className="news-section__carousel" ref={carouselRef}>
                 {ultimasNoticias.map(news => (
@@ -162,7 +173,7 @@ const NewsSection = () => {
                         autor={news.nombre_autor}
                         imageUrl={news.imageUrl || placeholderImage}
                         imageAlt={news.titulo}
-                        onClick={() => navigate(`/Noticias/${news.id_noticia}`)}
+                        onClick={() => handleNavigate(news.id_noticia)}
                     />
                 ))}
             </div>

@@ -17,7 +17,7 @@ const BotonVolver = ({ to, className }) => {
 
     return (
         <button className={buttonClassName} onClick={() => navigate(to)}>
-            <i class="fa-solid fa-circle-arrow-left"></i> 
+            <i className="fa-solid fa-circle-arrow-left"></i> 
             <p>Volver</p>
         </button>
     );

@@ -4,7 +4,10 @@ import app from './app.js'; // Importa la aplicación Express configurada
 import serverConfig from './config/server.config.js'; // Importa la configuración del servidor
  //import {connectToDatabase, poolConection} from './config/db.config.js'; // Solo si lo usas para iniciar el servidor
 
-import pool from './config/db.config.js'; // Importa el pool de conexiones a la base de datos
+import {pool} from './config/db.config.js'; // Importa el pool de conexiones a la base de datos
+
+import mensualidadesJobs from './jobs/mensualidades.job.js'; // Importa la función para iniciar los trabajos programados
+import climaJobs from './jobs/clima.job.js';
 
 const PORT = serverConfig.port;
 
@@ -29,6 +32,9 @@ function startServer() {
         // Iniciar el pool de conexiones a la base de datos
         app.listen(PORT, () => {
             console.log(`Servidor escuchando en http://localhost:${PORT}`);
+
+            mensualidadesJobs.initScheduledJobs();
+            climaJobs.initClimaJob();
         });
     } catch (error) {
         console.error('Error al iniciar el servidor:', error);

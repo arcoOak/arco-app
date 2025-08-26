@@ -3,12 +3,12 @@ import espacioController from '../controllers/espacio.controller.js'; // Importa
 
 const router = express.Router();
 
-router.get('/', espacioController.getAllEspaciosReservables); // Trae todos los espacios reservables
-router.get('/categoria/:id_categoria_espacio', espacioController.getEspacioByCategoria); // Trae espacios por categoría
+router.get('/:id_club', espacioController.getAllEspaciosReservables); // Trae todos los espacios reservables
+router.get('/categoria/:id_categoria_espacio/:id_club', espacioController.getEspacioByCategoria); // Trae espacios por categoría
 
 router.get('/unidades/:id', espacioController.getEspacioUnidadesById); // Trae unidades de un espacio por ID
-router.get('/categorias-disponibles', espacioController.getCategoriasEspacioDisponible); // Trae categorías de espacios disponibles
-router.get('/:id', espacioController.getEspacioById); // Trae un espacio por
+router.get('/categorias-disponibles/:id_club', espacioController.getCategoriasEspacioDisponible); // Trae categorías de espacios disponibles
+router.get('/individual/:id', espacioController.getEspacioById); // Trae un espacio por
 
 
 

@@ -1,8 +1,6 @@
 .calendar-section {
-    background-color: #fff;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 2rem;
+    background-color: var(--color-surface-primary);
+    border-radius: var(--border-radius-lg);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 
@@ -12,6 +10,7 @@
     margin-bottom: 1.4rem;
     text-align: left;
     font-weight: 500;
+    color: var(--color-text-primary);
 }
 
 .calendar-header p{
@@ -38,14 +37,31 @@
 
 .calendar-item {
     padding: .7rem;
-    border-radius: 10px;
-    width: 60px;
+    border-radius: var(--border-radius-md);
+    min-width: 60px;
     font-weight: 500;
+    background-color: var(--color-surface-primary);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--color-border-primary);
+
+}
+
+.calendar-item p{
+    font-size: 14px;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-align: center;
 }
 
 .active-month {
-    border: solid 2px #e9e9e9;
-    background-color: #e9e9e9;
+    border: solid 1px var(--color-border-interactive);
+    background-color: var(--color-surface-secondary);
+    
+}
+
+.active-month p{
+    color: var(--color-text-secondary);
+    font-weight: 700;
 }
 
 .balance-footer {
@@ -57,6 +73,7 @@
 .recibos-balance {
     font-weight: 700;
     font-size: 14px;
+    color: var(--color-text-secondary);
 }
 
 .total-balance {
@@ -65,9 +82,9 @@
 }
 
 .has-debt {
-    color: #dc3545;
+    color: var(--color-danger);
 }
 
 .no-debt {
-    color: #333;
+    color: var(--color-success);
 }

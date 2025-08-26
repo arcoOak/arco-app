@@ -6,14 +6,13 @@
     padding: 0.5rem;
     padding-top: 5rem; /* Espacio para el botón de volver */
     background-color: #f8f9fa; /* Fondo gris claro */
-    min-height: 100vh;
+    min-height: 50vh;
 }
 
 /* --- Cabecera del Detalle --- */
 .reservas-detalle-header h1 {
-    font-size: 2.5rem;
-    color: #343a40;
-    margin-bottom: 2rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
     font-weight: bold;
 }
 
@@ -25,10 +24,22 @@
     gap: 2rem;
     background-color: #ffffff;
     padding: 2rem;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     margin-bottom: 2rem;
 }
+
+
+.reserva-info-details{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    border: 1px solid var(--color-border-primary);
+    background-color: var(--color-surface-secondary);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+}
+
 
 /* --- Estilos para los Títulos de las secciones (h2) --- */
 .reserva-info-header h2,
@@ -36,35 +47,28 @@
 .horas-reservadas h2,
 .invitados-reservados h2 {
     font-size: 1.4rem;
-    color: #007bff; /* Color azul para resaltar */
+    color: var(--color-text-primary); /* Color azul para resaltar */
     margin-top: 0;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--color-border-secondary);
+
 }
 
-/* --- Estilos para los párrafos de información --- */
-.reserva-info p {
-    font-size: 1rem;
-    color: #6c757d;
-    line-height: 1.7;
-    margin-bottom: 0.75rem;
-}
 
-.reserva-info p strong {
-    color: #343a40;
-    margin-right: 0.5rem;
-    font-weight: 600;
-}
 
 /* --- Tarjetas para Horas e Invitados --- */
 .horas-reservadas,
 .invitados-reservados {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface-tertiary);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
     margin-bottom: 2rem;
+    gap: var(--spacing-sm);
+    border: 1px solid var(--color-border-tertiary);
 }
 
 /* --- Listas de Horas e Invitados --- */
@@ -78,20 +82,20 @@
 .horas-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: var(--spacing-sm);
 }
 
+
 .horas-list li {
-    background-color: #e0f7fa; /* Cian claro */
-    color: #00796b; /* Cian oscuro */
-    padding: 0.5rem 1rem;
-    border-radius: 20px; /* Estilo píldora */
-    font-weight: 500;
-    font-size: 0.9rem;
+    background-color: #e0f7fa;
+    color: var(--color-success); 
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    font-size: var(--font-size-sm);
 }
 
 .invitados-list li {
-    padding: 0.8rem 0;
+    padding: var(--spacing-sm) var(--spacing-md);
     border-bottom: 1px solid #f1f3f5;
     color: #495057;
 }
@@ -104,9 +108,68 @@
 .loading-text,
 .horas-reservadas p,
 .invitados-reservados p {
-    color: #909090;
+    color: var(--color-text-secondary);
     font-style: italic;
     text-align: center;
-    padding: 2rem 0;
+    padding: var(--spacing-md) 0;
 }
 
+
+
+.info-card-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-surface-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--color-border-primary);
+    box-shadow: var(--shadow-inset);
+}
+
+.info-card-link:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+
+.info-card-link__text {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-border-secondary);
+    padding: var(--spacing-sm);
+    width: 80%;
+}
+
+.info-card-link__label {
+    font-size: var(--font-size-md);
+    margin-bottom: 0.25rem;
+    color: var(--color-text-primary);
+}
+
+.info-card-link__value {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-secondary);
+}
+
+.info-card-link__subvalue {
+    font-size: var(--font-size-sm);
+    margin-top: 0.25rem;
+    color: var(--color-text-primary);
+}
+
+.info-card-link__icon {
+    font-size: 1.5rem;
+    color: #adb5bd; /* Un gris para el icono */
+    transition: color 0.3s ease;
+}
+
+.info-card-link:hover .info-card-link__icon {
+    color: #343a40;
+}

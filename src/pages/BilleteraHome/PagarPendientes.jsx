@@ -4,10 +4,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './PagosPendientes.css';
 
 import LoadingModal from '../../components/modals/LoadingModal';
+import ExitosoModal from '../../components/modals/ExitosoModal';
 
-import billeteraService from '../../services/billetera.service'; // Importa el servicio de billetera
+import transaccionesService from '../../services/transacciones.service'; // Importa el servicio de transacciones
+
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+
+import Button from '../../components/buttons/Button';
+import ButtonVolver from '../../components/buttons/ButtonVolver';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -26,12 +31,16 @@ const PagarPendientes = () => {
 
     const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
 
+    const [showExitosoModal, setShowExitosoModal] = useState(false);
+
+    const backLocation = location.state?.backLocation || '/';
 
     useEffect(() => {
 
         const obtenerPagosPendientes = async () => {
             try {
-                const response = await billeteraService.getPagosPendientes(user.id_socio);
+                const response = await transaccionesService.getTransaccionesPendientes(user.id_socio);
+                console.log(response);
                 setPagosPendientes(response);
             } catch (error) {
                 console.error('Error al obtener los pagos pendientes:', error);
@@ -49,21 +58,68 @@ const PagarPendientes = () => {
 
     },[user] );
 
+    const handlePagar = async (transaccion) => {
+
+        const obtenerPagosPendientes = async () => {
+            try {
+                const response = await transaccionesService.getTransaccionesPendientes(user.id_socio);
+                console.log(response);
+                setPagosPendientes(response);
+            } catch (error) {
+                console.error('Error al obtener los pagos pendientes:', error);
+            }
+        };
+
+        try {
+            const transaccionData = {
+                id_pago_asociado: transaccion.id_pago_asociado,
+                id_billetera: user.id_billetera,
+                id_tipo_transaccion: transaccion.id_tipo_transaccion,
+                monto: (transaccion.total_transaccion)
+            }
+            const response = await transaccionesService.pagarTransaccion(transaccionData);
+
+            if(response) {
+                setShowExitosoModal(true);
+            }
+
+        } catch (error) {
+            console.error('Error al procesar el pago:', error);
+        }finally{
+            setLoading(false);
+            setTimeout(() => {
+                setShowExitosoModal(false); // Cerrar modal de éxito después de 2
+                
+                if(user) {
+                    obtenerPagosPendientes();
+                }
+            }, 2000);
+
+            
+        }
+    }
+
 
     if (!pagosPendientes || pagosPendientes.length === 0 ) {
         return (
+            <React.Fragment>
+                <ButtonVolver to={backLocation} className="boton-volver" />
             <div className="payment-detail-container">
                 <h2>No se encontraron pagos pendientes</h2>
-                <button className="back-button" onClick={() => navigate('/')}>Volver al Historial</button>
             </div>
+            </React.Fragment>
         );
     }
 
     return (
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
+            <ButtonVolver to={backLocation} className="boton-volver" />
+            <ExitosoModal 
+                visible={showExitosoModal} 
+                mensaje='¡Pago con éxito!'  
+            />
         <div className="payment-detail-container">
-            <button className="back-button" onClick={() => navigate('/')}>&larr; Volver</button>
             <div className="detail-header">
                 <h2>Pagos Pendientes</h2>
             </div>
@@ -74,17 +130,19 @@ const PagarPendientes = () => {
 
                 <div className={`detail-card pendiente`} key={idx}>
                     <div className={`payment-header pendiente`}>
-                        <p className='payment-title'>{payment.descripcion_contenido}</p>
+                        <h3 className='payment-title'>{payment.descripcion_contenido}</h3>
                     </div>
                     <div className="payment-details">
                         <p className='payment-date'><strong>Fecha: </strong> {formatDate(payment.fecha_generacion)}</p>
                         <p className='payment-amount'><strong>Monto: </strong> ${payment.total_transaccion}</p>
 
-                    <button className="report-payment-button" onClick={ () => {} }>
+                    <Button
+                        onClick={() => {handlePagar(payment)}}
+                        className='primary'
+                    >
                         Pagar
-                    </button>
+                    </Button>
                  
-
                 </div>
             </div>)
             )}

@@ -1,7 +1,8 @@
 .progress-section {
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-surface-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);;
+    box-shadow: var(--shadow-md);
     width: 90%;
     margin: 1rem auto 0;
 }
@@ -51,17 +52,20 @@
 }
 
 .progress-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     flex-grow: 1;
     text-align: left;
 }
 
 .progress-title {
-    color: #4070f4;
+    color: var(--color-text-primary);
     margin-bottom: 5px;
 }
 
 .progress-description {
-    color: #555555;
+    color: var(--color-text-secondary);
     font-size: 14px;
     line-height: 1.5;
 }

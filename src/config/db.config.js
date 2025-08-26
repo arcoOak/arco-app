@@ -6,20 +6,16 @@ import dotenv from 'dotenv'; // Importar dotenv para manejar variables de entorn
 dotenv.config(); // Cargar variables de entorno desde .env
 // require('dotenv').config(); // Cargar variables de entorno
 
-const dbConfig = {
+const dbConfigPool = {
+  queueLimit: 0, // Sin límite de cola
+  connectionLimit: 100, // Número máximo de conexiones en el pool
+  waitForConnections: true, // Esperar conexiones si el pool está lleno
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
 };
-
-const dbConfigPool = {
-  queueLimit: 0, // Sin límite de cola
-  connectionLimit: 100, // Número máximo de conexiones en el pool
-  waitForConnections: true, // Esperar conexiones si el pool está lleno
-  ...dbConfig, // Usar la misma configuración de conexión
-}
 
 // async function connectToDatabase() {
 //   try {
@@ -45,4 +41,45 @@ const dbConfigPool = {
 
 const pool = mysql.createPool(dbConfigPool);
 
-export default pool;
+const HEARTBEAT_INTERVAL = 60000; // 50 segundos, debe ser menor que el wait_timeout de MySQL
+let heartbeatIntervalId = null;
+
+/**
+ * Inicia un "heartbeat" para mantener las conexiones del pool activas.
+ * Ejecuta un ping a la base de datos a intervalos regulares.
+ */
+const startHeartbeat = () => {
+  if (heartbeatIntervalId) return; // Evitar iniciar múltiples intervalos
+
+  console.log('Iniciando heartbeats para el pool de conexiones...');
+  heartbeatIntervalId = setInterval(async () => {
+    try {
+      const connection = await pool.getConnection();
+      await connection.ping();
+      connection.release();
+      // console.log('Heartbeat: Ping a la base de datos exitoso.'); // Descomentar para depuración
+    } catch (error) {
+      console.error('Heartbeat: Error en el ping a la base de datos:', error);
+      // El pool manejará la reconexión de esta conexión la próxima vez que se use.
+    }
+  }, HEARTBEAT_INTERVAL);
+};
+
+const stopHeartbeat = () => {
+  if (heartbeatIntervalId) {
+    clearInterval(heartbeatIntervalId);
+    heartbeatIntervalId = null;
+    console.log('Heartbeats detenidos.');
+  }
+};
+
+const gracefulShutdown = async () => {
+  console.log('Cerrando el pool de conexiones de la base de datos...');
+  stopHeartbeat();
+  await pool.end();
+  console.log('Pool de conexiones cerrado.');
+};
+
+startHeartbeat(); // Inicia el heartbeat cuando se carga el módulo
+
+export { pool, gracefulShutdown };

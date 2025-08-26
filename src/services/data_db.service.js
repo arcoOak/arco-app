@@ -29,5 +29,14 @@ const getCategoriasComercio = async () => {
     return response.json();
 }
 
-export default { getGeneros, getParentescos, getCategoriasComercio };
+const getMetodosPago = async () => {
+  const response = await fetch(`${API_HOST}/api/data/metodos-pago`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  });
+  if (!response.ok) throw new Error('Error al obtener los métodos de pago');
+  return response.json();
+};
+
+export default { getGeneros, getParentescos, getCategoriasComercio, getMetodosPago };
 

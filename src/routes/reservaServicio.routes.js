@@ -13,6 +13,6 @@ router.get('/socio/:id_club/:id_socio', reservaServicioController.getReservasSer
 router.get('/socio/:id_club/mensual/:anho/:mes/:id_socio', reservaServicioController.getReservasServicioPorSocioYMes);
 router.get('/horas/:id_reserva_servicio', reservaServicioController.getHorasReservadasPorReservaServicios);
 router.get('/horas/:id_club/:id_servicio/:fecha', reservaServicioController.getHorasReservadasPorServicioPorFecha);
-router.post('/', reservaServicioController.createReservaServicio);
+router.post('/', reservaServicioController.createReservaServicioTransaccion);
 
 export default router; // Exporta el router para usarlo en app.js

@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 import { useAuth } from '../context/AuthContext'; // Import useAuth
 
-import billeteraService from "../services/billetera.service";
+import transaccionesService from "../services/transacciones.service";
+
+import Button from './buttons/Button';
 
 export default function TransacctionSection() {
 
@@ -20,7 +22,7 @@ export default function TransacctionSection() {
         const cargarUltimasTransacciones = async () =>{
             try {
 
-                const transacciones = await billeteraService.getUltimasTransaccionesBilletera(user.id_socio);
+                const transacciones = await transaccionesService.getUltimasTransaccionesSocio(user.id_socio);
                 setUltimasTransacciones(transacciones);
 
             } catch (error){
@@ -37,7 +39,7 @@ export default function TransacctionSection() {
 
     const handleHistoryItemClick = (id_billetera_transaccion) => {
         if(id_billetera_transaccion && id_billetera_transaccion !== null) {
-            navigate(`/transaccion/${id_billetera_transaccion}`);
+            navigate(`/transaccion/${id_billetera_transaccion}`, { state: { returnTo: location.pathname } });
         }
         
     };
@@ -46,8 +48,15 @@ export default function TransacctionSection() {
         <div className="dashboard-container">
             <section className="investments-section">
                 <div className="investments-header">
-                    <h3>Últimas Transacciones</h3>
-                    <button className="view-all" onClick={() => navigate('/transaccion')}>Ver más</button>
+                    <h3 className=''>Últimas Transacciones</h3>
+
+                    <Button 
+                        onClick={() => navigate('/transaccion')}
+                        className='primary'
+                    >
+                        Ver Todo
+                    </Button>
+
                 </div>
                 <div className="statistics-placeholder">
                     {ultimasTransacciones.map(item => (

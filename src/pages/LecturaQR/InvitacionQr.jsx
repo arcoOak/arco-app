@@ -5,6 +5,8 @@ import {useAuth } from '../../context/AuthContext'; // Importa el contexto de au
 
 import familiaresService from '../../services/familiares.service'; // Importa el servicio de familiares
 
+import Button from '../../components/buttons/Button'; // Asegúrate de que la ruta sea correcta
+
 const FORM_MODES = {
     BENEFICIARIOS: 'beneficiarios',
     NUEVO_INVITADO: 'nuevo-invitado',
@@ -150,7 +152,8 @@ export default function InvitacionQR({visible, onConfirm, onClose }) {
               
 
                 <div className="invitacion-qr__actions">
-                    <button onClick={handleConfirm} className="button-primary" 
+
+                    <Button onClick={handleConfirm} className="primary" 
                     disabled={
                         loading || 
                         (formMode === FORM_MODES.BENEFICIARIOS && !familiarSeleccionado) ||
@@ -158,10 +161,10 @@ export default function InvitacionQR({visible, onConfirm, onClose }) {
 
                     }>
                         {loading ? 'Procesando...' : 'Enviar'}
-                    </button>
-                    <button onClick={handleCloseAndReset} className="button-secondary" disabled={loading}>
+                    </Button>
+                    <Button onClick={handleCloseAndReset} className="neutral" disabled={loading}>
                         Cancelar
-                    </button>
+                    </Button>
                     
                 </div>
             </div>
@@ -207,16 +210,16 @@ function NuevoInvitadoForm({ data, onChange }) {
         <div className="invitacion-qr__form-group">
             <h3>Datos del Invitado</h3>
             
-            <label className='invitacion-qr__label' htmlFor="nombre">Nombre</label>
+            {/* <label className='invitacion-qr__label' htmlFor="nombre">Nombre</label> */}
             <input id="nombre" className='invitacion-qr__input' value={data.nombre} onChange={onChange} type="text" name="nombre" placeholder="Nombre" required />
             
-            <label className='invitacion-qr__label' htmlFor="apellido">Apellido</label>
+            {/* <label className='invitacion-qr__label' htmlFor="apellido">Apellido</label> */}
             <input id="apellido" className='invitacion-qr__input' value={data.apellido} onChange={onChange} type="text" name="apellido" placeholder="Apellido" required />
             
-            <label className='invitacion-qr__label' htmlFor="documento_identidad">Cédula de Identidad</label>
+            {/* <label className='invitacion-qr__label' htmlFor="documento_identidad">Cédula de Identidad</label> */}
             <input id="documento_identidad" className='invitacion-qr__input' value={data.documento_identidad} onChange={onChange} type="text" inputMode="numeric" name="documento_identidad" placeholder="Cédula de Identidad" required />
             
-            <label className='invitacion-qr__label' htmlFor="correo">Correo</label>
+            {/* <label className='invitacion-qr__label' htmlFor="correo">Correo</label> */}
             <input id="correo" className='invitacion-qr__input' value={data.correo} onChange={onChange} type="email" name="correo" placeholder="Correo" required />
         </div>
     );

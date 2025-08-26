@@ -5,12 +5,19 @@ import './PaymentDetail.css';
 
 import LoadingModal from '../../components/modals/LoadingModal';
 
-import billeteraService from '../../services/billetera.service'; // Importa el servicio de billetera
+import transaccionesService from '../../services/transacciones.service.js'; // Importa el servicio de billetera
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 import MesSelector from '../../components/MesSelector'; // Importa el componente MesSelector
 
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el componente ButtonVolver
+
+import Button from '../../components/buttons/Button';
+
+import ExitosoModal from '../../components/modals/ExitosoModal';
+
+import {TIPOS_TRANSACCION} from '../../constants/transaccion.constants.js'; 
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -30,8 +37,9 @@ const PaymentDetail = () => {
     const location = useLocation();
 
     const mesHome = location.state?.mes;
+    const backLocation = location.state?.backLocation || '/';
 
-    const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
+    const { user, actualizarSaldoBilletera } = useAuth(); // Obtiene el usuario del contexto de autenticación
 
     const [registroTransacciones, setRegistroTransacciones] = useState([]); // 
 
@@ -39,15 +47,16 @@ const PaymentDetail = () => {
 
     const [mesSeleccionado, setMesSeleccionado] = useState(mesHome || new Date().getMonth() + 1);
 
-
+    const [showExitosoModal, setShowExitosoModal] = useState(false);
     
 
     useEffect(() => {
         const obtenerRegistroTransacciones = async () => {
             if (!user) return;
+            const anhoActual = new Date().getFullYear();
             try {
                 setLoading(true);
-                const response = await billeteraService.getTransaccionesBilleteraCompletaPorMes(user.id_socio, mesSeleccionado);
+                const response = await transaccionesService.getTransaccionesSocioCompletoPorMes(user.id_socio, mesSeleccionado, anhoActual);
                 console.log(response);
                 setRegistroTransacciones(response);
             } catch (error) {
@@ -71,37 +80,80 @@ const PaymentDetail = () => {
         }
     };
 
+    const actualizarTransacciones = async (mes = mesSeleccionado) => {
+        const anhoActual = new Date().getFullYear();
+        const transaccionesRespuesta = await transaccionesService.getTransaccionesSocioCompletoPorMes(user.id_socio, mes, anhoActual);
+        setRegistroTransacciones(transaccionesRespuesta);
+    }
+
     const handleMesSeleccionado = (mes) => {
                 setMesSeleccionado(mes);
-            
-                const fetchTransaccionesFecha = async () => {
-                    try {
-                        setLoading(true);
-                        const transaccionesRespuesta = await billeteraService.getTransaccionesBilleteraCompletaPorMes(user.id_socio, mes);
-                        setRegistroTransacciones(transaccionesRespuesta);
+                try{
+                    actualizarTransacciones(mes);
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 500); // Simulate a delay for loading state
     
-                        setTimeout(() => {
-                            setLoading(false);
-                        }, 500); // Simulate a delay for loading state
-    
-                    } catch (error) {
-                        console.error("Error fetching noticias por fecha:", error);
-                    }
-    
+                } catch (error) {
+                    console.error("Error fetching noticias por fecha:", error);
                 }
-                fetchTransaccionesFecha();
-            }
+        }
 
     
     let estadoPagoUnidad = 0;
     let unidadTransaccion = '';
          
 
+    const handlePagar = async (transaccion) => {
+        setLoading(true);
+        try{
+            const transaccionData = {
+                id_pago_asociado: transaccion.id_pago_asociado,
+                id_billetera: user.id_billetera,
+                id_tipo_transaccion: transaccion.id_tipo_transaccion,
+                monto: transaccion.total_transaccion
+            }
+            const response = await transaccionesService.pagarTransaccion(transaccionData);
+            
+            if(response) {
+                setShowExitosoModal(true);
+
+                actualizarSaldoBilletera()
+
+                setTimeout(() => {
+                    actualizarTransacciones();
+                }, 500);
+
+            }
+        } catch (error) {
+            console.error('Error al procesar el pago:', error);
+        } finally{
+            setLoading(false);
+
+            setTimeout(() => {
+                setShowExitosoModal(false); // Cerrar modal de éxito después de 2
+            }, 2000);
+
+        }
+
+
+            // Actualiza
+    }
+
+   
+
     return (
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
+            <ButtonVolver to={backLocation} className="boton-volver" />
+            <ExitosoModal 
+                visible={showExitosoModal} 
+                mensaje='¡Pago con éxito!'  
+            />
         <div className="payment-detail-container">
-            <button className="back-button" onClick={() => navigate('/')}>&larr; Volver</button>
+
+            
+
             <div className="detail-header">
                 <h2>Transacciones</h2>
             </div>
@@ -115,15 +167,16 @@ const PaymentDetail = () => {
 
                 estadoPagoUnidad = payment.estado_transaccion,
 
-                unidadTransaccion = payment.id_tipo_transaccion == 1 ? ['Mensualidad', 'Mensualidades'] : 
-                                    payment.id_tipo_transaccion == 2 ? ['Hora Reservada', 'Horas Reservadas'] : 
-                                    payment.id_tipo_transaccion == 3 ? ['Producto', 'Productos'] : ['Unidad', 'Unidades'],
+                unidadTransaccion = payment.id_tipo_transaccion == TIPOS_TRANSACCION.MENSUALIDAD ? ['Mensualidad', 'Mensualidades'] : 
+                                    payment.id_tipo_transaccion == TIPOS_TRANSACCION.RESERVACION ? ['Hora Reservada', 'Horas Reservadas'] : 
+                                    payment.id_tipo_transaccion == TIPOS_TRANSACCION.COMPRA_COMERCIO ? ['Producto', 'Productos'] : 
+                                    payment.id_tipo_transaccion == TIPOS_TRANSACCION.SERVICIO ? ['Hora Reservada', 'Horas Reservadas'] : ['Unidad', 'Unidades'],
 
                 <div className={`detail-card ${estadoPagoUnidad ? 'pago' : 'pendiente'}`} key={idx}
                     onClick={() => handleHistoryItemClick(payment.id_billetera_transaccion)}
                 >
                     <div className={`payment-header ${estadoPagoUnidad ? 'pago' : 'pendiente'}`}>
-                        <p className='payment-title'>{payment.tipo_transaccion}</p>
+                        <h3 className='payment-title'>{payment.tipo_transaccion}</h3>
                     </div>
                     <div className="payment-details">
                         <p className='payment-date'><strong>Fecha: </strong> {formatDate(payment.fecha_generacion)}</p>
@@ -160,24 +213,33 @@ const PaymentDetail = () => {
 
                 {/* Mostrar el botón "Reportar Pago" solo si el estado es 'pendiente' */}
                 {estadoPagoUnidad == 0 && (
-                    <button className="report-payment-button" onClick={ () => {} }>
+                    <Button
+                        className='primary'
+                        onClick={(e) => {
+                            e.stopPropagation(); // Detiene la propagación del evento
+                            handlePagar(payment)}
+                        }
+                    >
                         Pagar
-                        {/* {showReportForm ? 'Cancelar Reporte' : 'Pagar'} */}
-                    </button>
+                    </Button>
+                    
                 ) }
 
                 </div>
             </div>)
             )}
-            </div>
-            {/* Si no hay pagos, mostrar un mensaje */}
-            {registroTransacciones.length === 0 && (
+
+                {registroTransacciones.length === 0 && (
                 <div className="no-payments-container">
                     <p className="no-payments-message">No hay pagos registrados.</p>
                     
                 </div>
-            )
-            }
+                )
+                }
+
+            </div>
+            {/* Si no hay pagos, mostrar un mensaje */}
+            
         </div>
         </React.Fragment>
     );

@@ -1,5 +1,5 @@
 import {
-    getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDB
+    getGenerosDB, getParentescosDB, getParentescosByGeneroDB, getCategoriasComercioDB, getMetodosPagoDB
 } from '../models/data.model.js';
 
 const getGeneros = async (req, res) => {
@@ -44,9 +44,20 @@ const getCategoriasComercio = async (req, res) => {
     }
 }
 
+const getMetodosPago = async (req, res) => {
+    try {
+        const metodos = await getMetodosPagoDB();
+        res.json(metodos);
+    } catch (error) {
+        console.error('Error al obtener métodos de pago:', error);
+        res.status(500).json({ message: 'Error interno del servidor al obtener métodos de pago' });
+    }
+}
+
 export default{
     getGeneros,
     getParentescos,
     getParentescosByGenero,
-    getCategoriasComercio
+    getCategoriasComercio,
+    getMetodosPago
 }

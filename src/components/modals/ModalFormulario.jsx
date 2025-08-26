@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import './ModalFormulario.css'; // Asegúrate de que la ruta sea correcta
 
+import Button from '../buttons/Button'; // Asegúrate de que la ruta sea correcta
+
 import ValidadorFormularios from '../../utils/ValidadorFormularios'; // Asegúrate de que la ruta sea correcta
 
 const ModalFormulario = ({ onClose, onSubmit, titulo, visible, children, data }) => {
@@ -89,12 +91,22 @@ const ModalFormulario = ({ onClose, onSubmit, titulo, visible, children, data })
                     </div>
                 </form>
                 <div className="modal-footer">
-                    <button className="modal-submit-button" onClick={handleSubmit} disabled={isSubmitting}>
+
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className='primary'
+                    >
                         {isSubmitting ? 'Guardar...' : 'Guardar'}
-                    </button>
-                    <button className="modal-close-button" onClick={handleClose}>
+                    </Button>
+
+                    <Button 
+                        onClick={handleClose}
+                        className='neutral'
+                        >
                         Cancelar
-                    </button>
+                    </Button>
+
                 </div>
             </div>
         </div>

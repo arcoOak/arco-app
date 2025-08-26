@@ -1,11 +1,11 @@
 .pointContainer{
     width: 100%;
     height: auto;
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
 }
 .cardPoint {
     background-color: #fff;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     padding: 20px;
     display: flex;
     align-items: center;
@@ -16,7 +16,7 @@
 .icon-container {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,7 +68,7 @@
 .update-button {
     padding: 10px 18px;
     border: none;
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
@@ -99,7 +99,7 @@
     color: #5d3f6a;
     /* Darker purple text */
     padding: 15px;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     font-size: 14px;
     text-align: center;
     line-height: 1.4;

@@ -1,16 +1,25 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCube, Pagination } from 'swiper/modules';
-import '../css/Slider.css'
+import { useAuth } from '../context/AuthContext';
+import '../css/PromotionCard.css'
 
-export default function Slider() {
+import Button from './buttons/Button';
+
+export default function PromotionCard() {
+    const { isDarkTheme } = useAuth();
+
     return (
         <div className='slider-section'>
-            <div className="trainer-section__header">
-                <h3 className="trainer-section__title">Promociones</h3>
-                <button className='button__see-all'>
-                    <a href="#" className="trainer-section__see-all">Ver Todo</a>
-                </button>
+            <div className="promotion-section__header">
+                <h3 className={`promotion-section__title`}>Promociones</h3>
+
+                <Button
+                    onClick={() => navigate('/Promociones')}
+                    className='primary'
+                >
+                    Ver Todo
+                </Button>
             </div>
 
             <Swiper

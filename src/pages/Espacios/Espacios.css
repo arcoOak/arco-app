@@ -19,10 +19,11 @@
 }
 
 .espacio-card {
-    background-color: #ffffff;
-    border-radius: 15px;
-    padding: 15px 0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-surface-primary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,20 +36,21 @@
 }
 
 .espacio-card img {
+    background-color: var(--color-surface-tertiary);
     width: 150px;
     height: 150px;
-    border-radius: 20%;
+    border-radius: var(--border-radius-lg);
     object-fit: cover;
     margin-bottom: 10px;
-    border: 3px solid #eee;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    border: 3px solid var(--color-border-tertiary);
+    box-shadow: var(--shadow-sm);
 }
 
 .espacio-card h3 {
     font-size: 1.1em;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #444;
+    color: var(--color-text-primary);
 }
 
 .espacio-card p {
@@ -64,7 +66,7 @@
     color: #fff;
     border: none;
     padding: 8px 20px;
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
     cursor: pointer;
     font-size: 0.8em;
     font-weight: 600;
@@ -76,9 +78,6 @@
     transform: translateY(-2px);
 }
 
-.search-categoria button{
-    margin: 0;
-}
 
 
 .espacios {

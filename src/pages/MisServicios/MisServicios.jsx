@@ -85,7 +85,7 @@ export default function MisServicios() {
         <React.Fragment>
         <LoadingModal visible={loading} />
         <div className="reservas-container">
-            <h2 className='reservas-title' >Servicios Reservados</h2>
+            <h2 className='mis-reservas-title' >Servicios Reservados</h2>
 
             <MesSelector
                 mesSeleccionado={mesSeleccionado}
@@ -112,7 +112,7 @@ export default function MisServicios() {
                         ))
                     ) : (
                         <div className="no-reservas">
-                            <p>No tienes reservas activas.</p>
+                            <p>No tienes servicios reservados para esta fecha.</p>
                         </div>
                     )}
 

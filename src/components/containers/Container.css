@@ -4,7 +4,7 @@
   padding: 2rem;
   box-sizing: border-box;
   background-color: #fff;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);;
   box-shadow: 0 4px 24px #0002;
   transition: box-shadow 0.2s ease-in-out;
 }

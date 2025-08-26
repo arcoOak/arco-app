@@ -1,10 +1,10 @@
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
-const getAllEspaciosReservablesDB = async () => {
+const getAllEspaciosReservablesDB = async (id_club) => {
     try {
         //let connection = await connectToDatabase();
         const [rows] = await pool.execute(
-            `SELECT * FROM espacios_reservables`
+            `SELECT * FROM espacios_reservables WHERE id_club = ?`, [id_club]
         );
         return rows; // Retorna todos los espacios reservables
     } finally {
@@ -12,11 +12,12 @@ const getAllEspaciosReservablesDB = async () => {
     }
 }
 
-const getEspacioByCategoriaDB = async (id_categoria_espacio) => {
+const getEspacioByCategoriaDB = async (id_categoria_espacio, id_club) => {
     try {
         //let connection = await connectToDatabase();
         const [rows] = await pool.execute(
-            `SELECT * FROM espacios_reservables WHERE id_categoria_espacio = ?`, [id_categoria_espacio]
+            `SELECT * FROM espacios_reservables WHERE id_categoria_espacio = ? AND id_club = ?`, 
+            [id_categoria_espacio, id_club]
         );
         return rows;
     } finally {
@@ -30,7 +31,8 @@ const getEspacioByIdDB = async (id_espacio_reservable) => {
     try {
         //let connection = await connectToDatabase();
         const [rows] = await pool.execute(
-            `SELECT * FROM espacios_reservables WHERE id_espacio_reservable = ?`, [id_espacio_reservable]
+            `SELECT * FROM espacios_reservables WHERE id_espacio_reservable = ?`, 
+            [id_espacio_reservable]
         );
         return rows; // Retorna el primer comercio encontrado
     } finally {
@@ -50,12 +52,14 @@ const getEspacioUnidadesByIdDB = async (id_espacio_reservable) => {
     }
 }
 
-const getCategoriasEspacioDisponibleDB = async ()=>{ 
+const getCategoriasEspacioDisponibleDB = async (id_club)=>{ 
   //let connection;
   try {
     //connection = await connectToDatabase();
     const [rows] = await pool.execute(
-      `SELECT a.id_categoria_espacio, b.nombre_categoria_espacio, b.icon_fa FROM espacios_reservables a JOIN data_categoria_espacio b ON a.id_categoria_espacio = b.id_categoria_espacio GROUP BY a.id_categoria_espacio`
+      `SELECT a.id_categoria_espacio, b.nombre_categoria_espacio, b.icon_fa FROM espacios_reservables a 
+      JOIN data_categoria_espacio b ON a.id_categoria_espacio = b.id_categoria_espacio 
+      WHERE a.id_club = ? GROUP BY a.id_categoria_espacio`, [id_club]
     );
     return rows;
   } finally {

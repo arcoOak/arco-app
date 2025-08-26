@@ -1,9 +1,5 @@
 /*
 
-Crear Componente MisServiciosDetalle
-
-Pagina de Empresa de Servicio y Empresa Mixta
-
 Añadir a consultas de billetera el coste de las reservaciones de servicios
 
 Cambio de contraseña en perfil de usuario
@@ -101,7 +97,9 @@ export default function MisServiciosDetalle() {
         fetchData();
     }, []);
 
-        
+    const handleNavigate = (path, id) =>{
+        navigate(`/${path}/${id}`, { state: { returnTo: location.pathname } });
+    }
 
     return (
         <React.Fragment>
@@ -119,8 +117,23 @@ export default function MisServiciosDetalle() {
                     <div className='reserva-info-header'>
                         <h2>Información de la Reserva</h2>
                         <p><strong>Fecha Reserva:</strong> {new Date(miServicioDetalle.fecha_reservacion).toLocaleDateString()}</p>
-                        <p><strong>Prestador del Servicio:</strong> {miServicioDetalle.nombre_comercio}</p>
-                        <p><strong>Servicio:</strong> {miServicioDetalle.nombre_servicio_reservable}</p>
+
+                        <div className='info-card-link' onClick={() => handleNavigate('comercios', miServicioDetalle.id_comercio)}>
+                            <div className='info-card-link__text'>
+                                <span className='info-card-link__label'>Prestador del Servicio</span>
+                                <span className='info-card-link__value'>{miServicioDetalle.nombre_comercio}</span>
+                            </div>
+                            <i className='bx bx-chevron-right info-card-link__icon'></i>
+                        </div>
+
+                        <div className='info-card-link' onClick={() => handleNavigate('servicios', miServicioDetalle.id_servicio_reservable)}>
+                            <div className='info-card-link__text'>
+                                <span className='info-card-link__label'>Servicio</span>
+                                <span className='info-card-link__value'>{miServicioDetalle.nombre_servicio_reservable}</span>
+                            </div>
+                            <i className='bx bx-chevron-right info-card-link__icon'></i>
+                        </div>
+
                         <p><strong>Cantidad de Horas Reservadas:</strong> {listaHoras.length}</p>
                     </div>
                     <div className='reserva-info-details'>

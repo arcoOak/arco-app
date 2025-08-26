@@ -4,6 +4,7 @@ import './EspacioReservaModal.css';
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 import ModalFormulario from '../../components/modals/ModalFormulario';
+import Button from '../../components/buttons/Button'; // Importa el botón de confirmar
 
 import familiaresService from '../../services/familiares.service'; // Importa el servicio de familiares
 
@@ -185,6 +186,9 @@ export default function ConfirmacionReservaModal({
 
     return (
         <React.Fragment>
+
+        
+
         <ModalFormulario
             visible={showModalFormulario}
             onClose={() => handleToggleModalFormulario()}
@@ -211,97 +215,116 @@ export default function ConfirmacionReservaModal({
 
                 <h2 className='reserva-modal__title'>Confirmar Reserva</h2>
 
-                <div className='reserva-modal__info'>
-                    <p className='reserva-modal__text'><strong>Espacio:</strong> {espacio?.nombre_espacio_reservable}</p>
-                
-                    {unidadSeleccionada && <p className='reserva-modal__text'><strong>Unidad:</strong> {unidadSeleccionada.nombre_unidad}</p>}
-                </div>
+                <div className='modal-content-block'>
 
-                <div className='reserva-modal__info'>
-                    <p className='reserva-modal__text'><strong>Fecha:</strong> {formatearFecha(fecha)}</p>
-
-                    <p className='reserva-modal__text'><strong>Horarios:</strong></p>
-                    <ul className='reserva-modal__horarios'>
-                        {formatearHorarios(horarios).map((horario, index) => (
-                            <li key={index}>{horario}</li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className='reserva-modal__info'>
-                    <p className='reserva-modal__text'><strong>Coste Total:</strong> ${costeTotal}</p>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="nota">Añadir una nota (opcional)</label>
-                    <textarea
-                        id="nota"
-                        value={nota}
-                        className='reserva-modal__textarea'
-                        onChange={(e) => setNota(e.target.value)}
-                        rows="3"
-                        placeholder="Instrucciones especiales, etc."
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="invitados">Invitar Beneficiarios (opcional)</label>
-                    <div className="reserva-modal__invitados">
-                        {
-                            listaFamiliares.length > 0 && (
-                                listaFamiliares.map((familiar) => (
-                                    <div 
-                                        key={familiar.id_familiar} 
-                                        className={`reserva-modal__invitado ${familiarYaAgregado(familiar) ? 'seleccionado' : ''}`}
-                                        onClick={() => handleToggleFamiliar(familiar, 3)}
-                                    >
-                                        <p>
-                                            {familiar.nombre} {familiar.apellido}
-                                        </p>
-                                    </div>
-                                ))
-                            )
-                        }
-                    </div>
+                    <div className='reserva-modal__info'>
+                        <p className='reserva-modal__text'><strong>Espacio:</strong> {espacio?.nombre_espacio_reservable}</p>
                     
-                </div>
-
-                <div className="form-group">
-                        {
-                            invitados.length > 0 && (
-                                <label htmlFor="invitados">Invitados (opcional)</label>
-                            )
-                        }
-                    <div className="reserva-modal__invitados">
-                        
-                        
-                        {
-                            invitados.length > 0 && (
-                                invitados.map((invitadoUnico, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`reserva-modal__invitado ${invitadoYaAgregado(invitadoUnico.documento_identidad) ? 'seleccionado' : ''}`}
-                                        onClick={() => removeInvitado(invitadoUnico.documento_identidad)}
-                                    >
-                                        <p>
-                                            {invitadoUnico.nombre} {invitadoUnico.apellido}
-                                        </p>
-                                    </div>
-                                ))
-                            )
-                            
-                        }
+                        {unidadSeleccionada && <p className='reserva-modal__text'><strong>Unidad:</strong> {unidadSeleccionada.nombre_unidad}</p>}
                     </div>
-                    <button className='button-primary reserva-modal__button' onClick={() => handleToggleModalFormulario()}>Añadir Invitado</button>
+
+                    <div className='reserva-modal__info'>
+                        <p className='reserva-modal__text'><strong>Fecha:</strong> {formatearFecha(fecha)}</p>
+
+                        <p className='reserva-modal__text'><strong>Horarios:</strong></p>
+                        <ul className='reserva-modal__horarios'>
+                            {formatearHorarios(horarios).map((horario, index) => (
+                                <li key={index}>{horario}</li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className='reserva-modal__info'>
+                        <p className='reserva-modal__text'><strong>Coste Total:</strong> ${costeTotal}</p>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="nota">Añadir una nota (opcional)</label>
+                        <textarea
+                            id="nota"
+                            value={nota}
+                            className='reserva-modal__textarea'
+                            onChange={(e) => setNota(e.target.value)}
+                            rows="3"
+                            placeholder="Instrucciones especiales, etc."
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="invitados">Invitar Beneficiarios (opcional)</label>
+                        <div className="reserva-modal__invitados">
+                            {
+                                listaFamiliares.length > 0 && (
+                                    listaFamiliares.map((familiar) => (
+                                        <div 
+                                            key={familiar.id_familiar} 
+                                            className={`reserva-modal__invitado ${familiarYaAgregado(familiar) ? 'seleccionado' : ''}`}
+                                            onClick={() => handleToggleFamiliar(familiar, 3)}
+                                        >
+                                            <p>
+                                                {familiar.nombre} {familiar.apellido}
+                                            </p>
+                                        </div>
+                                    ))
+                                )
+                            }
+                        </div>
+                        
+                    </div>
+
+                    <div className="form-group">
+                            {
+                                invitados.length > 0 && (
+                                    <label htmlFor="invitados">Invitados (opcional)</label>
+                                )
+                            }
+                        <div className="reserva-modal__invitados">
+                            
+                            
+                            {
+                                invitados.length > 0 && (
+                                    invitados.map((invitadoUnico, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={`reserva-modal__invitado ${invitadoYaAgregado(invitadoUnico.documento_identidad) ? 'seleccionado' : ''}`}
+                                            onClick={() => removeInvitado(invitadoUnico.documento_identidad)}
+                                        >
+                                            <p>
+                                                {invitadoUnico.nombre} {invitadoUnico.apellido}
+                                            </p>
+                                        </div>
+                                    ))
+                                )
+                                
+                            }
+                        </div>
+
+                        <Button
+                            className='tertiary big'
+                            onClick={() => handleToggleModalFormulario()}
+                        >
+                            Añadir Invitado
+                        </Button>
+                    
+                    </div>
+
                 </div>
 
                 <div className="modal-actions">
-                    <button onClick={onConfirm} className="button-primary" disabled={loading}>
+                    <Button
+                        className='primary'
+                        onClick={onConfirm}
+                        disabled={loading}
+                    >
                         {loading ? 'Procesando...' : 'Confirmar'}
-                    </button>
-                    <button onClick={onClose} className="button-secondary" disabled={loading}>
+                    </Button>
+                    <Button
+                        className='neutral'
+                        onClick={onClose}
+                        disabled={loading}
+                    >
                         Cancelar
-                    </button>
+                    </Button>
                     
                 </div>
             </div>

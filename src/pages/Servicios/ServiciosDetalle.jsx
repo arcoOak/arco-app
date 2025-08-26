@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // Import useNavigate
 import './ServiciosDetalle.css'; // Crea un archivo CSS para este componente
 
 
@@ -15,7 +15,9 @@ import reservaServicioService from '../../services/reservasServicio.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
+import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
 
+import {TIPOS_TRANSACCION} from '../../constants/transaccion.constants.js'; 
 
 // Función para obtener el número de días en un mes específico
 const getDaysInMonth = (year, month) => {
@@ -55,7 +57,7 @@ const formatearHora = (hora) =>{
 
 export default function ServiciosDetalle() {
 
-    const { user } = useAuth(); // Obtiene el usuario autenticado desde el contexto
+    const { user, actualizarSaldoBilletera } = useAuth(); // Obtiene el usuario autenticado desde el contexto
     const { id } = useParams();
     const navigate = useNavigate(); // Hook para navegar programáticamente
     const [loading, setLoading] = useState(true); // Iniciar en true para la carga inicial
@@ -78,7 +80,8 @@ export default function ServiciosDetalle() {
     const [showServicioReservaModal, setShowServicioReservaModal] = useState(false); // Estado para manejar la visibilidad del modal de reserva
     const [notaReserva, setNotaReserva] = useState('');
 
-
+    const location = useLocation();
+    const backLocation = location.state?.returnTo || '/servicios'; // Ruta a la que volver, por defecto a /servicios
 
 
     useEffect(() => {
@@ -110,7 +113,7 @@ export default function ServiciosDetalle() {
                         setUnidadSeleccionada(unidadesData[0]?.id_servicio_reservable_empresa || null);
 
 
-                        console.log('Empresas Reservadoras:', unidadesData);
+                        //console.log('Empresas Reservadoras:', unidadesData);
                         //Se carga por defecto a la fecha de hoy en formato YYYY-MM-DD
 
                         const fechaActualFormateada = new Date().toISOString().slice(0, 10)
@@ -346,9 +349,9 @@ export default function ServiciosDetalle() {
             const empresaSeleccionada = empresasReservadoras.find(e => e.id_servicio_reservable_empresa === unidadSeleccionada);
             const cantidadTrabajadores = empresaSeleccionada?.cantidad_trabajadores || 1;
 
-            console.log('Reservaciones para la fecha:', reservacionesParaLaFecha);
-            console.log('Cantidad de trabajadores:', cantidadTrabajadores);
-            console.log('Empresa seleccionada:', empresaSeleccionada);
+            // console.log('Reservaciones para la fecha:', reservacionesParaLaFecha);
+            // console.log('Cantidad de trabajadores:', cantidadTrabajadores);
+            // console.log('Empresa seleccionada:', empresaSeleccionada);
 
             setListaHorarios(currentHorarios =>
                 currentHorarios.map(horario => {
@@ -383,6 +386,7 @@ export default function ServiciosDetalle() {
             });
 
             const datosCompletosReserva = {
+                id_usuario: user.id_usuario,
                 reservaServicioData: {
                     id_servicio_reservable : servicio.id_servicio_reservable,
                     id_servicio_reservable_empresa: unidadSeleccionada,
@@ -391,16 +395,27 @@ export default function ServiciosDetalle() {
                     coste_total: totalReserva,
                     id_socio: user?.id_socio || null, // Asegúrate de que el usuario esté autenticado
                 },
+                transaccionData: {
+                    id_billetera: user.id_billetera, 
+                    id_tipo_transaccion: TIPOS_TRANSACCION.SERVICIO, 
+                    monto: totalReserva
+                },
                 listaHoras: horariosReserva
             }
             
             //console.log('Datos de reserva:', datosCompletosReserva);
 
-            await reservaServicioService.createReservaServicio(datosCompletosReserva);
-          
 
-            setShowExitosoModal(true); // Mostrar modal de éxito
-            setShowServicioReservaModal(false); // Cerrar el modal de reserva
+
+            const response = await reservaServicioService.createReservaServicio(datosCompletosReserva);
+            console.log('Respuesta de la reserva:', response);
+
+            if(response){
+                actualizarSaldoBilletera();
+
+                setShowExitosoModal(true); // Mostrar modal de éxito
+                setShowServicioReservaModal(false); // Cerrar el modal de reserva
+            }
 
         }catch (error) {
             console.error('Error al confirmar la reserva:', error);
@@ -461,9 +476,11 @@ export default function ServiciosDetalle() {
             <LoadingModal visible={loading} />
 
             <div className="servicio-header">
-                <button className="back-button-espacios" onClick={() => navigate('/servicios')}>
-                    <i className='bx bx-arrow-back'></i> Volver
-                </button>
+
+                <div className='boton-volver-container'>
+                    <ButtonVolver to={backLocation} className="boton-volver-white" />
+                </div>
+
                 <h1>{servicio ? servicio.nombre_servicio_reservable : ''}</h1>
                 <p className="espacio-detalle-description">{servicio?.descripcion}</p>
                 {
@@ -473,7 +490,6 @@ export default function ServiciosDetalle() {
             </div>
 
             <div className="servicio-container">
-                <div className="booking-container">
                     <main className="booking-main-content">
 
                         <SelectorDeEmpresaReservadora
@@ -531,7 +547,7 @@ export default function ServiciosDetalle() {
                         </section>
 
                         <section className="time-section">
-                            <label>Horario</label>
+                            <h2>Horario</h2>
                             <div className='time-range'>
                                 <span className="time-value">{formatearHora(horaApertura)}</span>
                                 <span className="time-separator">-</span>
@@ -556,7 +572,6 @@ export default function ServiciosDetalle() {
                         </button>
                     </footer>
 
-                </div>
             </div>
         </React.Fragment>
     );
@@ -564,7 +579,7 @@ export default function ServiciosDetalle() {
 
 const SelectorDeEmpresaReservadora = ({ empresasReservadoras, unidadSeleccionada, handleUnidadSeleccionada }) => {
     return (
-        <div className='servicio-unidades-container'>
+        <div className='reserva-unidades-container'>
                             {empresasReservadoras.length > 0 && (
                                 <div className="unidades-list">
                                     <h2>Seleccionables</h2>

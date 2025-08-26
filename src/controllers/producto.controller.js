@@ -2,8 +2,10 @@ import {
     getAllProductosDB,
     getAllProductosIndividualesDB,
     getProductoByIdDB,
+    getProductosByCompraComercioDB,
     getProductosPorComercioDB,
-    getCategoriasDeProductosPorComercioDB
+    getCategoriasDeProductosPorComercioDB,
+    verificarDisponibilidadDB
 } from '../models/producto.model.js';
 
 const getAllProductos = async (req, res) => {
@@ -66,12 +68,31 @@ const getCategoriasDeProductosPorComercio = async (req, res) =>{
         res.status(500).json({ message: 'Error interno del servidor al obtener categorías de productos por comercio' });
     }
 }
+const verificarDisponibilidad = async (req, res) => {
+    const productos = req.body; // Esperamos un array de objetos con id_producto e id_comercio
+    try {
 
+        const listaDisponibilidad = await Promise.all(productos.map(async item => {
+            const disponible = await verificarDisponibilidadDB(item.id_producto, item.id_comercio);
+            return {
+                id_producto: item.id_producto,
+                id_comercio: item.id_comercio,
+                disponible
+            };
+        }));
+        console.log(listaDisponibilidad);
+        res.json(listaDisponibilidad.filter(ele => !ele.disponible)); // Filtrar los productos no disponibles
+    } catch (error) {
+        console.error('Error al verificar disponibilidad de productos:', error);
+        res.status(500).json({ message: 'Error interno del servidor al verificar disponibilidad' });
+    }
+}
 
 export default {
     getAllProductos,
     getAllProductosIndividuales,
     getProductoById,
     getProductosPorComercio,
-    getCategoriasDeProductosPorComercio
+    getCategoriasDeProductosPorComercio,
+    verificarDisponibilidad
 };

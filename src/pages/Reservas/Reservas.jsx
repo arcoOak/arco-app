@@ -98,7 +98,7 @@ export default function Reservas() {
                         ))
                     ) : (
                         <div className="no-reservas">
-                            <p>No tienes reservas activas.</p>
+                            <p>No tienes reservas activas para esta fecha.</p>
                         </div>
                     )}
 

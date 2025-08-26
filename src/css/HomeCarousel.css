@@ -2,7 +2,6 @@
 
 
 .app-container {
-    background-color: #f4f7fc;
     width: 100%;
     /* Max width for mobile-like appearance */
     overflow: hidden;
@@ -93,7 +92,7 @@
     width: 150px;
     /* Fixed width for cards */
     padding: 20px;
-    border-radius: 15px;
+    border-radius: var(--border-radius-lg);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -140,7 +139,7 @@
 
 .antecipay-card {
     background-color: #f8f8f8;
-    border-radius: 15px;
+    border-radius: var(--border-radius-lg);
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
@@ -157,7 +156,7 @@
 .antecipay-icon-wrapper {
     background-color: #e0e7ff;
     /* Light blue */
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     padding: 8px;
     display: flex;
     align-items: center;
@@ -198,7 +197,7 @@
 .progress-bar-container {
     width: 100%;
     background-color: #e0e0e0;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
     height: 8px;
     margin-top: 10px;
     overflow: hidden;
@@ -211,7 +210,7 @@
     /* Blue-purple gradient */
     width: 70%;
     /* Example fill percentage */
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
 }
 
 .actions-grid {
@@ -223,7 +222,7 @@
 
 .action-item {
     background-color: #fff;
-    border-radius: 15px;
+    border-radius: var(--border-radius-lg);
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -243,7 +242,7 @@
 .action-icon-wrapper {
     background-color: #b4c8ff;
     /* Very light blue */
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     padding: 10px;
     display: flex;
     align-items: center;
@@ -278,7 +277,7 @@
     font-size: 0.7em;
     font-weight: 600;
     padding: 4px 8px;
-    border-radius: 10px;
+    border-radius: var(--border-radius-md);
     position: absolute;
     top: 10px;
     right: 10px;

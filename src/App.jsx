@@ -27,6 +27,9 @@ import ServiciosDetalle from './pages/Servicios/ServiciosDetalle';
 import MisServicios from "./pages/MisServicios/MisServicios";
 import MisServiciosDetalle from "./pages/MisServicios/MisServiciosDetalle";
 
+import Compras from "./pages/MisCompras/MisCompras";
+import ComprasDetalle from "./pages/MisCompras/MisComprasDetalle";
+
 import LecturaQr from "./pages/LecturaQR/LecturaQr";
 
 
@@ -43,7 +46,6 @@ import Preloader from "./components/Preloader"; // Importa el componente Preload
 import FAQPage from "./pages/Faqs"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import TermsOfUse from "./pages/TermsOfUse"
-import Progress from "./components/Progress"
 
 import Reservas from "./pages/Reservas/Reservas"; // Importa el componente de Reservas
 import ReservasDetalle from "./pages/Reservas/ReservasDetalle"; // Importa el componente de detalle de reservas
@@ -109,7 +111,6 @@ function App() {
                         <Route path="/FAQPage" element={<FAQPage />} />
                         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
                         <Route path="/TermsOfUse" element={<TermsOfUse />} />
-                        <Route path="/Progress" element={<Progress />} />
                         <Route path="/notifications_user" element={<Notifications_user />} />
                         <Route path="/pagar-pendientes" element={<PagarPendientes />} />
                         <Route path="/transaccion/" element={<PaymentDetail />} />
@@ -130,7 +131,7 @@ function App() {
 
                         {/* Rutas de Comercios */}
                         <Route path="/comercios" element={<Comercios  />} />
-                        <Route path="/comercio/:id" element={<ComercioDetalle   />} />
+                        <Route path="/comercios/:id" element={<ComercioDetalle   />} />
 
                         {/* Rutas de Servicios */}
                         <Route path="/servicios" element={<Servicios  />} />
@@ -146,6 +147,10 @@ function App() {
                         {/* Rutas de Mis Servicios */}
                         <Route path="/mis-servicios" element={<MisServicios />} />
                         <Route path="/mis-servicios/:id" element={<MisServiciosDetalle />} />
+
+                        {/* Rutas de Compras */}
+                        <Route path="/compras" element={<Compras />} />
+                        <Route path="/compras/:id" element={<ComprasDetalle />} />
                     </Route>
                 </Route>
 

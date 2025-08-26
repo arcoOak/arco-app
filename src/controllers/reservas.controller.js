@@ -14,7 +14,9 @@ import {
     createReservaFamiliaresDB
 } from '../models/reservas.model.js';
 
-import pool from '../config/db.config.js';
+import { TransaccionReserva } from '../models/Transaccion.js';
+
+import {pool} from '../config/db.config.js';
 
 const getReservaById = async (req, res) => {
     const { id_reserva } = req.params;
@@ -137,60 +139,31 @@ const getInvitadosPorReserva = async (req, res) => {
     }
 }
 
-const createReserva = async (req, res) => {
+const crearReservaTransaccion = async (req, res) => {
     // Es crucial obtener una conexión del pool para manejar la transacción
-    const connection = await pool.getConnection(); 
     
     try {
-        const { reservaData, listaInvitados, listaFamiliares, listaHoras, id_usuario } = req.body;
+        const { reservaData, transaccionData, listaInvitados, listaFamiliares, listaHoras, id_usuario } = req.body;
 
-        // Iniciar la transacción
-        await connection.beginTransaction();
+        const transaccion = new TransaccionReserva({
+            id_usuario: id_usuario,
+            id_billetera: transaccionData.id_billetera,
+            id_tipo_transaccion: transaccionData.id_tipo_transaccion,
+            monto: transaccionData.monto,
+            reservaData,
+            listaInvitados,
+            listaFamiliares,
+            listaHoras
+        });
 
-        // 1. Crear la reserva principal
-        // Pasamos 'connection' a todas las funciones de DB para que usen la misma transacción
-        const newReserva = await createReservaDB(reservaData, connection);
+        await transaccion.save();
 
-        const idReserva = newReserva;
-
-        // 2. Insertar las horas de la reserva (si existen)
-        if (listaHoras && listaHoras.length > 0) {
-            await createReservaHorasDB(idReserva, listaHoras, connection);
-        }
-
-        // 3 . Si hay invitados, crearlos y asociarlos a la reserva
-
-        if( listaInvitados && listaInvitados.length > 0) {
-            const listaIdInvitados = await Promise.all(listaInvitados.map(invitado => createInvitadoDB(id_usuario, invitado, connection)));
-            
-            const listaInvitadosMapeada = listaIdInvitados.map(id_invitado => ({
-                id_rol: 4, 
-                id_invitado: id_invitado
-            }));
-            await createInvitadosEnReservaDB(idReserva, listaInvitadosMapeada, connection);
-        }
-
-        // 3.5. Insertar los beneficiarios invitados a la reserva (si existen)
-        if (listaFamiliares && listaFamiliares.length > 0) {
-            await createReservaFamiliaresDB(idReserva, listaFamiliares, connection);
-        }
-
-        // Si todo fue exitoso, confirmar la transacción
-        await connection.commit();
-
-        res.status(201).json(newReserva);
+        res.status(200).json({ message: 'Reserva creada exitosamente' });
+        
     } catch (error) {
-        // Si hay cualquier error, revertir todos los cambios
-        await connection.rollback(); 
-
-        console.error('Error al crear la reserva (transacción revertida):', error);
-        res.status(500).json({ message: 'Error interno del servidor al crear la reserva' });
-    } finally {
-        // Siempre liberar la conexión al pool al final
-        if (connection) {
-            connection.release();
-        }
-    }
+        console.error('Error al crear la reserva:', error);
+        res.status(500).json({ error: 'Error al crear la reserva' });        
+    } 
 }
 
 export default {
@@ -202,5 +175,5 @@ export default {
     getHorasReservadasPorUnidadFecha,
     getHorasReservadasPorReserva,
     getInvitadosPorReserva,
-    createReserva
+    crearReservaTransaccion
 };

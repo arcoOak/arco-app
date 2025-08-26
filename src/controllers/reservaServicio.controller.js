@@ -1,4 +1,4 @@
-import pool from '../config/db.config.js';
+import {pool} from '../config/db.config.js';
 
 import {
     getReservaServicioByIdDB,
@@ -11,6 +11,8 @@ import {
     createReservaServicioDB,
     createReservaServicioHorasDB
 } from '../models/reservaServicio.model.js';
+
+import { TransaccionReservaServicio } from '../models/Transaccion.js';
 
 const getReservaServicioById = async (req, res) => {
     const { id_reservacion_servicio } = req.params;
@@ -114,34 +116,25 @@ const getHorasReservadasPorReservaServicios = async (req, res) => {
     }
 }
 
-const createReservaServicio = async (req, res) => {
-    const { reservaServicioData, listaHoras } = req.body;
+const createReservaServicioTransaccion = async (req, res) => {
+    const { reservaServicioData, transaccionData, listaHoras, id_usuario } = req.body;
 
-    const connection = await pool.getConnection(); 
     try {
-        if (!reservaServicioData || !listaHoras || listaHoras.length === 0 || !reservaServicioData.id_socio ) {
-            return res.status(400).json({ message: 'Los datos de la reservación y la lista de horas son requeridos.' });
-        }
-        await connection.beginTransaction();
+        const transaccion = new TransaccionReservaServicio({
+            id_usuario: id_usuario,
+            id_billetera: transaccionData.id_billetera,
+            id_tipo_transaccion: transaccionData.id_tipo_transaccion,
+            monto: transaccionData.monto,
+            reservaServicioData,
+            listaHoras
+        });
 
-        const nuevaReserva = await createReservaServicioDB(reservaServicioData, connection);
+        await transaccion.save();
 
-        const id_nueva_reserva = nuevaReserva;
-
-        if (listaHoras.length > 0) {
-            await createReservaServicioHorasDB(id_nueva_reserva, listaHoras, connection);
-        }
-
-        await connection.commit();
-
-        res.status(201).json(nuevaReserva);
+        res.status(201).json({ message: 'Reserva de servicio creada exitosamente', id_reserva: transaccion.id_pago_asociado });
     } catch (error) {
-        console.error('Error al crear la reservación de servicio:', error);
-        res.status(500).json({ message: 'Error interno del servidor al crear la reservación de servicio' });
-    }finally{
-        if (connection) {
-            await connection.release();
-        }
+        console.error('Error al crear la reserva de servicio:', error);
+        res.status(500).json({ message: 'Error interno del servidor al crear la reserva de servicio' });
     }
 }
 
@@ -153,5 +146,5 @@ export default {
     getReservasServicioPorSocioYMes,
     getHorasReservadasPorServicioPorFecha,
     getHorasReservadasPorReservaServicios,
-    createReservaServicio
+    createReservaServicioTransaccion
 }

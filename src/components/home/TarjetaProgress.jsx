@@ -1,6 +1,8 @@
 // Progress.jsx (updated)
 import React from 'react';
-import '../css/Progress.css';
+import './TarjetaProgress.css';
+
+import Button from '../buttons/Button';
 
 const Progress = ({ percentage }) => {
     const radius = 40;
@@ -41,7 +43,11 @@ const Progress = ({ percentage }) => {
                     <div className="progress-info">
                         <h3 className="progress-title">Puntos Acumulados</h3>
                         <p className="progress-description">Canjea tus Recompensas</p>
-                        <button className='progress-button'>Canjear</button>
+
+                        <Button className='primary'>
+                            Canjear
+                        </Button>
+
                     </div>
                 </div>
             </div>

@@ -10,9 +10,11 @@ import InvitacionQR from './InvitacionQr';
 
 import ExitosoModal from '../../components/modals/ExitosoModal'; // Importa el modal de éxito
 
+import Button from '../../components/buttons/Button'; // Asegúrate de tener un componente Button reutilizable
+
 
 function LecturaQr() {
-    const { user} = useAuth(); // Obtiene el usuario autenticado desde el contexto
+    const { user, isDarkTheme } = useAuth(); // Obtiene el usuario autenticado desde el contexto
     const [qrTokenValue, setQrTokenValue] = useState(null); 
     const [qrTokenInvitado, setQrTokenInvitado] = useState('');
 
@@ -29,8 +31,8 @@ function LecturaQr() {
             return;
         }
 
-        const controller = new AbortController();
-        const signal = controller.signal;
+        const controller = new AbortController(); // Crea un controlador para abortar la solicitud
+        const signal = controller.signal; // Crea una señal para la solicitud
 
         const fetchQrToken = async () => {
             try {
@@ -106,29 +108,40 @@ function LecturaQr() {
             
             ></InvitacionQR>
         <div className="page-container">
-            <h1 className="page-title">Tu Código QR</h1>
+            
             <div className="qr-code-box">
-                <img src={user?.foto_perfil || './src/img/perfil.jpg'} className="profile-photo img" alt="Foto de perfil" />
-                <h2 className="mb-2">{user?.nombre || 'Usuario'}</h2>
-                <p>Escanea este código para ingresar:</p>
+                <div className='qr-code-info'>
+                    
+                    <img src={user?.foto_perfil || './src/img/perfil.jpg'} className="profile-photo img" alt="Foto de perfil" />
+                    <h1 className={`page-title ${isDarkTheme ? 'title-darkMode' : ''}`}>Tu Código QR</h1>
+                    <h2 className="mb-2">{user?.nombre + ' ' + user?.apellido || 'Usuario'}</h2>
+                    <p>Escanea este código para ingresar:</p>
+                </div>
+                
                 {loading ? (
                     <div className="qr-loading"><p>Cargando...</p></div>
                 ) : qrTokenValue ? (
-                    <div style={{ background: 'white', padding: '16px' }}>
+                    <div className="qr-code">
                         <QRCode value={qrTokenValue} size={256} />
                     </div>
                 ) : (
                     <div className="qr-loading"><p>No se pudo generar el código QR.</p></div>
                 )}
 
-                <button className='button-primary reserva-modal__button' onClick={() => setShowInvitacionQr(true)}>Enviar Invitación</button>
-
                 <p className="mt-2 text-muted">Tú Código QR es privado</p>
 
-
-                <div>
-                    <QRCode value={qrTokenInvitado} size={256} />
+                <div className='qr-code-actions'>
+                    <Button
+                        onClick={() => setShowInvitacionQr(true)}
+                        className={'primary big'}
+                    >
+                        Enviar Invitación
+                    </Button>
                 </div>
+
+                {/* <div>
+                    <QRCode value={qrTokenInvitado} size={256} />
+                </div> */}
             </div>
         </div>
         </React.Fragment>

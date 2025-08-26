@@ -46,10 +46,21 @@ const getCategoriasDeProductosPorComercio = async (id_comercio) => {
   return response.json();
 }
 
+const verificarDisponibilidad = async (productos) => {
+  const response = await fetch(`${API_HOST}/api/productos/verificar-disponibilidad`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(productos)
+  });
+  if (!response.ok) throw new Error('Error al verificar disponibilidad');
+  return response.json();
+}
+
 export default {
     getProductos,
     getProductosIndividuales,
     getProductoById,
     getProductosPorComercio,
-    getCategoriasDeProductosPorComercio
+    getCategoriasDeProductosPorComercio,
+    verificarDisponibilidad
 }

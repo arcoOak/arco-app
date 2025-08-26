@@ -4,11 +4,14 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import './TransaccionIndividual.css';
 
 import LoadingModal from '../../components/modals/LoadingModal'; // Importa el componente de modal de carga
+import ExitosoModal from '../../components/modals/ExitosoModal';
 
-import billeteraService from '../../services/billetera.service'; // Importa el servicio de billetera
+import transaccionesService from '../../services/transacciones.service'; // Importa el servicio de billetera
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
+
 import BotonVolver from '../../components/buttons/ButtonVolver';
+import Button from '../../components/buttons/Button';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -25,26 +28,25 @@ const TransaccionIndividual = () => {
     const location = useLocation(); // Obtiene la ubicación actual para manejar la navegación
     const backLocation = location.state?.returnTo || '/transaccion'; // Define la ruta de retorno
 
-    const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
+    const { user, actualizarSaldoBilletera } = useAuth(); // Obtiene el usuario del contexto de autenticación
 
     const [registroTransaccion, setRegistroTransaccion] = useState(); // 
     const [listaElementosTransaccion, setListaElementosTransaccion] = useState([]); // Estado para manejar los elementos de la transacción
 
     const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
-
-
+    const [showExitosoModal, setShowExitosoModal] = useState(false);
 
     useEffect(() => {
 
         const obtenerRegistroTransaccion = async () => {
             try {
-                const response = await billeteraService.getTransaccionPorId(id);
+                const response = await transaccionesService.getTransaccionPorId(id);
                 console.log(response);
 
-                const { transaccion, listaElementosTransaccion } = response; // Desestructura la transacción del objeto de respuesta
+                const { transaccion, datosTransaccion } = response; // Desestructura la transacción del objeto de respuesta
 
                 setRegistroTransaccion(transaccion);
-                setListaElementosTransaccion(listaElementosTransaccion);
+                setListaElementosTransaccion(datosTransaccion);
             } catch (error) {
                 console.error('Error al obtener el registro de transacciones:', error);
             }finally{
@@ -59,10 +61,60 @@ const TransaccionIndividual = () => {
             obtenerRegistroTransaccion();
         }
 
-        
-
-
     },[user] );
+
+    const actualizarTransaccion = async () => {
+        if (!user) return;
+        try {
+            setLoading(true);
+            const response = await transaccionesService.getTransaccionPorId(id);
+            console.log(response);
+            setRegistroTransaccion(response.transaccion);
+            setListaElementosTransaccion(response.listaElementosTransaccion);
+        } catch (error) {
+            console.error('Error al obtener el registro de transacciones:', error);
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        }
+    };
+
+    const handlePagar = async () => {
+            setLoading(true);
+            try{
+                
+                const transaccionData = {
+                    id_pago_asociado: registroTransaccion.id_pago_asociado,
+                    id_billetera: user.id_billetera,
+                    id_tipo_transaccion: registroTransaccion.id_tipo_transaccion,
+                    monto: (registroTransaccion.total_transaccion)
+                }
+                const response = await transaccionesService.pagarTransaccion(transaccionData);
+                
+                if(response) {
+                    setShowExitosoModal(true);
+
+                    actualizarSaldoBilletera();
+
+                    setTimeout(() => {
+                        actualizarTransaccion();
+                    }, 500);
+    
+                }
+            } catch (error) {
+                console.error('Error al procesar el pago:', error);
+            } finally{
+                setLoading(false);
+    
+                setTimeout(() => {
+                    setShowExitosoModal(false); // Cerrar modal de éxito después de 2
+                }, 2000);
+    
+            }
+    
+    
+        }
 
 
 
@@ -79,6 +131,10 @@ const TransaccionIndividual = () => {
     return (
         <React.Fragment>
             <LoadingModal visible={loading}></LoadingModal>
+            <ExitosoModal 
+                visible={showExitosoModal} 
+                mensaje='¡Pago con éxito!'  
+            />
 
         <BotonVolver to={backLocation} />
 
@@ -98,7 +154,7 @@ const TransaccionIndividual = () => {
                         </div>
                         <div className="payment-details">
                         <p className='payment-date'><strong>Fecha: </strong> {formatDate(registroTransaccion.fecha_generacion)}</p>
-                        <p className='payment-amount'><strong>Monto: </strong> ${registroTransaccion.total_transaccion}</p>
+                        <p className='payment-amount'><strong>Monto Total: </strong> ${registroTransaccion.monto}</p>
 
                         {/* La hora y referencia solo se muestran si ya está pagado */}
                         {
@@ -113,7 +169,7 @@ const TransaccionIndividual = () => {
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Cantidad</th>
-                                    <th>Coste</th>
+                                    <th>Importe</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -122,12 +178,25 @@ const TransaccionIndividual = () => {
                                     <tr key={index} className="payment-elemento">
                                         <td>{elemento.nombre_transaccion}</td>
                                         <td>{elemento.cantidad}</td>
-                                        <td>{elemento.coste_total}</td>
+                                        <td>${elemento.coste_total}</td>
                                     </tr>
                                 ))
                             }
                             </tbody>
                         </table>
+
+                        {registroTransaccion.estado_transaccion == 0 && (
+                            <Button
+                                className='primary'
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Detiene la propagación del evento
+                                    handlePagar()}
+                                }
+                            >
+                                Pagar
+                            </Button>
+                            
+                        ) }
 
                 </div>
             </div>

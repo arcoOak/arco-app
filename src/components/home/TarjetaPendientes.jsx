@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useRef, useEffect, use  } from "react";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import "../css/Balance.css";
+import "./TarjetaPendientes.css";
 
-import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
+import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
-import billeteraService from '../services/billetera.service';
+import transaccionesService from '../../services/transacciones.service';
 
-import Button from './buttons/Button'; // Asegúrate de que la ruta sea correcta
+import Button from '../buttons/Button'; // Asegúrate de que la ruta sea correcta
 
 export default function Balance() {
 
@@ -18,6 +18,8 @@ export default function Balance() {
 
     const [ pagosPendientes, setPagosPendientes ] = useState([]);
 
+    const [ mesesConDeuda, setMesesConDeuda ] = useState(new Set());
+
     const navigate = useNavigate();
 
     const monthsRef = useRef({});
@@ -28,20 +30,27 @@ export default function Balance() {
     useEffect(() => {
         const obtenerPagosPendientes = async () => {
             try {
-                const response = await billeteraService.getPagosPendientes(user.id_socio);
+                const response = await transaccionesService.getTransaccionesPendientes(user.id_socio);
 
-
+                console.log('Pagos pendientes:', response);
                 setPagosPendientes(response);
 
-                setTotalDeuda(response.reduce((total, pago) => total + pago.total_transaccion, 0));
+                const totalDeuda = response.reduce((total, pago) => total + parseFloat(pago.total_transaccion), 0)
+
+                setTotalDeuda(totalDeuda);
+
+                const mesesDeudores = new Set(response.map(pago => new Date(pago.fecha_generacion).getMonth() + 1));
+                setMesesConDeuda(mesesDeudores);
 
             } catch (error) {
                 console.error('Error al obtener los pagos pendientes:', error);
             }
         };
 
-        obtenerPagosPendientes();
-    },[])   
+        if (user?.id_socio) {
+            obtenerPagosPendientes();
+        }
+    },[user])   
 
 
 
@@ -144,7 +153,7 @@ export default function Balance() {
                                 >
                                     <p>{mes.nombre.slice(0, 3).toUpperCase()} </p>
                                     <i className="fa fa-circle" 
-                                        style={{ color: pagosPendientes.some(pago => pago.mes_generacion === mes.numero) ? '#dc3545' : '#22ad82', fontSize: '11px' }}>
+                                        style={{ color: mesesConDeuda.has(mes.numero) ? '#dc3545' : '#22ad82', fontSize: '11px' }}>
                                     </i>
                                 </div>
                             ))
@@ -159,8 +168,8 @@ export default function Balance() {
                             {pagosPendientes.length != 1 ? ' Recibos pendientes' : ' Recibo pendiente'}</p>
                     </div>
                     <div>
-                        <p className={`total-balance ${totalDeuda > 0 ? 'has-debt' : 'no-debt'}`}>
-                            {totalDeuda > 0 ? `-${totalDeuda}$` : "Sin deuda"}
+                        <p className={`total-balance ${totalDeuda < 0 ? 'has-debt' : 'no-debt'}`}>
+                            {totalDeuda < 0 ? `${totalDeuda}$` : "Sin deuda"}
                         </p>
                     </div>
                 </div>

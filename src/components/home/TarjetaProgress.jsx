@@ -1,8 +1,8 @@
 // Progress.jsx (updated)
 import React from 'react';
-import './Progress.css';
+import './TarjetaProgress.css';
 
-import Button from './buttons/Button';
+import Button from '../buttons/Button';
 
 const Progress = ({ percentage }) => {
     const radius = 40;

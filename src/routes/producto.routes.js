@@ -9,5 +9,6 @@ router.get('/:id_club/individuales', productoController.getAllProductosIndividua
 router.get('/individual/:id', productoController.getProductoById); // Trae un producto por ID
 router.get('/comercio/:id_comercio', productoController.getProductosPorComercio); // Trae los productos de un comercio específico por su ID
 router.get('/categorias-comercio/:id_comercio', productoController.getCategoriasDeProductosPorComercio); // Trae las categorías de productos por comercio
+router.post('/verificar-disponibilidad', productoController.verificarDisponibilidad); // Verifica la disponibilidad de productos
 
 export default router; // Exporta el router para usarlo en app.js

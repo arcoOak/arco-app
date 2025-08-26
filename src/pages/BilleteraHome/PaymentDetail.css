@@ -2,11 +2,12 @@
 
  .no-payments-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: var(--spacing-md);
     height: 50vh;
-    font-size: 1.2em;
-    color: #888;   
+    font-size: var(--font-size-medium);
 }
 .no-payments-message {
     margin: 0;

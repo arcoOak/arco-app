@@ -6,7 +6,8 @@ import './PagosPendientes.css';
 import LoadingModal from '../../components/modals/LoadingModal';
 import ExitosoModal from '../../components/modals/ExitosoModal';
 
-import billeteraService from '../../services/billetera.service'; // Importa el servicio de billetera
+import transaccionesService from '../../services/transacciones.service'; // Importa el servicio de transacciones
+
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
@@ -38,7 +39,7 @@ const PagarPendientes = () => {
 
         const obtenerPagosPendientes = async () => {
             try {
-                const response = await billeteraService.getPagosPendientes(user.id_socio);
+                const response = await transaccionesService.getTransaccionesPendientes(user.id_socio);
                 console.log(response);
                 setPagosPendientes(response);
             } catch (error) {
@@ -61,7 +62,7 @@ const PagarPendientes = () => {
 
         const obtenerPagosPendientes = async () => {
             try {
-                const response = await billeteraService.getPagosPendientes(user.id_socio);
+                const response = await transaccionesService.getTransaccionesPendientes(user.id_socio);
                 console.log(response);
                 setPagosPendientes(response);
             } catch (error) {
@@ -74,9 +75,9 @@ const PagarPendientes = () => {
                 id_pago_asociado: transaccion.id_pago_asociado,
                 id_billetera: user.id_billetera,
                 id_tipo_transaccion: transaccion.id_tipo_transaccion,
-                monto: (transaccion.total_transaccion * (-1))
+                monto: (transaccion.total_transaccion)
             }
-            const response = await billeteraService.pagarTransaccion(transaccionData);
+            const response = await transaccionesService.pagarTransaccion(transaccionData);
 
             if(response) {
                 setShowExitosoModal(true);

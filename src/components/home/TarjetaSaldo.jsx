@@ -1,9 +1,9 @@
 // src/components/ImageSlider.jsx
 import React, { useState } from 'react';
-import CreditCard from './CreditCard'; // Importa el nuevo componente CreditCard
-import '../css/ImageSlider.css'; // Asegúrate de mantener este archivo CSS para el contenedor y las propiedades 3D
+import CreditCard from '../CreditCard'; // Importa el nuevo componente CreditCard
+import './TarjetaSaldo.css'; // Asegúrate de mantener este archivo CSS para el contenedor y las propiedades 3D
 
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const ImageSlider = () => {
 

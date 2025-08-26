@@ -8,7 +8,7 @@ router.get('/generos', dataController.getGeneros); //Traerá los géneros
 router.get('/parentesco', dataController.getParentescos); //Traerá los parentescos
 router.get('/parentesco/genero', dataController.getParentescosByGenero); //Traerá los parentescos sin distinguir género
 router.get('/categorias-comercio', dataController.getCategoriasComercio); //Traerá las categorías de comercio
-
+router.get('/metodos-pago', dataController.getMetodosPago); //Traerá los métodos de pago
 
 
 

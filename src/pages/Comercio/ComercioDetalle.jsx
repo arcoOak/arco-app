@@ -51,8 +51,8 @@ const ProductoCard = ({ producto, handleAddToCarrito, productoEnCarrito }) => (
     </div>
 );
 
-const ServicioCard = ({ servicio }) => (
-    <div className="servicio-card" key={servicio.id_servicio_reservable_empresa}>
+const ServicioCard = ({ servicio, handleServicioClick }) => (
+    <div className="servicio-card" key={servicio.id_servicio_reservable_empresa} onClick={() => handleServicioClick(servicio.id_servicio_reservable)}>
         <h3 className="servicio-name">{servicio.nombre_servicio_reservable}</h3>
         <p className="servicio-description">{servicio.descripcion}</p>
         <span className="servicio-price">${Number(servicio.costo_servicio).toFixed(2)}</span>
@@ -167,12 +167,17 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
     }, [id]);
 
     const handleAddToCarrito = (producto)=>{
-        addToCarrito(producto);
+        addToCarrito(producto, id);
         setShowExitosoModal(true); // Muestra el modal de éxito
         setTimeout(() => {
             setShowExitosoModal(false); // Oculta el modal después de un tiempo
-        }, 2000);
+        }, 1500);
 
+    }
+
+    const handleServicioClick = (idServicio) => {
+        // Lógica para manejar el clic en un servicio
+        navigate(`/servicios/${idServicio}`, { state: { returnTo: `/comercios/${id}` } });
     }
 
     const displayCategorias = useMemo(() => [
@@ -345,7 +350,7 @@ export default function ComercioDetalle() { // Recibe allBusinesses como prop
 
                 <div className="servicios-grid">
                     {serviciosFiltrados.map(servicio => (
-                        <ServicioCard servicio={servicio} key={servicio.id_servicio_reservable_empresa} />
+                        <ServicioCard servicio={servicio} key={servicio.id_servicio_reservable_empresa} handleServicioClick={handleServicioClick} />
                     ))}
                     {serviciosFiltrados.length === 0 && <p className="no-products">No hay servicios disponibles en este momento.</p>}
                 </div>

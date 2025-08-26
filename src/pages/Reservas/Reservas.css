@@ -75,8 +75,9 @@
 .reserva-item-date {
     font-size: 0.9rem;
     color: var(--color-text-secondary); /* Un color más suave para información secundaria */
-    white-space: nowrap; /* Evita que la fecha se rompa en dos líneas */
+    white-space: wrap; /* Evita que la fecha se rompa en dos líneas */
     margin-left: 1rem;
+
 }
 
 .reserva-item-details p {

@@ -67,6 +67,23 @@ const getProductosPorComercioDB = async (id_comercio)=>{
   }
 }
 
+const getProductosByCompraComercioDB = async (id_compra_comercio, db_connection) => {
+
+    const executor = db_connection || pool;
+    try {
+        const [rows] = await executor.query(`
+        SELECT pcp.*, p.nombre_producto 
+        FROM compras_comercio_productos pcp
+        JOIN productos p ON pcp.id_producto = p.id_producto
+        WHERE pcp.id_compra_comercio = ?`, [id_compra_comercio]);
+        return rows;
+    } catch (error) {
+        console.error('Error al obtener los productos por compra comercio:', error);
+        throw error;
+    }
+    
+}
+
 const getCategoriasDeProductosPorComercioDB = async (id_comercio) =>{
     try {
         const [rows] = await pool.execute(
@@ -86,10 +103,31 @@ const getCategoriasDeProductosPorComercioDB = async (id_comercio) =>{
     }
 }
 
+const verificarDisponibilidadDB = async (id_producto, id_comercio) =>{
+    try{
+        const [rows] = await pool.execute(
+            `
+            SELECT (pc.activo AND cmr.activo ) activo 
+            FROM producto_comercio pc 
+            JOIN comercios cmr ON pc.id_comercio = cmr.id_comercio 
+            WHERE cmr.id_comercio = ? 
+            AND pc.id_producto = ?
+            `, 
+            [id_comercio, id_producto]
+        );
+        return rows[0] ? rows[0].activo : false;
+    } catch (error) {
+        console.error('Error al verificar disponibilidad de producto:', error);
+        throw error;
+    }
+}
+
 export {
     getAllProductosDB,
     getAllProductosIndividualesDB,
     getProductoByIdDB,
     getProductosPorComercioDB,
-    getCategoriasDeProductosPorComercioDB
+    getProductosByCompraComercioDB,
+    getCategoriasDeProductosPorComercioDB,
+    verificarDisponibilidadDB
 }

@@ -1,5 +1,6 @@
 import {pool} from '../config/db.config.js';
 
+// Obtiene el pronóstico del clima para los próximos 7 días, filtrado por el horario de apertura del club.
 const getClimaSemanalDB = async (id_club, fecha) =>{
 
     try{
@@ -22,6 +23,19 @@ const getClimaSemanalDB = async (id_club, fecha) =>{
     }
 
 }
+
+// Obtiene todos los clubes con sus coordenadas para la actualización del clima.
+const getAllClubesConCoordenadasDB = async () => {
+    try {
+        const [rows] = await pool.execute(
+            `SELECT id_club, latitud, longitud FROM clubes WHERE latitud IS NOT NULL AND longitud IS NOT NULL`
+        );
+        return rows;
+    } catch (error) {
+        console.error('Error al obtener coordenadas de los clubes:', error);
+        throw error;
+    }
+};
 
 const cargarDatosClimaSemanalDB = async (id_club, datosSemanales)=>{
 
@@ -51,7 +65,23 @@ const cargarDatosClimaSemanalDB = async (id_club, datosSemanales)=>{
 
 }
 
+// Limpia los datos de pronóstico existentes (de hoy en adelante) para un club.
+const limpiarPronosticoClimaDB = async (id_club) => {
+    try {
+        const [result] = await pool.execute(
+            `DELETE FROM clubes_clima WHERE id_club = ? AND fecha >= CURDATE()`,
+            [id_club]
+        );
+        return result.affectedRows;
+    } catch (error) {
+        console.error(`Error al limpiar pronóstico del clima para el club ${id_club}:`, error);
+        throw error;
+    }
+};
+
 export {
     getClimaSemanalDB,
-    cargarDatosClimaSemanalDB
+    cargarDatosClimaSemanalDB,
+    getAllClubesConCoordenadasDB,
+    limpiarPronosticoClimaDB
 };

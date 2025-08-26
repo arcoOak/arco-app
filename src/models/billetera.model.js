@@ -1,8 +1,11 @@
 import {pool} from '../config/db.config.js';
 
-const getBilleteraDB = async (id_socio) => {
+import {TIPOS_TRANSACCION} from '../constants/transaccion.constants.js'; 
+
+const getBilleteraSocioDB = async (id_socio, connection) => {
+    const db_connection = connection || pool;
     try {
-        const [rows] = await pool.execute('SELECT * FROM billeteras WHERE id_socio = ?', [id_socio]);
+        const [rows] = await db_connection.execute('SELECT * FROM billeteras WHERE id_socio = ?', [id_socio]);
         return rows[0]; // Assuming there's only one wallet per user
     } catch (error) {
         console.error('Error consultando billetera:', error);
@@ -10,444 +13,30 @@ const getBilleteraDB = async (id_socio) => {
     }
 }
 
-const getTransaccionesBilleteraPorMesDB = async (id_socio, mes) => {
+const getBilleteraIdDB = async (id_billetera, connection) => {
+    const db_connection = connection || pool;
     try {
-        const [rows] = await pool.execute(`
-            SELECT a.*, b.saldo_actual
-            FROM billeteras_transacciones a 
-            JOIN billeteras b ON a.id_billetera = b.id_billetera 
-            WHERE b.id_socio = ? 
-            AND MONTH(a.fecha_transaccion) = ?`, 
-            [id_socio, mes]);
-        return rows;
+        const [rows] = await db_connection.execute('SELECT * FROM billeteras WHERE id_billetera = ?', [id_billetera]);
+        return rows[0]; // Assuming there's only one wallet per user
     } catch (error) {
-        console.error('Error consultando transacciones por mes:', error);
+        console.error('Error consultando billetera por ID:', error);
         throw error;
     }
 }
 
-const getUltimasTransaccioonesBilleteraDB = async (id_socio) => {
+const obtenerSaldoBilleteraDB = async(id_billetera, connection) => {
+    const db_connection = connection || pool;
     try {
-        const [rows] = await pool.execute(`
-            		SELECT  bt.* , dtt.nombre_transaccion, 
-                    CASE
-                    WHEN bt.id_tipo_transaccion = 1 THEN ( CONCAT(dtt.nombre_transaccion, ' ', dts.nombre_tipo_socio)  )
-                    WHEN bt.id_tipo_transaccion = 2 THEN ( SELECT eru.nombre_unidad FROM reservaciones res JOIN espacios_reservables_unidad as eru ON res.id_espacio_reservable_unidad = eru.id_espacio_reservable_unidad WHERE res.id_reservacion =  bt.id_pago_asociado  )
-                    WHEN bt.id_tipo_transaccion = 3 THEN
-                        ( SELECT com.nombre_comercio FROM compras_comercio coc JOIN comercios com ON coc.id_comercio = com.id_comercio WHERE coc.id_compra_comercio = bt.id_pago_asociado  )
-                    WHEN bt.id_tipo_transaccion = 4 THEN
-                        ( SELECT srv.nombre_servicio_reservable FROM reservaciones_servicios AS rsv JOIN servicios_reservables srv ON rsv.id_servicio_reservable = srv.id_servicio_reservable JOIN servicios_reservables_empresa AS sre ON rsv.id_servicio_reservable_empresa = sre.id_servicio_reservable_empresa WHERE rsv.id_reservacion_servicio = bt.id_pago_asociado )
-                    END as descripcion_transaccion
-                    FROM billeteras_transacciones bt
-                            JOIN billeteras b ON b.id_billetera = bt.id_billetera
-                                        JOIN data_tipo_transaccion dtt ON bt.id_tipo_transaccion = dtt.id_tipo_transaccion
-                                        JOIN socios s ON s.id_socio = b.id_socio
-                                        JOIN data_tipo_socio dts ON dts.id_tipo_socio = s.id_tipo_socio
-                            WHERE b.id_socio = ?
-                            ORDER BY bt.id_billetera_transaccion DESC, bt.fecha_transaccion DESC
-                            LIMIT 5
-            `, [id_socio]);
-        return rows
-    } catch (e){
-        console.error('Error consultando transacciones por mes:', e);
-        throw e;
-    }
-}
-
-const getTransaccionesBilleteraCompletaPorMesDB = async (id_socio, mes) =>{
-    try {
-        const [rows] = await pool.execute(`
-            -- Parte 1: Mensualidades de Socios
-                    SELECT
-                dtt.id_tipo_transaccion,
-            mens.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            dts.tarifa AS total_transaccion,
-                CAST(CONCAT(mens.anho, '-', mens.mes, '-', mens.dia) AS DATE) as fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                CONCAT(dtt.nombre_transaccion, ' ', dts.nombre_tipo_socio) as descripcion_contenido,
-                1 as descripcion_cantidad,
-                bt.id_billetera_transaccion,
-                bt.id_pago_asociado
-        FROM
-            mensualidades_socios AS mens
-        JOIN socios AS s ON mens.id_socio = s.id_socio
-        JOIN data_tipo_socio AS dts ON s.id_tipo_socio = dts.id_tipo_socio
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 1 -- Tipo de transacción para mensualidades
-        LEFT JOIN billeteras AS b ON mens.id_socio = b.id_socio
-        LEFT JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 1
-            AND bt.id_pago_asociado = mens.id_mensualidad_socio
-        WHERE
-            mens.id_socio = ? AND mens.mes = ?
-
-        UNION ALL
-
-        -- Parte 2: Reservaciones
-        SELECT
-                dtt.id_tipo_transaccion,
-            res.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            res.costo_reserva AS total_transaccion,
-                res.fecha_creacion AS fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                CONCAT(eru.nombre_unidad) AS descripcion_contenido,
-                (SELECT COUNT(rh.id_reservacion_hora ) FROM reservaciones_horas AS rh WHERE rh.id_reservacion = res.id_reservacion ) AS descripcion_cantidad,
-                bt.id_billetera_transaccion,
-                bt.id_pago_asociado
-                FROM
-            reservaciones AS res
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 2 -- Tipo de transacción para reservaciones
-        LEFT JOIN billeteras AS b ON res.id_socio = b.id_socio
-        LEFT JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 2
-            AND bt.id_pago_asociado = res.id_reservacion
-        JOIN espacios_reservables_unidad AS eru ON eru.id_espacio_reservable_unidad = res.id_espacio_reservable_unidad
-        WHERE
-            res.id_socio = ?
-            AND MONTH(res.fecha_creacion) = ?
-
-        UNION ALL
-
-        -- Parte 3: Compras en Comercio
-        SELECT
-                dtt.id_tipo_transaccion,
-            comp.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            comp.precio_total AS total_transaccion,
-                comp.fecha_compra AS fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                cmr.nombre_comercio AS descripcion_contenido,
-            (SELECT SUM(ccp.cantidad) FROM compras_comercio_productos AS ccp WHERE ccp.id_compra_comercio = comp.id_compra_comercio )  AS descripcion_cantidad,
-            bt.id_billetera_transaccion,
-            bt.id_pago_asociado
-        FROM
-            compras_comercio AS comp
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 3 -- Tipo de transacción para compras
-        LEFT JOIN billeteras AS b ON comp.id_socio = b.id_socio
-        LEFT JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 3
-            AND bt.id_pago_asociado = comp.id_compra_comercio
-        JOIN comercios AS cmr ON cmr.id_comercio = comp.id_comercio 
-        WHERE
-            comp.id_socio = ?
-            AND MONTH(comp.fecha_compra) = ?
-
-        UNION ALL
-
-        -- Parte 4: Pago de Servicios
-
-        SELECT
-                dtt.id_tipo_transaccion,
-            rsv.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            rsv.costo_reserva AS total_transaccion,
-                rsv.fecha_reservacion AS fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                cmr.nombre_comercio AS descripcion_contenido,
-            (SELECT count(rsh.id_reservacion_servicio_hora) FROM reservaciones_servicios_horas AS rsh WHERE rsh.id_reservacion_servicio = rsv.id_reservacion_servicio )  AS descripcion_cantidad,
-            bt.id_billetera_transaccion,
-            bt.id_pago_asociado
-        FROM
-            reservaciones_servicios AS rsv 
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 4
-        JOIN servicios_reservables_empresa AS sre ON sre.id_servicio_reservable_empresa = rsv.id_servicio_reservable_empresa
-        LEFT JOIN billeteras AS b ON rsv.id_socio = b.id_socio
-        JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 4
-            AND bt.id_pago_asociado = rsv.id_reservacion_servicio
-        JOIN comercios AS cmr ON cmr.id_comercio = sre.id_comercio 
-        WHERE
-            rsv.id_socio = ?
-            AND MONTH(rsv.fecha_reservacion) = ?
-
-
-            `, 
-            [id_socio, mes, id_socio, mes, id_socio, mes,  id_socio, mes]);
-        return rows;
+        const [rows] = await db_connection.execute('SELECT saldo_actual FROM billeteras WHERE id_billetera = ?', [id_billetera]);
+        return rows[0]?.saldo_actual || 0;
     } catch (error) {
-        console.error('Error consultando transacciones completas por mes:', error);
-        throw error;
-    }
-}
-
-const getPagosPendientesDB = async (id_socio) => {
-
-    try {
-        const [rows] = await pool.execute(`
-            SELECT mens.estado AS estado_transaccion,
-                dts.tarifa AS total_transaccion,
-                mens.mes as mes_generacion,
-                CONCAT(dtt.nombre_transaccion, ' ',dts.nombre_tipo_socio) as descripcion_contenido,
-                CAST(CONCAT(mens.anho, '-', mens.mes, '-', mens.dia) AS DATE) as fecha_generacion,
-                mens.id_mensualidad_socio as id_pago_asociado,
-                dtt.id_tipo_transaccion
-                FROM
-                    mensualidades_socios AS mens
-                JOIN socios AS s ON mens.id_socio = s.id_socio
-                JOIN data_tipo_socio AS dts ON s.id_tipo_socio = dts.id_tipo_socio
-								JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 1
-                WHERE
-                    mens.estado = 0 AND
-                    mens.id_socio = ? `,
-            [id_socio]);
-        return rows;
-    } catch (error) {
-        console.error('Error consultando pagos pendientes:', error);
-        throw error;
-    }
-}
-
-const getTransaccionPorIdDB = async (id_billetera_transaccion) => {
-    try {
-        const [rows] = await pool.execute(`SELECT * FROM(
-                SELECT dtt.id_tipo_transaccion,
-            mens.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            dts.tarifa AS total_transaccion,
-                CAST(CONCAT(mens.anho, '-', mens.mes, '-', mens.dia) AS DATE) as fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                CONCAT(dtt.nombre_transaccion, ' ', dts.nombre_tipo_socio) as descripcion_contenido,
-								bt.id_billetera_transaccion,
-                                bt.id_pago_asociado
-        FROM
-            mensualidades_socios AS mens
-        JOIN socios AS s ON mens.id_socio = s.id_socio
-        JOIN data_tipo_socio AS dts ON s.id_tipo_socio = dts.id_tipo_socio
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 1 -- Tipo de transacción para mensualidades
-        LEFT JOIN billeteras AS b ON mens.id_socio = b.id_socio
-        LEFT JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 1
-            AND bt.id_pago_asociado = mens.id_mensualidad_socio
-        
-
-        UNION ALL
-
-        SELECT
-                dtt.id_tipo_transaccion,
-            res.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            res.costo_reserva AS total_transaccion,
-                res.fecha_creacion AS fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                CONCAT(eru.nombre_unidad) AS descripcion_contenido,
-								bt.id_billetera_transaccion,
-                                bt.id_pago_asociado
-        FROM
-            reservaciones AS res
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 2 -- Tipo de transacción para reservaciones
-        LEFT JOIN billeteras AS b ON res.id_socio = b.id_socio
-        LEFT JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 2
-            AND bt.id_pago_asociado = res.id_reservacion
-        JOIN espacios_reservables_unidad AS eru ON eru.id_espacio_reservable_unidad = res.id_espacio_reservable_unidad
-        
-
-        UNION ALL
-
-
-        SELECT
-                dtt.id_tipo_transaccion,
-            comp.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            comp.precio_total AS total_transaccion,
-                comp.fecha_compra AS fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                cmr.nombre_comercio AS descripcion_contenido,
-								bt.id_billetera_transaccion,
-                                bt.id_pago_asociado
-        FROM compras_comercio AS comp
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 3
-        LEFT JOIN billeteras AS b ON comp.id_socio = b.id_socio
-        LEFT JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 3
-            AND bt.id_pago_asociado = comp.id_compra_comercio
-        JOIN comercios AS cmr ON cmr.id_comercio = comp.id_comercio 
-
-        UNION ALL
-
-        SELECT
-                dtt.id_tipo_transaccion,
-            rsv.estado AS estado_transaccion,
-            dtt.nombre_transaccion AS tipo_transaccion,
-            rsv.costo_reserva AS total_transaccion,
-                rsv.fecha_reservacion AS fecha_generacion,
-            bt.fecha_transaccion AS fecha_transaccion,
-                cmr.nombre_comercio AS descripcion_contenido,
-            bt.id_billetera_transaccion,
-						bt.id_pago_asociado
-        FROM
-            reservaciones_servicios AS rsv 
-        JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 4
-        JOIN servicios_reservables_empresa AS sre ON sre.id_servicio_reservable_empresa = rsv.id_servicio_reservable_empresa
-        LEFT JOIN billeteras AS b ON rsv.id_socio = b.id_socio
-        JOIN billeteras_transacciones AS bt ON b.id_billetera = bt.id_billetera
-            AND bt.id_tipo_transaccion = 4
-            AND bt.id_pago_asociado = rsv.id_reservacion_servicio
-        JOIN comercios AS cmr ON cmr.id_comercio = sre.id_comercio 
-        
-        ) tabla
-				WHERE tabla.id_billetera_transaccion = ?
-        `, [id_billetera_transaccion]);
-        return rows[0];
-    } catch (error) {
-        console.error('Error consultando transacción por ID:', error);
-        throw error;
-    }
-}
-
-const getDatosMensualidadDB = async (id_pago_asociado) => {
-    try {
-        const [rows] = await pool.execute(`
-            SELECT '1' as cantidad, 
-            CONCAT(dtt.nombre_transaccion,' ',dts.nombre_tipo_socio) nombre_transaccion, 
-            dts.tarifa as coste_total 
-            FROM mensualidades_socios AS mens
-            JOIN socios AS s ON mens.id_socio = s.id_socio      
-            JOIN data_tipo_socio AS dts ON s.id_tipo_socio = dts.id_tipo_socio
-            JOIN data_tipo_transaccion AS dtt ON dtt.id_tipo_transaccion = 1
-            WHERE mens.id_mensualidad_socio = ?`, [id_pago_asociado]);
-            return rows;
-    } catch (error) {
-        console.error('Error al obtener los datos de la mensualidad:', error);
-        throw error;
-    }
-}
-
-const getDatosReservacionDB = async (id_pago_asociado) => {
-    try {
-        const [rows] = await pool.execute(`
-            SELECT COUNT(rh.id_reservacion_hora) as cantidad, 
-            eru.nombre_unidad as nombre_transaccion, 
-            res.costo_reserva as coste_total
-            FROM reservaciones AS res
-            JOIN espacios_reservables_unidad AS eru ON eru.id_espacio_reservable_unidad = res.id_espacio_reservable_unidad
-            JOIN reservaciones_horas AS rh ON rh.id_reservacion = res.id_reservacion
-            WHERE res.id_reservacion = ?`, [id_pago_asociado]);
-        return rows;
-    } catch (error) {
-        console.error('Error al obtener los datos de la reservación:', error);
-        throw error;
-    }
-}
-
-const getDatosCompraDB = async (id_pago_asociado) => {
-    try {
-        const [rows] = await pool.execute(`
-            SELECT ccp.cantidad as cantidad, 
-            pr.nombre_producto as nombre_transaccion, 
-            ccp.precio_producto as coste_total
-            FROM compras_comercio AS comp
-            JOIN comercios AS cmr ON cmr.id_comercio = comp.id_comercio
-            JOIN compras_comercio_productos AS ccp ON ccp.id_compra_comercio = comp.id_compra_comercio
-            JOIN productos AS pr ON pr.id_producto = ccp.id_producto
-            WHERE comp.id_compra_comercio = ?`, [id_pago_asociado]);
-        return rows;
-    } catch (error) {
-        console.error('Error al obtener los datos de la compra:', error);
-        throw error;
-    }
-}
-
-const getDatosServicioDB = async (id_pago_asociado) => {
-    try{
-
-        const [rows] = await pool.execute(`
-            SELECT COUNT(rsh.id_reservacion_servicio_hora) as cantidad, 
-            CONCAT(srs.nombre_servicio_reservable, ' ', cmr.nombre_comercio) as nombre_transaccion, 
-            rvs.costo_reserva as coste_total
-            FROM reservaciones_servicios AS rvs
-            JOIN servicios_reservables srs 
-                ON srs.id_servicio_reservable = rvs.id_servicio_reservable
-            JOIN servicios_reservables_empresa sre 
-                ON sre.id_servicio_reservable_empresa = rvs.id_servicio_reservable_empresa
-            JOIN reservaciones_servicios_horas rsh
-                ON rsh.id_reservacion_servicio = rvs.id_reservacion_servicio
-            JOIN comercios AS cmr
-                ON cmr.id_comercio = sre.id_comercio
-            WHERE rvs.id_reservacion_servicio = ?`, [id_pago_asociado]);
-        return rows;
-
-    }catch(error){
-        console.error('Error al obtener los datos del servicio:', error);
-        throw error;
-    }
-}
-
-const createTransaccionDB = async (id_billetera, id_tipo_transaccion, id_pago_asociado, monto, connection) => {
-    const executor = connection || pool;
-    try {
-
-        const [result] = await executor.execute(`
-            INSERT INTO billeteras_transacciones (id_billetera, id_tipo_transaccion, id_pago_asociado, monto, fecha_transaccion) 
-            VALUES (?, ?, ?, ?, ?)`, 
-            [id_billetera, id_tipo_transaccion, id_pago_asociado, monto, new Date()]);
-
-        return result.insertId; // Retorna el ID de la transacción creada
-
-    }catch(error) {
-        console.error('Error creando transacción:', error);
-        throw error;
-    }
-}
-
-const pagarMensualidadDB = async (id_pago_asociado, db_connection) => {
-    const executor = db_connection || pool;
-    try{
-        const [rows] = await executor.execute(`
-            UPDATE mensualidades_socios 
-            SET estado = 1
-            WHERE id_mensualidad_socio = ?`, [id_pago_asociado]);
-        return rows.affectedRows > 0; // Retorna true si se actualizó al menos una fila
-    }catch(error) {
-        console.error('Error al pagar mensualidad:', error);
-        throw error;
-    }
-}
-
-const pagarReservacionDB = async (id_pago_asociado, db_connection) =>{
-    const executor = db_connection || pool;
-    try{
-        const [rows] = await executor.execute(`
-            UPDATE reservaciones
-            SET estado = 1
-            WHERE id_reservacion = ?`, [id_pago_asociado]);
-        return rows.affectedRows > 0; // Retorna true si se actualizó al menos una fila
-
-    }catch(error){
-        console.error('Error al pagar reservación:', error);
+        console.error('Error consultando saldo de billetera:', error);
         throw error;
     }
 }
 
 
-const pagarCompraDB = async (id_pago_asociado, db_connection) => {
-    const executor = db_connection || pool;
-    try{
-        const [rows] = await executor.execute(`
-            UPDATE compras_comercio
-            SET estado = 1
-            WHERE id_compra_comercio = ?`, [id_pago_asociado]);
-        return rows.affectedRows > 0; // Retorna true si se actualizó al menos una fila
-    }catch(error){
-        console.error('Error al pagar compra:', error);
-        throw error;
-    }
-}
 
-const pagarServicioDB = async (id_pago_asociado, db_connection) =>{
-    const executor = db_connection || pool;
-    try{
-        const [rows] = await executor.execute(`
-            UPDATE reservaciones_servicios
-            SET estado = 1
-            WHERE id_reservacion_servicio = ?`, [id_pago_asociado]);
-        return rows.affectedRows > 0; // Retorna true si se actualizó al menos una fila
-    }catch(error){
-        console.error('Error al pagar servicio:', error);
-        throw error;
-    }
-}
 
 const actualizarBilleteraDB = async (id_billetera, monto, db_connection) =>{
     const executor = db_connection || pool;
@@ -465,23 +54,37 @@ const actualizarBilleteraDB = async (id_billetera, monto, db_connection) =>{
 
 }
 
+const crearRecargaDB = async (id_billetera, id_metodo_pago, connection) => {
+    const executor = connection || pool;
+    try {
+        const [result] = await executor.execute(`
+            INSERT INTO billeteras_recargas (id_billetera, id_metodo_pago, estado) 
+            VALUES (?, ?, ?)`, [id_billetera, id_metodo_pago, 1]);
+        return result.insertId; // Retorna el ID de la recarga creada
+    } catch (error) {
+        console.error('Error creando recarga:', error);
+        throw error;
+    }
+}
 
+const crearBilleteraDB = async (id_socio, id_usuario, db_connection) => {
+    const executor = db_connection || pool;
+    try {
+        const [result] = await executor.execute(`
+            INSERT INTO billeteras (id_billetera, id_socio, id_usuario) 
+            VALUES (?, ?, ?)`, [id_billetera, id_socio, id_usuario]);
+        return result.insertId; // Retorna el ID de la billetera creada
+    } catch (error) {
+        console.error('Error creando billetera:', error);
+        throw error;
+    }
+}
 
 export {
-    getBilleteraDB,
-    getUltimasTransaccioonesBilleteraDB,
-    getTransaccionesBilleteraPorMesDB,
-    getTransaccionesBilleteraCompletaPorMesDB,
-    getPagosPendientesDB,
-    getTransaccionPorIdDB,
-    getDatosMensualidadDB,
-    getDatosReservacionDB,
-    getDatosCompraDB,
-    getDatosServicioDB,
-    createTransaccionDB,
-    pagarMensualidadDB,
-    pagarReservacionDB,
-    pagarCompraDB,
-    pagarServicioDB,
-    actualizarBilleteraDB
+    getBilleteraSocioDB,
+    getBilleteraIdDB,
+    obtenerSaldoBilleteraDB,
+    actualizarBilleteraDB,
+    crearRecargaDB,
+    crearBilleteraDB,
 };

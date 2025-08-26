@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 import { useAuth } from '../context/AuthContext'; // Import useAuth
 
-import billeteraService from "../services/billetera.service";
+import transaccionesService from "../services/transacciones.service";
 
 import Button from './buttons/Button';
 
@@ -22,7 +22,7 @@ export default function TransacctionSection() {
         const cargarUltimasTransacciones = async () =>{
             try {
 
-                const transacciones = await billeteraService.getUltimasTransaccionesBilletera(user.id_socio);
+                const transacciones = await transaccionesService.getUltimasTransaccionesSocio(user.id_socio);
                 setUltimasTransacciones(transacciones);
 
             } catch (error){

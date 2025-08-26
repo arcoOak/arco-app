@@ -34,69 +34,57 @@ export const CartProvider = ({ children }) => {
 
 
     // Funciones para agregar y eliminar productos del carrito
-    const addToCarrito = (producto) => {
+    const addToCarrito = (producto, id_comercio) => {
         setElementosCarrito((prevCarrito) => {
-            // Verificar si el producto ya existe en el carrito
-            const elementoExiste = prevCarrito.find(ele => ele.id_producto === producto.id_producto); 
+            // Buscar si el producto de la misma tienda ya existe en el carrito
+            const elementoExistente = prevCarrito.find(
+                (ele) => ele.id_producto === producto.id_producto && ele.id_comercio === id_comercio
+            );
 
-            // Si el producto ya existe, incrementar la cantidad
-            if (elementoExiste){
-                //Retorna el carrito actualizado con la cantidad incrementada
-                return prevCarrito.map(ele => { 
-                    if(ele.id_producto === producto.id_producto) {
-                        return {
-                            ...ele,
-                            cantidad: ele.cantidad + 1 // Incrementar la cantidad si ya existe
-                        };
-                    }else{
-                        return ele; // Devolver el elemento sin cambios si no es el que se está agregando
-                    }
-                })
+            // Si el producto ya existe, solo incrementamos la cantidad
+            if (elementoExistente) {
+                return prevCarrito.map((ele) =>
+                    ele.id_producto === producto.id_producto && ele.id_comercio === id_comercio
+                        ? { ...ele, cantidad: ele.cantidad + 1 }
+                        : ele
+                );
             }
-            // Si el producto no existe, agregarlo con cantidad 1
-            else{
-                return [...prevCarrito, { ...producto, cantidad: 1 }]; 
-            }
+            
+            // Si no existe, lo agregamos al carrito con cantidad 1
+            return [...prevCarrito, { ...producto, id_comercio, cantidad: 1 }];
         });
     };
     
-    const removeFromCarrito = (productId) => {
-        setElementosCarrito((prevCarrito) => {
-            const carritoActualizado = prevCarrito.filter(ele => ele.id_producto !== productId);
-            return carritoActualizado;
-        });
+    const removeFromCarrito = (productId, id_comercio) => {
+        setElementosCarrito((prevCarrito) =>
+            prevCarrito.filter(
+                (ele) => !(ele.id_producto === productId && ele.id_comercio === id_comercio)
+            )
+        );
     };
 
-    const updateCantidad = (productId, valorCambio)=>{
-        setElementosCarrito((prevCarrito) => {
-        
-            return prevCarrito.map((ele) => {
-                if(ele.id_producto === productId) {
-                    const nuevaCantidad = ele.cantidad + valorCambio; // Calcular la nueva cantidad
-                    if( nuevaCantidad <= 0){
-                        // Si la nueva cantidad es menor o igual a 0, eliminar el producto del carrito
-                        return null; // Devolver null para eliminar este elemento
+    const updateCantidad = (productId, id_comercio, valorCambio) => {
+        setElementosCarrito((prevCarrito) =>
+            prevCarrito
+                .map((ele) => {
+                    if (ele.id_producto === productId && ele.id_comercio === id_comercio) {
+                        const nuevaCantidad = ele.cantidad + valorCambio;
+                        return nuevaCantidad > 0 ? { ...ele, cantidad: nuevaCantidad } : null;
                     }
-                    return {
-                        ...ele,
-                        cantidad: nuevaCantidad // Actualizar la cantidad del producto
-                    };
-                }
-                
-                return ele; // Devolver el elemento sin cambios si no es el que se está actualizando
-                
-            }).filter(ele => ele !== null); // Filtrar los elementos nulos (los que se eliminaron)
-        })
-    }
+                    return ele;
+                })
+                .filter(Boolean) // Elimina los elementos nulos (productos con cantidad <= 0)
+        );
+    };
 
     const limpiarCarrito = ()=>{
         setElementosCarrito([]); // Limpiar el carrito
         localStorage.removeItem('carrito'); // Eliminar el carrito del localStorage
     }
 
-    const isProductoEnCarrito = (productId) => {
-        return elementosCarrito.some(ele => ele.id_producto === productId);
-    }
+    const isProductoEnCarrito = (productId, id_comercio) => {
+        return elementosCarrito.some(ele => ele.id_producto === productId && ele.id_comercio === id_comercio);
+    };
 
     const totalItems = useMemo(() => {
         return elementosCarrito.reduce((total, item) => total + item.cantidad, 0);

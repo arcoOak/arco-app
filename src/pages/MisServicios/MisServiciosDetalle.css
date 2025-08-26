@@ -6,7 +6,7 @@
     padding: 0.5rem;
     padding-top: 5rem; /* Espacio para el botón de volver */
     background-color: #f8f9fa; /* Fondo gris claro */
-    min-height: 100vh;
+    min-height: 50vh;
 }
 
 /* --- Cabecera del Detalle --- */
@@ -55,19 +55,7 @@
 
 }
 
-/* --- Estilos para los párrafos de información --- */
-.reserva-info p {
-    font-size: 1rem;
-    color: #6c757d;
-    line-height: 1.7;
-    margin-bottom: 0.75rem;
-}
 
-.reserva-info p strong {
-    color: #343a40;
-    margin-right: 0.5rem;
-    font-weight: 600;
-}
 
 /* --- Tarjetas para Horas e Invitados --- */
 .horas-reservadas,

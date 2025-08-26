@@ -2,7 +2,7 @@
 .reservas-container {
     padding: 1rem;
     background-color: var(--color-surface-primary); /* Un color de fondo suave y neutro */
-    min-height: 100vh; /* Asegura que ocupe al menos toda la altura de la pantalla */
+    min-height: 50vh; /* Asegura que ocupe al menos toda la altura de la pantalla */
     display: flex;
     flex-direction: column;
     box-sizing: border-box;

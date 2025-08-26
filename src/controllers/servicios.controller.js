@@ -9,6 +9,7 @@ import {
     getCategoriasServiciosActivosPorEmpresaReservadoraDB
 } from '../models/servicios.model.js';
 
+
 const getTodosServicios = async (req, res) => {
     try {
         const { id_club } = req.params;

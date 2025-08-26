@@ -137,7 +137,10 @@ const createReservaDB = async (reservaData, db_connection) => {
     try {
         const { id_espacio_reservable, id_espacio_reservable_unidad, fecha_reservacion, nota, coste_total, id_socio } = reservaData;
         const [result] = await executor.execute(
-            `INSERT INTO reservaciones (id_espacio_reservable, id_espacio_reservable_unidad, fecha_reservacion, nota, costo_reserva, id_socio, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+            `INSERT INTO reservaciones 
+            (id_espacio_reservable, 
+            id_espacio_reservable_unidad, 
+            fecha_reservacion, nota, costo_reserva, id_socio, fecha_creacion, estado) VALUES (?, ?, ?, ?, ?, ?, NOW(), 0)`,
             [id_espacio_reservable, id_espacio_reservable_unidad, fecha_reservacion, nota, coste_total, id_socio]
         );
         return result.insertId; // Retorna el ID de la nueva reserva

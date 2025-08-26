@@ -79,15 +79,22 @@
 
 .vista-carrito-item {
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-xs);
     border-radius: var(--border-radius-md);;
     border: 1px solid var(--color-border-primary);
     padding: var(--spacing-sm) var(--spacing-md);
     border-bottom: 1px solid var(--color-border-primary);
 }
+
+.no_disponible{
+    /* pointer-events: none; */
+    border: 1px solid var(--color-danger);
+}
+
 
 .vista-carrito-item:last-child {
     border-bottom: none;
@@ -102,6 +109,10 @@
     flex-shrink: 0; /* Evita que la imagen se reduzca */
 }
 
+.no_disponible .vista-carrito-imagen{
+    filter: blur(2px);
+}
+
 /* Contenedor para nombre y precio */
 .vista-carrito-item > span {
     font-size: 1rem;
@@ -114,6 +125,10 @@
     padding: var(--spacing-sm);
     border: 1px solid var(--color-border-secondary);
     border-radius: var(--border-radius-pill);
+}
+
+.no_disponible .controles-cantidad{
+    filter: blur(2px); 
 }
 
 /* Contenedor para los controles de cantidad */
@@ -132,7 +147,7 @@
 }
 
 /* Botones de cantidad (+ y -) */
-.vista-carrito-item .controles-cantidad button {
+.vista-carrito-item .controles-cantidad button, .boton-eliminar {
     background-color: var(--color-surface-secondary);
     border: 1px solid var(--color-border-secondary);
     color: var(--color-text-primary);
@@ -157,23 +172,6 @@
     transform: scale(0.92);
 }
 
-/* Botón para eliminar el item */
-.vista-carrito-item .boton-eliminar {
-    background-color: #e74c3c;
-    color: #fff;
-    border-radius: var(--border-radius-md);;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-    flex-shrink: 0;
-}
-
-.vista-carrito-item .boton-eliminar:hover {
-    background-color: #e74c3c;
-    color: white;
-}
 
 .vista-carrito-total {
     text-align: right;
@@ -218,7 +216,7 @@
 /* Estilo para el mensaje de carrito vacío */
 .vista-carrito-vacio {
     text-align: center;
-    padding: 2rem 2rem 8rem;
+    height: 50vh;
 }
 
 .vista-carrito-mensaje {
@@ -240,4 +238,34 @@
     box-sizing: border-box;
     resize: vertical;
     min-height: 100px;
+}
+
+.vista-carrito-comercio{
+    font-size: var(--font-size-sm) !important;
+    font-weight: var(--font-weight-bold) !important;
+}
+
+.vista-carrito-item-no-disponible{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: 100%;
+    
+}
+
+.vista-carrito-item-no-disponible span{
+    background-color: var(--color-surface-secondary);
+    color: var(--color-text-secondary);
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border-secondary);
+    box-shadow: var(--shadow-sm);
+    font-weight: var(--font-weight-bold);
 }

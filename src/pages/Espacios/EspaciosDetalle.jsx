@@ -10,9 +10,6 @@ import EspacioReservaModal from './EspacioReservaModal'; // Asegúrate de que la
 
 import espacioService from '../../services/espacio.service';
 import reservasService from '../../services/reservas.service';
-import qrTokenService from '../../services/qrtoken.service';
-import billeteraService from '../../services/billetera.service';
-import transaccionesService from '../../services/transacciones.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
@@ -20,7 +17,7 @@ import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el 
 
 import Button from '../../components/buttons/Button'; // Importa el botón de reservar
 
-
+import {TIPOS_TRANSACCION} from '../../constants/transaccion.constants.js'; 
 
 // Función para obtener el número de días en un mes específico
 const getDaysInMonth = (year, month) => {
@@ -34,7 +31,7 @@ const getFirstDayOfMonth = (year, month) => {
 
 export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
-    const { user, saldoBilletera } = useAuth(); // Obtiene el usuario autenticado desde el contexto
+    const { user, actualizarSaldoBilletera } = useAuth(); // Obtiene el usuario autenticado desde el contexto
     const { id } = useParams();
     const navigate = useNavigate(); // Hook para navegar programáticamente
     const [loading, setLoading] = useState(false); // Estado para manejar la carga de datos
@@ -378,8 +375,8 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
                 },
                 transaccionData: {
                     id_billetera: user.id_billetera, 
-                    id_tipo_transaccion: 2, 
-                    monto: (totalReserva * -1)
+                    id_tipo_transaccion: TIPOS_TRANSACCION.RESERVACION, 
+                    monto: totalReserva
                 },
                 listaInvitados: invitadosReserva,
                 listaFamiliares: invitadosFamiliares,
@@ -405,17 +402,14 @@ export default function EspaciosDetalle() { // Recibe concesionarios como prop
 
             // Crear Transaccion
 
-            const transaccionResponse = await transaccionesService.crearReservaTransaccion(datosCompletosReserva);
+            const transaccionResponse = await reservasService.createReserva(datosCompletosReserva);
 
-            if(transaccionResponse) {
+            if(transaccionResponse ) {
                 setShowExitosoModal(true);
+
+                actualizarSaldoBilletera();
             }
 
-            //await billeteraService.crearTransaccionBilletera(transaccionData);
-
-            // if(totalReserva <= saldoBilletera){
-            //     await billeteraService.pagarTransaccion(transaccionData);
-            // }
 
 
             setShowEspacioReservaModal(false); // Cerrar el modal de reserva

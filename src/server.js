@@ -6,6 +6,9 @@ import serverConfig from './config/server.config.js'; // Importa la configuraciÃ
 
 import {pool} from './config/db.config.js'; // Importa el pool de conexiones a la base de datos
 
+import mensualidadesJobs from './jobs/mensualidades.job.js'; // Importa la funciÃ³n para iniciar los trabajos programados
+import climaJobs from './jobs/clima.job.js';
+
 const PORT = serverConfig.port;
 
 // Iniciar el servidor
@@ -29,6 +32,9 @@ function startServer() {
         // Iniciar el pool de conexiones a la base de datos
         app.listen(PORT, () => {
             console.log(`Servidor escuchando en http://localhost:${PORT}`);
+
+            mensualidadesJobs.initScheduledJobs();
+            climaJobs.initClimaJob();
         });
     } catch (error) {
         console.error('Error al iniciar el servidor:', error);

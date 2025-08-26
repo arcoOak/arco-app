@@ -5,18 +5,22 @@ import NewsSection from '../components/NewsSection';
 //import Points from '../components/Points'; // Importa tu componente Carousel
 import ServicioSection from "../components/ServicioSection";
 import MonthlyOverview from '../components/MonthlyOverview';
-import ImageSlider from '../components/ImageSlider';
+
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/HomeCarousel.css';
 import '../css/HomeComponents.css';
 import Card from '../components/Card';
 import Carousel from '../components/Carousel';
-import Balance from '../components/Balance';
-import BalanceSection from '../components/BalanceSection';
+
+import TarjetaPendientes from '../components/home/TarjetaPendientes';
+import TarjetaSaldo from '../components/home/TarjetaSaldo';
+import TarjetaRecargar from '../components/home/TarjetaRecargar';
+import TarjetaProgress from '../components/home/TarjetaProgress';
+
 import TransacctionSection from '../components/TransacctionSection';
 import PromotionCard from '../components/PromotionCard';
-import Progress from '../components/Progress';
+
 import ClimaHome from '../components/ClimaHome';
 import RedesSocialesHome from "../components/RedesSocialesHome";
 import HorarioHome from "../components/HorarioHome";
@@ -86,10 +90,10 @@ export default function App() {
                     <h2>{user.nombre + ' ' + user.apellido}</h2>
                 </div>
             </div>
-            <Balance />
-            <ImageSlider />
-            <BalanceSection />
-            <Progress
+            <TarjetaPendientes />
+            <TarjetaSaldo />
+            <TarjetaRecargar />
+            <TarjetaProgress
                 percentage={43}
             />
             <TransacctionSection />

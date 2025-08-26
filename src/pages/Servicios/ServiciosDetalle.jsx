@@ -12,13 +12,12 @@ import ServicioReservaModal from './ServicioReservaModal'; // Asegúrate de que 
 import serviciosService from '../../services/servicios.service';
 
 import reservaServicioService from '../../services/reservasServicio.service';
-import transaccionesService from '../../services/transacciones.service';
 
 import {useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 import ButtonVolver from '../../components/buttons/ButtonVolver'; // Importa el botón de volver
 
-
+import {TIPOS_TRANSACCION} from '../../constants/transaccion.constants.js'; 
 
 // Función para obtener el número de días en un mes específico
 const getDaysInMonth = (year, month) => {
@@ -58,7 +57,7 @@ const formatearHora = (hora) =>{
 
 export default function ServiciosDetalle() {
 
-    const { user } = useAuth(); // Obtiene el usuario autenticado desde el contexto
+    const { user, actualizarSaldoBilletera } = useAuth(); // Obtiene el usuario autenticado desde el contexto
     const { id } = useParams();
     const navigate = useNavigate(); // Hook para navegar programáticamente
     const [loading, setLoading] = useState(true); // Iniciar en true para la carga inicial
@@ -387,6 +386,7 @@ export default function ServiciosDetalle() {
             });
 
             const datosCompletosReserva = {
+                id_usuario: user.id_usuario,
                 reservaServicioData: {
                     id_servicio_reservable : servicio.id_servicio_reservable,
                     id_servicio_reservable_empresa: unidadSeleccionada,
@@ -397,20 +397,25 @@ export default function ServiciosDetalle() {
                 },
                 transaccionData: {
                     id_billetera: user.id_billetera, 
-                    id_tipo_transaccion: 4, 
-                    monto: (totalReserva * -1)
+                    id_tipo_transaccion: TIPOS_TRANSACCION.SERVICIO, 
+                    monto: totalReserva
                 },
                 listaHoras: horariosReserva
             }
             
             //console.log('Datos de reserva:', datosCompletosReserva);
 
-            //await reservaServicioService.createReservaServicio(datosCompletosReserva);
-            await transaccionesService.crearReservaServicioTransaccion(datosCompletosReserva)
-          
 
-            setShowExitosoModal(true); // Mostrar modal de éxito
-            setShowServicioReservaModal(false); // Cerrar el modal de reserva
+
+            const response = await reservaServicioService.createReservaServicio(datosCompletosReserva);
+            console.log('Respuesta de la reserva:', response);
+
+            if(response){
+                actualizarSaldoBilletera();
+
+                setShowExitosoModal(true); // Mostrar modal de éxito
+                setShowServicioReservaModal(false); // Cerrar el modal de reserva
+            }
 
         }catch (error) {
             console.error('Error al confirmar la reserva:', error);

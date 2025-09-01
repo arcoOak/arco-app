@@ -120,7 +120,7 @@ class Transaccion {
     static async getTransaccionPorId(id_transaccion, connection) {
         const transaccion = await getTransaccionPorIdDB(id_transaccion, connection);
 
-        console.log('Transacción obtenida:', transaccion);
+        //console.log('Transacción obtenida:', transaccion);
 
         transaccion.id_tipo_transaccion = parseInt(transaccion.id_tipo_transaccion);
 
@@ -137,7 +137,7 @@ class Transaccion {
         }else if(transaccion.id_tipo_transaccion === TIPOS_TRANSACCION.RECARGA){
             datosTransaccion = await getDatosRecargaDB(transaccion.id_pago_asociado);
         }
-        console.log('Datos de la transacción:', datosTransaccion);
+        //console.log('Datos de la transacción:', datosTransaccion);
         return {transaccion, datosTransaccion};
     }
 
@@ -163,19 +163,21 @@ class Transaccion {
 
     static async pagarTransaccion({ id_billetera, id_tipo_transaccion, id_pago_asociado, monto }, connection) {
         let response;
-        if (id_tipo_transaccion === TIPOS_TRANSACCION.MENSUALIDAD) {
+        console.log('Datos:', { id_billetera, id_tipo_transaccion, id_pago_asociado, monto });
+        if (parseInt(id_tipo_transaccion) === TIPOS_TRANSACCION.MENSUALIDAD) {
             response = await pagarMensualidadDB(id_pago_asociado, connection);
-        } else if (id_tipo_transaccion === TIPOS_TRANSACCION.RESERVACION) {
+        } else if (parseInt(id_tipo_transaccion) === TIPOS_TRANSACCION.RESERVACION) {
             response = await pagarReservacionDB(id_pago_asociado, connection);
-        } else if (id_tipo_transaccion === TIPOS_TRANSACCION.COMPRA_COMERCIO) {
+        } else if (parseInt(id_tipo_transaccion) === TIPOS_TRANSACCION.COMPRA_COMERCIO) {
             response = await pagarCompraDB(id_pago_asociado, connection);
-        } else if (id_tipo_transaccion === TIPOS_TRANSACCION.SERVICIO) {
+        } else if (parseInt(id_tipo_transaccion) === TIPOS_TRANSACCION.SERVICIO) {
             response = await pagarServicioDB(id_pago_asociado, connection);
         }
+        console.log('Response:', response);
         if (!response) {
             throw new Error('No se encontró el pago asociado o ya está pagado.');
         }
-        await actualizarBilleteraDB(id_billetera, (monto * -1), connection);
+        await actualizarBilleteraDB(id_billetera, (monto), connection);
         return response;
     }
 

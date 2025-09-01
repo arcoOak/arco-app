@@ -32,7 +32,7 @@ export default function Balance() {
             try {
                 const response = await transaccionesService.getTransaccionesPendientes(user.id_socio);
 
-                console.log('Pagos pendientes:', response);
+                //console.log('Pagos pendientes:', response);
                 setPagosPendientes(response);
 
                 const totalDeuda = response.reduce((total, pago) => total + parseFloat(pago.total_transaccion), 0)

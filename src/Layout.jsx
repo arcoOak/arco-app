@@ -5,6 +5,10 @@ import { useCarrito } from "./context/CartContext";
 import VistaCarrito from "./components/cart/VistaCarrito";
 import ModalCarrito from "./components/cart/ModalCarrito";
 
+import {useNotificaciones} from './context/NotificacionesContext';
+import VistaNotificaciones from "./components/notificaciones/VistaNotificaciones";
+import ModalNotificaciones from "./components/notificaciones/ModalNotificaciones";
+
 import './css/Wrapper.css'; // Importa tu CSS para el layout
 
 import Navbar from "./pages/Navbar";
@@ -16,6 +20,9 @@ export default function Layout() {
 
     const { elementosCarrito, totalItems } = useCarrito(); // Obtiene los elementos del carrito desde el contexto
     const [carritoVisible, setCarritoVisible] = useState(false); // Estado para controlar la visibilidad del carrito
+
+    const { notificaciones, noVistasCount, marcarComoVista } = useNotificaciones();
+    const [notificacionesVisible, setNotificacionesVisible] = useState(false);
 
     const menuItems = [
         { icon: "bx bxs-home-alt-2", label: "Inicio", path: "/" },
@@ -33,10 +40,17 @@ export default function Layout() {
 
     return (
         <div className="app-container">
-            {/* ... Tu barra de navegación superior o inferior ... */}
-            <ModalCarrito visible={totalItems > 0} cantidad={totalItems} onPress={() => setCarritoVisible(!carritoVisible)} />
+            <div className="floating-modals-container">
+                <ModalCarrito visible={totalItems > 0} cantidad={totalItems} onPress={() => setCarritoVisible(!carritoVisible)} />
+                <ModalNotificaciones cantidadNoVistas={noVistasCount} visible={notificaciones.length > 0} onPress={() => setNotificacionesVisible(!notificacionesVisible)} />
+            </div>
+
             {carritoVisible && 
-            (<VistaCarrito onClose={() => setCarritoVisible(false)}></VistaCarrito>)
+                (<VistaCarrito onClose={() => setCarritoVisible(false)}></VistaCarrito>)
+            }
+
+            {notificacionesVisible && 
+                (<VistaNotificaciones onClose={() => setNotificacionesVisible(false)}></VistaNotificaciones>)
             }
 
             <Navbar/>

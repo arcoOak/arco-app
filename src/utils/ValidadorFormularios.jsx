@@ -1,3 +1,6 @@
+
+
+
 const ValidadorFormularios = (listaDeCampos) => {
     const errors = {};
     for (const [key, value] of Object.entries(listaDeCampos)) {

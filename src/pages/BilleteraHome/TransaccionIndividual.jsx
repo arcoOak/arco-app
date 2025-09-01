@@ -8,10 +8,14 @@ import ExitosoModal from '../../components/modals/ExitosoModal';
 
 import transaccionesService from '../../services/transacciones.service'; // Importa el servicio de billetera
 
+import billeteraService from '../../services/billetera.service.js';
+
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 import BotonVolver from '../../components/buttons/ButtonVolver';
 import Button from '../../components/buttons/Button';
+
+import {TIPOS_TRANSACCION } from '../../constants/transaccion.constants';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -61,7 +65,7 @@ const TransaccionIndividual = () => {
             obtenerRegistroTransaccion();
         }
 
-    },[user] );
+    },[user, id] );
 
     const actualizarTransaccion = async () => {
         if (!user) return;
@@ -70,7 +74,7 @@ const TransaccionIndividual = () => {
             const response = await transaccionesService.getTransaccionPorId(id);
             console.log(response);
             setRegistroTransaccion(response.transaccion);
-            setListaElementosTransaccion(response.listaElementosTransaccion);
+            setListaElementosTransaccion(response.datosTransaccion);
         } catch (error) {
             console.error('Error al obtener el registro de transacciones:', error);
         } finally {
@@ -88,9 +92,19 @@ const TransaccionIndividual = () => {
                     id_pago_asociado: registroTransaccion.id_pago_asociado,
                     id_billetera: user.id_billetera,
                     id_tipo_transaccion: registroTransaccion.id_tipo_transaccion,
-                    monto: (registroTransaccion.total_transaccion)
+                    monto: (registroTransaccion.monto)
                 }
-                const response = await transaccionesService.pagarTransaccion(transaccionData);
+
+
+                console.log('Datos de transacción:', transaccionData);
+
+                let response;
+
+                if(TIPOS_TRANSACCION.RECARGA == transaccionData.id_tipo_transaccion){
+                    response = await billeteraService.validarRecarga(transaccionData);
+                }else{
+                    response = await transaccionesService.pagarTransaccion(transaccionData);
+                }
                 
                 if(response) {
                     setShowExitosoModal(true);
@@ -119,11 +133,15 @@ const TransaccionIndividual = () => {
 
 
     if (!registroTransaccion || registroTransaccion.length === 0) {
+
         return (
+            <React.Fragment>
+                <BotonVolver to={backLocation} />
             <div className="payment-detail-container">
                 <h2>Detalle del Pago no encontrado</h2>
                 <button className="back-button" onClick={() => navigate(backLocation)}>Volver al Inicio</button>
             </div>
+        </React.Fragment>
         );
     }
 
@@ -138,74 +156,59 @@ const TransaccionIndividual = () => {
 
         <BotonVolver to={backLocation} />
 
-        <div className="payment-detail-container">
+        <div className="payment-individual-detail-container">
 
-            
 
-            <div className="detail-header">
-                <h2>Detalle de Pago</h2>
-            </div>
+            <div className="payments-individual-container">
 
-            <div className="payments-container">
+                <div className={`payment-individual-header ${registroTransaccion.estado_transaccion ? 'pago' : 'pendiente'}`}>
+                    <h2 className='payment-title-individual'>{registroTransaccion.tipo_transaccion}</h2>
+                </div>
+                <div className="payment-individual-details">
+                    <p className='payment-individual-date'><strong>Fecha: </strong> {formatDate(registroTransaccion.fecha_generacion)}</p>
+                    <p className='payment-individual-amount'><strong>Monto Total: </strong> ${registroTransaccion.monto}</p>
 
-                    <div className={`detail-card ${registroTransaccion.estado_transaccion ? 'pago' : 'pendiente'}`} >
-                        <div className={`payment-header ${registroTransaccion.estado_transaccion ? 'pago' : 'pendiente'}`}>
-                            <h3 className='payment-title'>{registroTransaccion.tipo_transaccion}</h3>
-                        </div>
-                        <div className="payment-details">
-                        <p className='payment-date'><strong>Fecha: </strong> {formatDate(registroTransaccion.fecha_generacion)}</p>
-                        <p className='payment-amount'><strong>Monto Total: </strong> ${registroTransaccion.monto}</p>
+                    {/* La hora y referencia solo se muestran si ya está pagado */}
+                    {registroTransaccion.estado_transaccion === 1 && (
+                        <p><strong>Fecha de Pago:</strong> {formatDate(registroTransaccion.fecha_transaccion)}</p>
+                    )}
 
-                        {/* La hora y referencia solo se muestran si ya está pagado */}
-                        {
-                        registroTransaccion.estado_transaccion == 1 && (
-                            <>
-                                <p><strong>Fecha de Pago:</strong> {formatDate(registroTransaccion.fecha_transaccion)}</p>
-                            </>
-                        )}
+                    <table className={'payment-individual-tabla-elementos'}>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <th>Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {listaElementosTransaccion.map((elemento, index) => (
+                            <tr key={index} className="payment-individual-elemento">
+                                <td>{elemento.nombre_transaccion}</td>
+                                <td>{elemento.cantidad}</td>
+                                <td>${elemento.coste_total}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
 
-                        <table className={'payment-tabla-elementos'}>
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Cantidad</th>
-                                    <th>Importe</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                listaElementosTransaccion.map((elemento, index) => (
-                                    <tr key={index} className="payment-elemento">
-                                        <td>{elemento.nombre_transaccion}</td>
-                                        <td>{elemento.cantidad}</td>
-                                        <td>${elemento.coste_total}</td>
-                                    </tr>
-                                ))
-                            }
-                            </tbody>
-                        </table>
-
-                        {registroTransaccion.estado_transaccion == 0 && (
-                            <Button
-                                className='primary'
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Detiene la propagación del evento
-                                    handlePagar()}
-                                }
-                            >
-                                Pagar
-                            </Button>
-                            
-                        ) }
-
+                    {registroTransaccion.estado_transaccion === 0 && registroTransaccion.id_tipo_transaccion != TIPOS_TRANSACCION.RECARGA && (
+                        <Button
+                            className='primary'
+                            onClick={(e) => {
+                                e.stopPropagation(); // Detiene la propagación del evento
+                                handlePagar();
+                            }}
+                        >
+                            Pagar
+                        </Button>
+                    )}
                 </div>
             </div>
-            
-            </div>
-            
         </div>
         </React.Fragment>
     )
     };
+
 
 export default TransaccionIndividual;

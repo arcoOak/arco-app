@@ -40,6 +40,7 @@ const obtenerSaldoBilleteraDB = async(id_billetera, connection) => {
 
 const actualizarBilleteraDB = async (id_billetera, monto, db_connection) =>{
     const executor = db_connection || pool;
+    console.log('Actualizando billetera:', {id_billetera, monto});
     try{
 
         const [rows] = await executor.execute(`
@@ -59,7 +60,7 @@ const crearRecargaDB = async (id_billetera, id_metodo_pago, connection) => {
     try {
         const [result] = await executor.execute(`
             INSERT INTO billeteras_recargas (id_billetera, id_metodo_pago, estado) 
-            VALUES (?, ?, ?)`, [id_billetera, id_metodo_pago, 1]);
+            VALUES (?, ?, ?)`, [id_billetera, id_metodo_pago, 0]);
         return result.insertId; // Retorna el ID de la recarga creada
     } catch (error) {
         console.error('Error creando recarga:', error);
@@ -80,6 +81,17 @@ const crearBilleteraDB = async (id_socio, id_usuario, db_connection) => {
     }
 }
 
+const validarRecargaDB = async (id_recarga, connection) => {
+    const db_connection = connection || pool;
+    try {
+        const [rows] = await db_connection.execute('UPDATE billeteras_recargas SET estado = 1 WHERE id_billetera_recarga = ?', [id_recarga]);
+        return rows[0]; // Assuming there's only one wallet per user
+    } catch (error) {
+        console.error('Error consultando recarga:', error);
+        throw error;
+    }
+}
+
 export {
     getBilleteraSocioDB,
     getBilleteraIdDB,
@@ -87,4 +99,5 @@ export {
     actualizarBilleteraDB,
     crearRecargaDB,
     crearBilleteraDB,
+    validarRecargaDB
 };

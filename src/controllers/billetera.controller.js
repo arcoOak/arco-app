@@ -56,6 +56,30 @@ const recargarSaldo = async (req, res) =>{
 
 }
 
+const validarRecarga = async (req, res) => {
+    const { id_billetera, id_pago_asociado, monto } = req.body;
+    const connection = await pool.getConnection();
+
+    console.log('Validando recarga:', { id_billetera, id_pago_asociado, monto });
+
+    try {
+        await connection.beginTransaction();
+        const billetera = await Billetera.obtenerBilleteraId(id_billetera, connection);
+        await billetera.validarRecarga(id_pago_asociado, monto, connection);
+        await connection.commit();
+
+        return res.status(200).json({ message: 'Recarga validada exitosamente' });
+
+    } catch (error) {
+        await connection.rollback();
+        console.error('Error al validar recarga:', error);
+        res.status(500).json({ message: 'Error interno del servidor al validar recarga' });
+
+    } finally {
+        connection.release();
+    }
+}
+
 const getSaldoBilletera = async (req, res) => {
     const { id_billetera } = req.params;
     try {
@@ -72,5 +96,6 @@ export default {
     getBilleteraBySocio,
     getBilleteraById,
     recargarSaldo,
+    validarRecarga,
     getSaldoBilletera
 };

@@ -52,10 +52,14 @@
   text-align: left;
 }
 
-
+.titleNotification{
+  display: flex;
+  align-items: center;
+}
 
 .titleNotification i{
   color: var(--color-text-secondary);
+  margin-right: var(--spacing-xxl);
 }
 
 .notification {

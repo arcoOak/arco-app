@@ -63,7 +63,8 @@
 
   --color-active: #007bff;
 
-  --color-border-active: #0056b3; ;
+  --color-border-active: #0056b3; 
+
 
   /* Botones */
   --color-button-primary: #4070f4;
@@ -156,7 +157,7 @@ body.dark-theme {
   --color-surface-secondary: #1f2937; /* Usado para sidebar, modals, etc. */
   --color-surface-tertiary: #3D4859;
   --color-surface-contrast: #1F2936;
-  --color-surface-overlay: rgba(0, 0, 0, 0.7);
+  --color-surface-overlay: rgba(0, 0, 0, 0.85);
 
   /* Borders */
   --color-border-primary: #3B475C;
@@ -183,6 +184,9 @@ body.dark-theme {
   --color-button-tertiary: #3D4859;
 
   --color-button-volver: #111827;
+
+
+
 }
 
 

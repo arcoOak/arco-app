@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo, useContext, useRef } from 'react';
 
-import notificacionesService from '../../services/notificaciones.service';
-
 import LoadingModal from '../../components/modals/LoadingModal';
 
 import { useNavigate } from 'react-router-dom';
@@ -43,13 +41,7 @@ const Notificaciones = ()=> {
         const fetchNotificaciones = async ()=>{
             try {
 
-                const [notificacionesRespuesta , categoriasRespuesta] = await Promise.all([
-                    notificacionesService.getNotificacionesPorMesAnho(user.id_usuario, mesSeleccionado || 
-                        new Date().getMonth() + 1, 
-                        new Date().getFullYear()
-                    ),
-                    notificacionesService.getCategoriasNotificaciones(user.id_usuario)
-                ]);
+                
 
                 setNotificaciones(notificacionesRespuesta);
                 setCategorias(categoriasRespuesta);
@@ -71,24 +63,7 @@ const Notificaciones = ()=> {
             setMesSeleccionado(mes);
         
             const fetchNotificacionesFecha = async () => {
-                try {
-                    setLoading(true);
-                    const notificacionesRespuesta = await notificacionesService.getNotificacionesPorMesAnho(user.id_usuario, mes, anhoSeleccionado);
-                    setNotificaciones(notificacionesRespuesta);
-
-                    setNotificacionesFiltradas(notificacionesRespuesta);
-                    setCategoriaSeleccionada(null); // Reset category selection when changing month                 
-
-                } catch (error) {
-                    console.error("Error fetching notificaciones por fecha:", error);
-
-                    setNotificacionesFiltradas([]);
-                    setCategoriaSeleccionada(null); // Reset category selection on error
-                } finally{
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 500); 
-                }
+                
 
             }
             fetchNotificacionesFecha();

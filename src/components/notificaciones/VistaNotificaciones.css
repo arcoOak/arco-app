@@ -1,0 +1,183 @@
+/* Overlay for the notifications view */
+.vista-notificacion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-surface-overlay);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to the top */
+  z-index: 1050;
+  padding-top: 5rem; /* Give some space from the top */
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Main container for the notifications */
+.vista-notificacion {
+  background-color: var(--color-surface-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-md);
+  width: 90%;
+  padding: 0 var(--spacing-md);
+  max-width: 450px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.3s ease-out;
+  border: 2px solid var(--color-border-primary);
+}
+
+/* Header section */
+.vista-notificacion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.vista-notificacion-header .fa-bell {
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  margin-right: 0.5rem;
+}
+
+.vista-notificacion-title {
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* Close button */
+.vista-notificacion-cerrar {
+  font-size: 1.5rem;
+    padding: 0rem 0.5rem;
+    background-color: var(--color-transparent);
+    border: solid 2px var(--color-border-primary);
+    border-radius: var(--border-radius-full);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+
+/* List of notifications */
+.vista-notificacion-lista {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-md);
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Individual notification item */
+.vista-notificacion-item {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-surface-tertiary);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.vista-notificacion-icon{
+    width: 10%;
+}
+
+.vista-notificacion-contenido{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Icon within the item */
+.vista-notificacion-item .fa-info-circle {
+  grid-row: 1 / span 2;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+  align-self: center;
+}
+
+/* Main notification text */
+.vista-notificacion-item span {
+  grid-column: 2;
+  font-weight: 500;
+}
+
+.vista-notificacion-comercio {
+  grid-column: 2;
+  font-size: 0.875rem;
+  color: #777;
+}
+
+.vista-notificacion-fecha {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* Style for unread notifications */
+.vista-notificacion-item.no-visto .vista-notificacion-icon {
+  animation: shake-text 0.75s ease-in-out infinite;
+}
+
+.vista-notificacion-titulo{
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.vista-notificacion-item .vista-notificacion-fecha,
+.vista-notificacion-item .vista-notificacion-comercio {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.vista-notificacion-item.no-visto{
+    animation: shake-border 0.75s ease-in-out infinite;
+}
+
+
+  @keyframes shake-text {
+    0% { color: var(--color-warning);}
+    50% { color: var(--color-text-secondary);}
+    100% { color: var(--color-warning);}
+  }
+
+  @keyframes shake-border {
+    0% { border-color: var(--color-warning);}
+    50% { border-color: var(--color-border-primary);}
+    100% { border-color: var(--color-warning);}
+  }
+
+/* Empty state message */
+.vista-notificacion-vacio {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+.vista-notificacion-vacio:hover {
+    background-color: transparent;
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

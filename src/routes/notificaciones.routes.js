@@ -5,11 +5,7 @@ import notificacionesController from '../controllers/notificaciones.controller.j
 const router = express.Router();
 
 router.get('/:id_usuario', notificacionesController.getAllNotificaciones);
-router.get('/:id_usuario/ultima', notificacionesController.getUltimasNotificaciones);
-router.get('/:id_usuario/:id_notificacion', notificacionesController.getNotificacionPorId);
-router.get('/:id_usuario/categoria/activas', notificacionesController.getCategoriasNotificaciones);
-router.get('/:id_usuario/categoria/:id_categoria', notificacionesController.getNotificacionesPorCategoria);
-router.get('/:id_usuario/mes/:mes/anho/:anho', notificacionesController.getNotificacionesPorMesAnho);
-
+router.post('/visualizar/:id_notificacion', notificacionesController.marcarNotificacionComoVista);
+router.post('/:id_usuario', notificacionesController.crearNotificacion);
 
 export default router;

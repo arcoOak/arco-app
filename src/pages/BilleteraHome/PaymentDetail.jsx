@@ -113,7 +113,11 @@ const PaymentDetail = () => {
                 id_tipo_transaccion: transaccion.id_tipo_transaccion,
                 monto: transaccion.total_transaccion
             }
-            const response = await transaccionesService.pagarTransaccion(transaccionData);
+            if(TIPOS_TRANSACCION.RECARGA == transaccionData.id_tipo_transaccion){
+                response = await billeteraService.validarRecarga(transaccionData);
+            }else{
+                response = await transaccionesService.pagarTransaccion(transaccionData);
+            }
             
             if(response) {
                 setShowExitosoModal(true);
@@ -212,7 +216,7 @@ const PaymentDetail = () => {
  
 
                 {/* Mostrar el botón "Reportar Pago" solo si el estado es 'pendiente' */}
-                {estadoPagoUnidad == 0 && (
+                {estadoPagoUnidad == 0 && payment.id_tipo_transaccion !== TIPOS_TRANSACCION.RECARGA && (
                     <Button
                         className='primary'
                         onClick={(e) => {

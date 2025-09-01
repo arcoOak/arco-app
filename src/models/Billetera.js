@@ -4,7 +4,8 @@ import {
     actualizarBilleteraDB,
     getBilleteraSocioDB,
     getBilleteraIdDB,
-    crearBilleteraDB
+    crearBilleteraDB,
+    validarRecargaDB
 } from './billetera.model.js';
 
 import {    
@@ -55,7 +56,6 @@ class Billetera {
         const nuevoSaldo = this.saldo_actual + montoNum;
 
         const id_recarga = await crearRecargaDB(this.id_billetera, id_metodo_pago, connection);
-        await actualizarBilleteraDB(this.id_billetera, montoNum, connection);
         await createTransaccionDB(
             this.id_billetera,
             TIPOS_TRANSACCION.RECARGA,
@@ -64,6 +64,12 @@ class Billetera {
             connection
         );
         this.saldo_actual = nuevoSaldo;
+    }
+
+    async validarRecarga(id_recarga, monto, connection) {
+        const montoNum = Number(monto);
+        await validarRecargaDB(id_recarga, connection);
+        await actualizarBilleteraDB(this.id_billetera, montoNum, connection);
     }
 
     async debitarSaldo(monto) {

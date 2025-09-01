@@ -9,13 +9,13 @@ import data_dbService from "../../services/data_db.service";
 
 import ModalFormulario from "../modals/ModalFormulario";
 
-export default function BalanceSection() {
+export default function TarjetaRecargar() {
 
     const {user, actualizarSaldoBilletera} = useAuth();
 
     const [monto, setMonto] = useState(0);
     const [metodosPago, setMetodosPago] = useState([]);
-    const [metodoSeleccionado, setMetodoSeleccionado] = useState(null);
+    const [metodoSeleccionado, setMetodoSeleccionado] = useState('');
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -51,19 +51,35 @@ export default function BalanceSection() {
 
     const handleModalClose = () => {
         setIsModalOpen(false);
+        // Resetea los campos del formulario al cerrar
+        setMonto(0);
+        setMetodoSeleccionado('');
     };
 
-    const handleModalSubmit = async () => {
-        recargarSaldo();
-        setIsModalOpen(false);
+    const handleModalSubmit = async (event) => {
+        // Es una buena práctica prevenir el comportamiento por defecto del formulario.
+        if (event) event.preventDefault();
+        console.log('Monto a recargar:', monto);
+        console.log('Método de pago seleccionado:', metodoSeleccionado);
+        
+        // Validador: comprueba si los datos son inválidos y sale de la función
+        if (!monto || parseFloat(monto) <= 0 || !metodoSeleccionado) {
+            console.log("Validación fallida. El modal no debería cerrarse.");
+            // Si el modal se sigue cerrando, el problema reside en el componente ModalFormulario,
+            // que podría estar llamando a onClose incondicionalmente.
+            return;
+        }
+
+        await recargarSaldo();
+        handleModalClose(); // Cierra y resetea el modal
     };
 
     return (
         <React.Fragment>
             <ModalFormulario
                 visible={isModalOpen}
-                onClose={() => handleModalClose()}
-                onSubmit={() => handleModalSubmit()}
+                onClose={handleModalClose}
+                onSubmit={handleModalSubmit}
                 titulo="Recargar Saldo"
                 data={{ monto, metodoSeleccionado }}
             >
@@ -82,8 +98,9 @@ export default function BalanceSection() {
                         value={metodoSeleccionado}
                         onChange={(e) => setMetodoSeleccionado(e.target.value)}
                         className="box-form-container-input"
+                        required
                     >
-                        <option value="">Seleccionar</option>
+                        <option value="" disabled>Seleccionar</option>
                         {metodosPago.map((metodo) => (
                             <option key={metodo.id_metodo_pago} value={metodo.id_metodo_pago}>
                                 {metodo.nombre_metodo_pago}

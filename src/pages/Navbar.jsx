@@ -11,11 +11,15 @@ import {useAuth } from '../context/AuthContext'; // Importa el contexto de auten
 
 // Es una buena práctica definir constantes que no dependen del estado o props fuera del componente.
 // Esto evita que se recreen en cada renderizado.
-const menuItems = [
+const ownItems = [
     { name: 'Inicio', icon: 'home', path: '/' },
     { name: 'Mis Reservas', icon: 'calendar_month', path: '/reservas' },
     { name: 'Mis Servicios', icon: 'work', path: '/mis-servicios' },
     { name: 'Mis Compras', icon: 'shopping_cart', path: '/compras' },
+    
+];
+
+const menuItems = [
     { name: 'Espacios', icon: 'location_on', path: '/espacios' },
     { name: 'QR', icon: 'qr_code_scanner', path: '/qr' },
     { name: 'Noticias', icon: 'article', path: '/noticias' },
@@ -25,6 +29,8 @@ const menuItems = [
     { name: 'Ajustes', icon: 'settings', path: '/perfil' },
 ];
 
+
+
 const Navbar = () => {
 
     const navigate = useNavigate(); // Hook para navegar programáticamente
@@ -33,6 +39,8 @@ const Navbar = () => {
     const [activeMenuItem, setActiveMenuItem] = useState('Inicio'); // State for active menu item
 
     const { isDarkTheme, toggleTheme, logo } = useAuth();
+
+   
 
     // Function to toggle sidebar
     const toggleSidebar = () => {
@@ -60,10 +68,6 @@ const Navbar = () => {
         };
     }, []);
 
-    const handleNotification = () => {
-        navigate(`notifications_user`)
-    };
-
     const handleSeleccionarBoton = (e, item) => {
         e.preventDefault(); // Prevenir el comportamiento por defecto de la etiqueta <a>
         setActiveMenuItem(item.name);
@@ -84,13 +88,6 @@ const Navbar = () => {
                     <button className="sidebar-toggle" onClick={toggleSidebar}>
                         <i className='fa fa-solid fa-bars'></i>
                     </button>
-                </div>
-                <div
-                    className="titleNotification"
-                    onClick={handleNotification}
-                >
-                    <div className="notification"></div>
-                    <i className='fa-solid fa-bell'></i>
                 </div>
             </div>
 
@@ -117,6 +114,26 @@ const Navbar = () => {
                         <span className="material-symbols-rounded">search</span>
                         <input type="search" placeholder="Buscar..." required />
                     </form>
+
+
+                    {/* Own Sidebar Menu */}
+
+                    <ul className='menu-list'>
+                    {ownItems.map((item) => (
+                        <li className="menu-item own" key={item.name}>
+                            <a
+                                href="#"
+                                className={`menu-link ${activeMenuItem === item.name ? 'active' : ''}`}
+                                onClick={(e) => handleSeleccionarBoton(e, item)}
+                            >
+                                <span className="material-symbols-rounded">{item.icon}</span>
+                                <span className="menu-label">{item.name}</span>
+                            </a>
+                        </li>
+                    ))}
+                    </ul>
+
+                    <hr />
 
                     {/* Sidebar Menu */}
                     <ul className="menu-list">

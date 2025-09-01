@@ -7,12 +7,15 @@ import LoadingModal from '../../components/modals/LoadingModal';
 import ExitosoModal from '../../components/modals/ExitosoModal';
 
 import transaccionesService from '../../services/transacciones.service'; // Importa el servicio de transacciones
-
+import billeteraService from '../../services/billetera.service.js';
 
 import { useAuth } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 import Button from '../../components/buttons/Button';
 import ButtonVolver from '../../components/buttons/ButtonVolver';
+
+import {TIPOS_TRANSACCION} from '../../constants/transaccion.constants.js'; 
+
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -25,7 +28,7 @@ const PagarPendientes = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const { user } = useAuth(); // Obtiene el usuario del contexto de autenticación
+    const { user, actualizarSaldoBilletera } = useAuth(); // Obtiene el usuario del contexto de autenticación
 
     const [pagosPendientes, setPagosPendientes] = useState([]); // 
 
@@ -77,10 +80,19 @@ const PagarPendientes = () => {
                 id_tipo_transaccion: transaccion.id_tipo_transaccion,
                 monto: (transaccion.total_transaccion)
             }
-            const response = await transaccionesService.pagarTransaccion(transaccionData);
+
+            let response;
+
+            if(TIPOS_TRANSACCION.RECARGA == transaccionData.id_tipo_transaccion){
+                response = await billeteraService.validarRecarga(transaccionData);
+            }else{
+                response = await transaccionesService.pagarTransaccion(transaccionData);
+            }
+            
 
             if(response) {
                 setShowExitosoModal(true);
+                actualizarSaldoBilletera();
             }
 
         } catch (error) {
@@ -104,9 +116,9 @@ const PagarPendientes = () => {
         return (
             <React.Fragment>
                 <ButtonVolver to={backLocation} className="boton-volver" />
-            <div className="payment-detail-container">
-                <h2>No se encontraron pagos pendientes</h2>
-            </div>
+                <div className="payment-detail-container">
+                    <h2>No se encontraron pagos pendientes</h2>
+                </div>
             </React.Fragment>
         );
     }
@@ -136,13 +148,15 @@ const PagarPendientes = () => {
                         <p className='payment-date'><strong>Fecha: </strong> {formatDate(payment.fecha_generacion)}</p>
                         <p className='payment-amount'><strong>Monto: </strong> ${payment.total_transaccion}</p>
 
+                    { payment.id_tipo_transaccion !== TIPOS_TRANSACCION.RECARGA &&
                     <Button
                         onClick={() => {handlePagar(payment)}}
                         className='primary'
                     >
                         Pagar
                     </Button>
-                 
+                    }
+
                 </div>
             </div>)
             )}

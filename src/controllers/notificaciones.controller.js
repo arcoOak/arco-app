@@ -1,102 +1,91 @@
-import {
-    getAllNotificacionesDB,
-    getNoticiaPorIdDB,
-    getUltimasNotificacionesDB,
-    getNotificacionesPorCategoriaDB,
-    getNotificacionesPorMesAnhoDB,
-    getCategoriasNotificacionesDB
-} from '../models/Notificaciones.model.js';
+import { Notificacion } from "../models/Notificacion.js";
 
+import {pool} from '../config/db.config.js';
 
 const getAllNotificaciones = async (req, res) => {
     const { id_usuario } = req.params;
+    let connection
     try {
-        const Notificaciones = await getAllNotificacionesDB(id_usuario);
-        if (!Notificaciones || Notificaciones.length === 0) {
+        connection = await pool.getConnection();
+        const notificaciones = await Notificacion.getAllNotificaciones(id_usuario, connection);
+        if (!notificaciones || notificaciones.length === 0) {
             return res.status(404).json({ message: 'No hay Notificaciones disponibles' });
         }
-        res.status(200).json(Notificaciones);
+        //console.log('Notificaciones Controller:', notificaciones);
+        res.status(200).json(notificaciones);
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener las Notificaciones', error });
+        res.status(500).json({ message: 'Error al obtener las Notificaciones', error: error.message });
+    }finally {
+        if (connection) connection.release();
+    }
+
+}
+
+const marcarNotificacionComoVista = async(req, res) =>{
+    const { id_notificacion } = req.params;
+    let connection;
+    try{
+
+        connection = await pool.getConnection();
+        await connection.beginTransaction();
+
+        const notificacion = await Notificacion.getNotificacionPorId(id_notificacion, connection);
+
+        if (!notificacion) {
+            await connection.rollback();
+            return res.status(404).json({ message: 'Notificación no encontrada' });
+        }
+
+        console.log('Notificacion a marcar como vista:', notificacion);
+        // Se pasa el `id_notificacion` de los parámetros de la ruta para evitar el error 'undefined',
+        // ya que la propiedad en el objeto `notificacion` podría no llamarse `id_notificacion`.
+        await notificacion.marcarComoVista(connection);
+        await connection.commit();
+        res.status(200).json({ message: 'Notificación marcada como vista' });
+    } catch (error) {
+        // Asegurarse de que la conexión existe antes de hacer rollback
+        if (connection) await connection.rollback();
+        res.status(500).json({ message: 'Error al marcar la Notificación como vista', error: error.message });
+    }finally {
+        if (connection) connection.release();
     }
 }
 
-const getNoticiaPorId = async (req, res) =>{
-    const { id_usuario, id_noticia } = req.params;
-    
+const crearNotificacion = async (req, res) =>{
+    const { 
+        id_usuario, 
+        id_club, 
+        fecha_activacion_notificacion, 
+        estado_visualizacion,
+        id_categoria_notificacion, 
+        id_tipo_transaccion, 
+        id_asociado } = req.body;
+
+    let connection;
     try {
-        const noticia = await getNoticiaPorIdDB(id_usuario, id_noticia);
-        // Verifica si la noticia existe
-        if (!noticia || noticia.length === 0) {
-            return res.status(404).json({ message: 'Noticia no encontrada' });
-        }
-        res.status(200).json(noticia[0]);
+        connection = await pool.getConnection();
+        const notificacion = new Notificacion({
+            id_usuario,
+            id_club,
+            fecha_activacion_notificacion,
+            estado_visualizacion,
+            id_categoria_notificacion,
+            id_tipo_transaccion,
+            id_asociado
+        });
+        const result = await notificacion.save(connection);
+        res.status(201).json({ message: 'Notificación creada', notificacion: result });
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener la noticia', error });
+        res.status(500).json({ message: 'Error al crear la Notificación', error });
+    }finally {
+        if (connection) connection.release();
     }
 }
 
-const getUltimasNotificaciones = async (req, res) => {
-    const { id_usuario } = req.params;
-    try{
-        const Notificaciones = await getUltimasNotificacionesDB(id_usuario);
-        if (!Notificaciones || Notificaciones.length === 0) {
-            return res.status(404).json({ message: 'No hay Notificaciones disponibles' });
-        }
 
-        res.status(200).json(Notificaciones);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al obtener la última noticia', error });
-    }
-}
-
-const getNotificacionesPorCategoria = async (req, res) => {
-    const { id_usuario, id_categoria } = req.params;
-    try{
-        const Notificaciones = await getNotificacionesPorCategoriaDB(id_usuario, id_categoria);
-        if (!Notificaciones || Notificaciones.length === 0) {
-            return res.status(404).json({ message: 'No hay Notificaciones disponibles para esta categoría' });
-        }
-        res.status(200).json(Notificaciones);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al obtener Notificaciones por categoría', error });
-    }
-}
-
-const getNotificacionesPorMesAnho = async (req, res) => {
-    const { id_usuario, mes, anho } = req.params;
-    try {
-        const Notificaciones = await getNotificacionesPorMesAnhoDB(mes, anho, id_usuario);
-        if (!Notificaciones || Notificaciones.length === 0) {
-            return res.status(404).json({ message: 'No hay Notificaciones disponibles para este mes y año' });
-        }
-        res.status(200).json(Notificaciones);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al obtener Notificaciones por mes y año', error });
-    }
-}
-
-const getCategoriasNotificaciones = async (req, res) =>{
-    const { id_usuario } = req.params;
-
-    try{
-
-        const categorias = await getCategoriasNotificacionesDB(id_usuario);
-        if (!categorias || categorias.length === 0) {
-            return res.status(404).json({ message: 'No hay categorías de Notificaciones disponibles' });
-        }
-        res.status(200).json(categorias);
-
-    } catch (error){
-        res.status(500).json({ message: 'Error al obtener las categorías de Notificaciones', error });
-    }
-}
 
 export default {
     getAllNotificaciones,
-    getNoticiaPorId,
-    getUltimasNotificaciones,
-    getNotificacionesPorCategoria,
-    getNotificacionesPorMesAnho,
-    getCategoriasNotificaciones
+    marcarNotificacionComoVista,
+    crearNotificacion
 }

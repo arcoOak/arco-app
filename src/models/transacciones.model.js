@@ -21,19 +21,17 @@ const getTransaccionesPendientesDB = async (id_socio, connection) => {
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.RESERVACION} THEN (SELECT rs.estado FROM reservaciones rs WHERE rs.id_reservacion = bt.id_pago_asociado)
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.COMPRA_COMERCIO} THEN (SELECT cc.estado FROM compras_comercio cc WHERE cc.id_compra_comercio = bt.id_pago_asociado)
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.SERVICIO} THEN (SELECT ps.estado FROM reservaciones_servicios ps WHERE ps.id_reservacion_servicio = bt.id_pago_asociado)
-                WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.RECARGA} THEN (SELECT br.estado FROM billeteras_recargas br WHERE br.id_billetera_recarga = bt.id_pago_asociado)
             END AS estado_transaccion,
             CASE 
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.MENSUALIDAD} THEN (SELECT ms.fecha FROM mensualidades_socios ms WHERE ms.id_mensualidad_socio = bt.id_pago_asociado)
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.RESERVACION} THEN (SELECT rs.fecha_creacion FROM reservaciones rs WHERE rs.id_reservacion = bt.id_pago_asociado)
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.COMPRA_COMERCIO} THEN (SELECT cc.fecha_compra FROM compras_comercio cc WHERE cc.id_compra_comercio = bt.id_pago_asociado)
                 WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.SERVICIO} THEN (SELECT ps.fecha_creacion FROM reservaciones_servicios ps WHERE ps.id_reservacion_servicio = bt.id_pago_asociado)
-                WHEN bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.RECARGA} THEN bt.fecha_transaccion
             END AS fecha_generacion
             FROM billeteras_transacciones bt
             JOIN data_tipo_transaccion dtt ON dtt.id_tipo_transaccion = bt.id_tipo_transaccion
             JOIN billeteras b ON b.id_billetera = bt.id_billetera
-            WHERE b.id_socio = ? ) t HAVING t.estado_transaccion = 0
+            WHERE b.id_socio = ? AND bt.id_tipo_transaccion != ${TIPOS_TRANSACCION.RECARGA} ) t HAVING t.estado_transaccion = 0
             `,
             [id_socio]);
         return rows;
@@ -199,10 +197,32 @@ const getTransaccionesSocioCompletoPorMesDB = async (id_socio, mes, anho) => {
                 LEFT JOIN reservaciones_servicios_horas rsh ON rsh.id_reservacion_servicio = rsv.id_reservacion_servicio
                 WHERE rsv.id_socio = ? 
                 GROUP BY rsv.id_reservacion_servicio
+
+                UNION ALL
+                
+                SELECT
+                    ${TIPOS_TRANSACCION.RECARGA} AS id_tipo_transaccion,
+                    br.estado AS estado_transaccion,
+                    dtt.nombre_transaccion AS tipo_transaccion,
+                    bt.monto AS total_transaccion,
+                    bt.fecha_transaccion AS fecha_generacion,
+                    bt.fecha_transaccion,
+                    NULL AS descripcion_contenido,
+                    NULL AS descripcion_cantidad,
+                    bt.id_billetera_transaccion,
+                    bt.id_pago_asociado
+                FROM billeteras_recargas br
+                JOIN data_tipo_transaccion dtt ON dtt.id_tipo_transaccion = ${TIPOS_TRANSACCION.RECARGA}
+                LEFT JOIN billeteras b ON br.id_billetera = b.id_billetera
+                LEFT JOIN billeteras_transacciones bt ON b.id_billetera = bt.id_billetera
+                    AND bt.id_tipo_transaccion = ${TIPOS_TRANSACCION.RECARGA}
+                    AND bt.id_pago_asociado = br.id_billetera_recarga
+                WHERE b.id_socio = ?
+
             ) t
             WHERE MONTH(t.fecha_generacion) = ? AND YEAR(t.fecha_generacion) = ?
             ORDER BY t.fecha_generacion DESC
-        `, [id_socio, id_socio, id_socio, id_socio, mes, anho]);
+        `, [id_socio, id_socio, id_socio, id_socio, id_socio, mes, anho]);
         return rows;
     } catch (error) {
         console.error('Error consultando transacciones completas por mes:', error);
@@ -254,7 +274,7 @@ const getDatosMensualidadDB = async (id_pago_asociado, connection) => {
         const [rows] = await executor.execute(`
             SELECT '1' as cantidad, 
             CONCAT(dtt.nombre_transaccion,' ',dts.nombre_tipo_socio) nombre_transaccion, 
-            dts.tarifa as coste_total,
+            dts.tarifa as coste_total
             FROM mensualidades_socios AS mens
             JOIN socios AS s ON mens.id_socio = s.id_socio      
             JOIN data_tipo_socio AS dts ON s.id_tipo_socio = dts.id_tipo_socio

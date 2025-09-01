@@ -53,6 +53,8 @@ import ReservasDetalle from "./pages/Reservas/ReservasDetalle"; // Importa el co
 import { useAuth } from "./context/AuthContext"; // Importa el contexto de autenticación
 import { CartProvider } from './context/CartContext'
 
+import {NotificacionesProvider} from './context/NotificacionesContext' // Importa el proveedor de notificaciones
+
 function App() {
     const { user, login, logout, isAuthenticated} = useAuth(); // Usa el contexto de autenticación
     // Estado para controlar la visibilidad del preloader inicial
@@ -104,7 +106,9 @@ function App() {
                     {/* El Layout ahora se aplicará solo a las rutas autenticadas */}
                     <Route element={
                         <CartProvider>
-                            <Layout />
+                            <NotificacionesProvider>
+                                <Layout />
+                            </NotificacionesProvider>
                         </CartProvider>
                         }>
                         <Route path="/" element={<Home />} />

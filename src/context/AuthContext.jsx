@@ -5,8 +5,6 @@ import authService from '../services/auth.service';
 import modificarSocio from '../services/modificar.service'; 
 import clubService from '../services/club.service'; // Importa el servicio de club
 
-import LoadingModal from '../components/modals/LoadingModal';
-
 import billeteraService from '../services/billetera.service'; // Importa el servicio de billetera
 
 import logoLight from '../img/logo.png'; // Importa tu logo
@@ -64,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     if (!user) return; // No hacer nada si no hay usuario
     try {
       const response = await billeteraService.getBilleteraBySocio(user.id_socio);
-      console.log('Respuesta de billetera:', response);
+      //console.log('Respuesta de billetera:', response);
       const saldo = response.saldo_actual || 0; // Asegurarse de que el saldo sea un número
       setSaldoBilletera(saldo);
     } catch (error) {

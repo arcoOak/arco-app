@@ -8,5 +8,6 @@ router.get('/:id_billetera', billeteraController.getBilleteraById); // Trae la b
 router.get('/socio/:id_socio', billeteraController.getBilleteraBySocio); // Trae la billetera de un socio por ID
 router.get('/:id_billetera/saldo', billeteraController.getSaldoBilletera); // Trae el saldo de la billetera
 router.post('/recargar', billeteraController.recargarSaldo); // Nueva ruta para recarga de saldo
+router.post('/validar-recarga', billeteraController.validarRecarga); // Nueva ruta para validar recarga de saldo
 
 export default router; // Exporta el router para usarlo en app.js

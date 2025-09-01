@@ -37,9 +37,20 @@ const recargarSaldo = async (recargaData) => {
     return response.json();
 }
 
+const validarRecarga = async (validacionData) => {
+    const response = await fetch(`${API_HOST}/api/billetera/validar-recarga`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(validacionData)
+    });
+    if (!response.ok) throw new Error('Error al validar recarga');
+    return response.json();
+}
+
 export default {
     getBilleteraById,
     getBilleteraBySocio,
     getSaldoBilletera,
-    recargarSaldo
+    recargarSaldo,
+    validarRecarga
 }
